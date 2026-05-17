@@ -130,7 +130,7 @@ function VarlokDuoCard() {
             className="absolute inset-0"
             style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(6,2,10,0.85) 100%)' }}
           />
-          <div className="absolute inset-x-0 bottom-0 pb-1 px-2 text-center">
+          <div className="absolute inset-x-0 px-2 text-center" style={{ bottom: '24px' }}>
             <p
               className="tracking-[0.2em] uppercase"
               style={{
@@ -158,7 +158,7 @@ function VarlokDuoCard() {
             className="absolute inset-0"
             style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(6,2,10,0.85) 100%)' }}
           />
-          <div className="absolute inset-x-0 bottom-0 pb-1 px-2 text-center">
+          <div className="absolute inset-x-0 px-2 text-center" style={{ bottom: '24px' }}>
             <p
               className="tracking-[0.2em] uppercase"
               style={{
