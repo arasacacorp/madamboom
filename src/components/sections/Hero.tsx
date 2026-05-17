@@ -141,12 +141,12 @@ function VarlokDuoCard() {
                 textShadow: '0 2px 8px rgba(0,0,0,0.7)',
               }}
             >
-              Сергей
+              Анна
             </p>
           </div>
         </div>
 
-        {/* Right — Анна */}
+        {/* Right — Сергей */}
         <div className="relative w-1/2" style={{ aspectRatio: '3/4' }}>
           <img
             src="/images/varlok-anna.jpg"
@@ -169,7 +169,7 @@ function VarlokDuoCard() {
                 textShadow: '0 2px 8px rgba(0,0,0,0.7)',
               }}
             >
-              Анна
+              Сергей
             </p>
           </div>
         </div>
@@ -219,9 +219,9 @@ function VarlokDuoCard() {
           <p
             className="tracking-[0.4em] uppercase"
             style={{
-              fontFamily: 'var(--font-inter)',
-              color: '#F5E6D3',
-              fontWeight: 300,
+              fontFamily: 'var(--font-playfair)',
+              color: '#C9A96E',
+              fontWeight: 500,
               fontSize: 'clamp(8px, 1.1vw, 11px)',
               opacity: 0.5,
             }}
