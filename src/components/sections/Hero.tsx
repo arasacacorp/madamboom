@@ -118,35 +118,7 @@ function VarlokDuoCard() {
           boxShadow: '0 0 40px rgba(123,26,43,0.35), 0 0 15px rgba(201,169,110,0.08), 0 10px 40px rgba(0,0,0,0.6)',
         }}
       >
-        {/* Left — Анна */}
-        <div className="relative w-1/2" style={{ aspectRatio: '3/4' }}>
-          <img
-            src="/images/varlok-anna.jpg"
-            alt="Анна Варлок"
-            className="w-full h-full object-cover object-top"
-            style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(6,2,10,0.85) 100%)' }}
-          />
-          <div className="absolute inset-x-0 bottom-0 pb-2 px-2 text-center">
-            <p
-              className="tracking-[0.2em] uppercase"
-              style={{
-                fontFamily: 'var(--font-playfair)',
-                color: '#C9A96E',
-                fontWeight: 500,
-                fontSize: 'clamp(9px, 1.2vw, 13px)',
-                textShadow: '0 2px 8px rgba(0,0,0,0.7)',
-              }}
-            >
-              Анна
-            </p>
-          </div>
-        </div>
-
-        {/* Right — Сергей */}
+        {/* Left — Сергей */}
         <div className="relative w-1/2" style={{ aspectRatio: '3/4' }}>
           <img
             src="/images/varlok-sergey.jpg"
@@ -158,18 +130,46 @@ function VarlokDuoCard() {
             className="absolute inset-0"
             style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(6,2,10,0.85) 100%)' }}
           />
-          <div className="absolute inset-x-0 bottom-0 pb-2 px-2 text-center">
+          <div className="absolute inset-x-0 bottom-0 pb-1 px-2 text-center">
             <p
               className="tracking-[0.2em] uppercase"
               style={{
                 fontFamily: 'var(--font-playfair)',
                 color: '#C9A96E',
                 fontWeight: 500,
-                fontSize: 'clamp(9px, 1.2vw, 13px)',
+                fontSize: 'clamp(9px, 1.1vw, 12px)',
                 textShadow: '0 2px 8px rgba(0,0,0,0.7)',
               }}
             >
               Сергей
+            </p>
+          </div>
+        </div>
+
+        {/* Right — Анна */}
+        <div className="relative w-1/2" style={{ aspectRatio: '3/4' }}>
+          <img
+            src="/images/varlok-anna.jpg"
+            alt="Анна Варлок"
+            className="w-full h-full object-cover object-top"
+            style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(6,2,10,0.85) 100%)' }}
+          />
+          <div className="absolute inset-x-0 bottom-0 pb-1 px-2 text-center">
+            <p
+              className="tracking-[0.2em] uppercase"
+              style={{
+                fontFamily: 'var(--font-playfair)',
+                color: '#C9A96E',
+                fontWeight: 500,
+                fontSize: 'clamp(9px, 1.1vw, 12px)',
+                textShadow: '0 2px 8px rgba(0,0,0,0.7)',
+              }}
+            >
+              Анна
             </p>
           </div>
         </div>
@@ -185,12 +185,16 @@ function VarlokDuoCard() {
         />
         {/* Diamond ornament center */}
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
             width: '10px',
             height: '10px',
+            marginTop: '-5px',
+            marginLeft: '-5px',
             border: '1px solid rgba(201,169,110,0.7)',
-            transform: 'translate(-50%, -50%) rotate(45deg)',
+            transform: 'rotate(45deg)',
             background: 'rgba(6,2,10,0.95)',
             zIndex: 3,
           }}
@@ -204,9 +208,11 @@ function VarlokDuoCard() {
 
         {/* Shared surname banner */}
         <div
-          className="absolute inset-x-0 bottom-0 text-center py-2"
+          className="absolute inset-x-0 bottom-0 text-center"
           style={{
-            background: 'linear-gradient(180deg, transparent, rgba(6,2,10,0.95) 50%)',
+            background: 'linear-gradient(180deg, transparent, rgba(6,2,10,0.95) 60%)',
+            paddingTop: '14px',
+            paddingBottom: '6px',
             zIndex: 3,
           }}
         >
@@ -217,7 +223,7 @@ function VarlokDuoCard() {
               color: '#F5E6D3',
               fontWeight: 300,
               fontSize: 'clamp(8px, 1.1vw, 11px)',
-              opacity: 0.45,
+              opacity: 0.5,
             }}
           >
             Варлок
