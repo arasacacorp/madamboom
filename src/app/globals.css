@@ -568,6 +568,57 @@ button:focus-visible {
   animation: badgeGlow 4s ease-in-out infinite;
 }
 
+/* Stage background cinematic reveal */
+@keyframes bgReveal {
+  from {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero-bg-reveal {
+  opacity: 0;
+  animation: bgReveal 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+/* Performer card fly-in — mimics GSAP power3.out */
+@keyframes cardFlyIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(var(--card-rot, 0deg)) translate(var(--card-x, 0px), var(--card-y, 0px));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(var(--card-rot, 0deg)) translate(0, 0);
+  }
+}
+
+/* Per-card fly-in directions via CSS custom properties */
+.performer-pos-1 {
+  --card-x: -200px;
+  --card-y: -80px;
+  --card-rot: -15deg;
+}
+.performer-pos-2 {
+  --card-x: -180px;
+  --card-y: 60px;
+  --card-rot: -10deg;
+}
+.performer-pos-3 {
+  --card-x: 180px;
+  --card-y: 60px;
+  --card-rot: 10deg;
+}
+.performer-pos-4 {
+  --card-x: 200px;
+  --card-y: -80px;
+  --card-rot: 15deg;
+}
+
 /* Smooth font rendering */
 body {
   -webkit-font-smoothing: antialiased;
