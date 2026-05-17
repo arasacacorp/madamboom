@@ -625,3 +625,33 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
+
+/* ══════════════════════════════════════════
+   MOBILE RESPONSIVE ENHANCEMENTS
+   ══════════════════════════════════════════ */
+
+/* Touch optimization — prevent text selection on interactive elements */
+@media (max-width: 1023px) {
+  a, button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Reduce particles on mobile for performance */
+  .particle:nth-child(n+15) {
+    display: none;
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Mobile landscape adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .cta-button {
+    padding: 6px 20px !important;
+  }
+}

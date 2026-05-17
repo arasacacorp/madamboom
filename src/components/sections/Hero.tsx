@@ -50,7 +50,7 @@ function PerformerCard({ name, image, delay, wide, objectPos }: {
 }) {
   return (
     <div
-      className="flex-shrink-0"
+      className="flex-shrink-0 card-snap-item"
       style={{
         width: wide ? 'clamp(160px, 20vw, 260px)' : 'clamp(75px, 9vw, 120px)',
         opacity: 0,
@@ -109,7 +109,7 @@ function PerformerCard({ name, image, delay, wide, objectPos }: {
 function VarlokDuoCard() {
   return (
     <div
-      className="flex-shrink-0"
+      className="flex-shrink-0 card-snap-item"
       style={{
         width: 'clamp(160px, 20vw, 260px)',
         opacity: 0,
@@ -152,7 +152,7 @@ function VarlokDuoCard() {
           </div>
         </div>
 
-        {/* Right — Сергей */}
+        {/* Right — Анна */}
         <div className="relative w-1/2" style={{ aspectRatio: '3/4' }}>
           <img
             src="/images/varlok-anna.jpg"
@@ -253,6 +253,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
   const ctaRef = useRef<HTMLDivElement>(null)
   const cardsRowRef = useRef<HTMLDivElement>(null)
   const stageBgRef = useRef<HTMLDivElement>(null)
+  const swipeHintRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!animate) return
@@ -300,6 +301,20 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
       { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
       1.9
     )
+
+    // Fade out swipe hint after 4 seconds on mobile
+    if (swipeHintRef.current) {
+      gsap.fromTo(
+        swipeHintRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.6, delay: 3.0 }
+      )
+      gsap.to(swipeHintRef.current, {
+        opacity: 0,
+        duration: 1,
+        delay: 7,
+      })
+    }
 
     return () => {
       tl.kill()
@@ -391,7 +406,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           className="text-center leading-[0.85] opacity-0"
           style={{
             fontFamily: 'var(--font-playfair)',
-            fontSize: 'clamp(52px, 10vw, 120px)',
+            fontSize: 'clamp(48px, 10vw, 120px)',
             fontWeight: 900,
             color: '#F5E6D3',
             letterSpacing: '0.06em',
@@ -412,14 +427,14 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         <div ref={subtitleRef} className="opacity-0 text-center">
           <p
             className="tracking-[0.5em] uppercase"
-            style={{ fontFamily: 'var(--font-cormorant)', color: '#C9A96E', fontWeight: 400, fontSize: 'clamp(12px, 2vw, 20px)' }}
+            style={{ fontFamily: 'var(--font-cormorant)', color: '#C9A96E', fontWeight: 400, fontSize: 'clamp(11px, 2vw, 20px)' }}
           >
             Бурлеск-Кабаре
           </p>
         </div>
 
         {/* ═══ SHOWS NAVIGATION ═══ */}
-        <div ref={ctaRef} className="flex items-center justify-center gap-5 mt-4 opacity-0 flex-wrap px-2">
+        <div ref={ctaRef} className="flex items-center justify-center gap-3 sm:gap-5 mt-4 opacity-0 flex-wrap px-2 max-w-full">
           {/* Left — Афиша СПб */}
           <a
             href="https://madamboomdouglas.ticketscloud.org/"
@@ -431,8 +446,8 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             <div
               className="flex items-center justify-center gap-2 rounded-sm transition-all duration-300"
               style={{
-                width: 'clamp(110px, 12vw, 150px)',
-                padding: '10px 0',
+                width: 'clamp(100px, 18vw, 150px)',
+                padding: '8px 6px',
                 border: '1px solid rgba(201,169,110,0.15)',
                 background: 'rgba(201,169,110,0.04)',
               }}
@@ -454,8 +469,8 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
                   style={{
                     fontFamily: 'var(--font-inter)',
                     color: '#C9A96E',
-                    fontSize: 'clamp(7px, 0.9vw, 9px)',
-                    letterSpacing: '0.2em',
+                    fontSize: 'clamp(6px, 1.6vw, 9px)',
+                    letterSpacing: '0.15em',
                     fontWeight: 400,
                     textTransform: 'uppercase',
                     whiteSpace: 'nowrap',
@@ -468,8 +483,8 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
                   style={{
                     fontFamily: 'var(--font-inter)',
                     color: '#F5E6D3',
-                    fontSize: 'clamp(7px, 0.8vw, 8px)',
-                    letterSpacing: '0.1em',
+                    fontSize: 'clamp(6px, 1.4vw, 8px)',
+                    letterSpacing: '0.08em',
                     fontWeight: 300,
                     whiteSpace: 'nowrap',
                     opacity: 0.4,
@@ -486,11 +501,11 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             href="https://23may.ticketscloud.org/"
             target="_blank"
             rel="noopener noreferrer"
-            className="cta-button group flex flex-col items-center gap-1.5 rounded-sm transition-all duration-300 cursor-pointer"
+            className="cta-button group flex flex-col items-center gap-1 rounded-sm transition-all duration-300 cursor-pointer"
             style={{
               background: 'rgba(90, 15, 26, 0.85)',
               border: '1px solid rgba(201, 169, 110, 0.5)',
-              padding: '10px 32px',
+              padding: 'clamp(8px, 1.5vw, 12px) clamp(16px, 4vw, 36px)',
               textDecoration: 'none',
             }}
             onMouseEnter={(e) => {
@@ -508,8 +523,8 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
               style={{
                 fontFamily: 'var(--font-inter)',
                 color: '#C9A96E',
-                fontSize: 'clamp(7px, 0.9vw, 9px)',
-                letterSpacing: '0.2em',
+                fontSize: 'clamp(6px, 1.6vw, 9px)',
+                letterSpacing: '0.15em',
                 fontWeight: 400,
                 textTransform: 'uppercase',
                 whiteSpace: 'nowrap',
@@ -521,9 +536,9 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
               style={{
                 fontFamily: 'var(--font-playfair)',
                 color: '#F5E6D3',
-                fontSize: 'clamp(11px, 1.3vw, 15px)',
+                fontSize: 'clamp(12px, 2.5vw, 15px)',
                 fontWeight: 500,
-                letterSpacing: '0.15em',
+                letterSpacing: '0.12em',
                 whiteSpace: 'nowrap',
                 textShadow: '0 0 20px rgba(201,169,110,0.2)',
               }}
@@ -534,12 +549,11 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
               style={{
                 fontFamily: 'var(--font-inter)',
                 color: '#C9A96E',
-                fontSize: 'clamp(7px, 0.8vw, 9px)',
-                letterSpacing: '0.15em',
+                fontSize: 'clamp(6px, 1.4vw, 9px)',
+                letterSpacing: '0.12em',
                 fontWeight: 300,
                 whiteSpace: 'nowrap',
                 opacity: 0.6,
-                marginTop: '2px',
               }}
             >
               Забронировать стол
@@ -557,8 +571,8 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             <div
               className="flex items-center justify-center gap-2 rounded-sm transition-all duration-300"
               style={{
-                width: 'clamp(110px, 12vw, 150px)',
-                padding: '10px 0',
+                width: 'clamp(100px, 18vw, 150px)',
+                padding: '8px 6px',
                 border: '1px solid rgba(201,169,110,0.15)',
                 background: 'rgba(201,169,110,0.04)',
               }}
@@ -580,8 +594,8 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
                   style={{
                     fontFamily: 'var(--font-inter)',
                     color: '#C9A96E',
-                    fontSize: 'clamp(7px, 0.9vw, 9px)',
-                    letterSpacing: '0.2em',
+                    fontSize: 'clamp(6px, 1.6vw, 9px)',
+                    letterSpacing: '0.15em',
                     fontWeight: 400,
                     textTransform: 'uppercase',
                     whiteSpace: 'nowrap',
@@ -594,8 +608,8 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
                   style={{
                     fontFamily: 'var(--font-inter)',
                     color: '#F5E6D3',
-                    fontSize: 'clamp(7px, 0.8vw, 8px)',
-                    letterSpacing: '0.1em',
+                    fontSize: 'clamp(6px, 1.4vw, 8px)',
+                    letterSpacing: '0.08em',
                     fontWeight: 300,
                     whiteSpace: 'nowrap',
                     opacity: 0.4,
@@ -608,27 +622,128 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           </a>
         </div>
 
+        {/* "Ближайшие шоу" label */}
+        <div
+          className="flex items-center gap-2 mt-1"
+          ref={(el) => {
+            if (el && animate) {
+              gsap.fromTo(el, { opacity: 0 }, { opacity: 0.4, duration: 0.8, delay: 2.2 })
+            }
+          }}
+        >
+          <div style={{ width: '20px', height: '0.5px', background: 'rgba(201,169,110,0.3)' }} />
+          <span
+            style={{
+              fontFamily: 'var(--font-inter)',
+              color: '#C9A96E',
+              fontSize: 'clamp(6px, 1.2vw, 8px)',
+              letterSpacing: '0.25em',
+              fontWeight: 300,
+              textTransform: 'uppercase',
+              opacity: 0.6,
+            }}
+          >
+            Ближайшие шоу
+          </span>
+          <div style={{ width: '20px', height: '0.5px', background: 'rgba(201,169,110,0.3)' }} />
+        </div>
+
         {/* ═══ BOTTOM: ALL CARDS IN A ROW ═══ */}
+        {/* Desktop: centered flex row | Mobile: horizontal swipe carousel */}
         <div
           ref={cardsRowRef}
-          className="flex items-end justify-center gap-3 mt-6 pb-4 opacity-0"
+          className="flex items-end justify-center gap-3 lg:gap-3 mt-4 lg:mt-6 pb-4 opacity-0
+            lg:overflow-visible lg:justify-center
+            cards-swipe"
           style={{ maxWidth: '100%' }}
         >
+          {/* Mobile left spacer — centers the first card initially */}
+          <div className="cards-spacer" aria-hidden="true" />
+
           <PerformerCard name="Олеся Волык" image="/images/performer-olesya.jpg" delay="2.0s" />
           <PerformerCard name="Сапфая Тайгресс" image="/images/performer-saphaya.jpg" delay="2.1s" objectPos="80% 5%" />
           <VarlokDuoCard />
           <PerformerCard name="Инна Айвори" image="/images/performer-inna.jpg" delay="2.1s" objectPos="65% top" />
           <PerformerCard name="Кристал Дейзи" image="/images/performer-crystal.jpg" delay="2.0s" />
+
+          {/* Mobile right spacer */}
+          <div className="cards-spacer" aria-hidden="true" />
+        </div>
+
+        {/* Mobile swipe hint */}
+        <div ref={swipeHintRef} className="lg:hidden flex items-center justify-center gap-2 pb-2 opacity-0" style={{ zIndex: 6 }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ color: 'rgba(201,169,110,0.35)' }}>
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+          <span
+            style={{
+              fontFamily: 'var(--font-inter)',
+              color: 'rgba(201,169,110,0.35)',
+              fontSize: '9px',
+              letterSpacing: '0.15em',
+              fontWeight: 300,
+              textTransform: 'uppercase',
+            }}
+          >
+            Свайп
+          </span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ color: 'rgba(201,169,110,0.35)' }}>
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
         </div>
       </div>
 
-
-
-      {/* Fade slide up animation */}
+      {/* ═══ INLINE STYLES ═══ */}
       <style>{`
         @keyframes fadeSlideUp {
           from { opacity: 0; transform: translateY(30px) scale(var(--scale, 1)); }
           to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ── Mobile swipeable cards ── */
+        .cards-swipe {
+          /* Desktop: normal centered flex */
+          /* Mobile: horizontal scroll */
+        }
+
+        @media (max-width: 1023px) {
+          .cards-swipe {
+            overflow-x: auto;
+            overflow-y: hidden;
+            justify-content: flex-start !important;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding-left: 0;
+            padding-right: 0;
+            scroll-padding: 0 calc(50vw - 55px);
+            mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+            -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+          }
+
+          .cards-swipe::-webkit-scrollbar {
+            display: none;
+          }
+          .cards-swipe {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+
+          .card-snap-item {
+            scroll-snap-align: center;
+          }
+
+          .cards-spacer {
+            flex-shrink: 0;
+            width: calc(50vw - 55px);
+            min-width: calc(50vw - 55px);
+          }
+        }
+
+        /* ── Swipe hint pulse ── */
+        @keyframes swipeHintSlide {
+          0%, 100% { transform: translateX(0); opacity: 0.35; }
+          25% { transform: translateX(4px); opacity: 0.5; }
+          75% { transform: translateX(-4px); opacity: 0.5; }
         }
       `}</style>
     </section>
