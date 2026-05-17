@@ -466,7 +466,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           style={{ maxWidth: '100%' }}
         >
           <PerformerCard name="Олеся Волык" image="/images/performer-olesya.jpg" delay="2.0s" />
-          <PerformerCard name="Сапфая Тайгресс" image="/images/performer-saphaya.jpg" delay="2.1s" objectPos="65% top" />
+          <PerformerCard name="Сапфая Тайгресс" image="/images/performer-saphaya.jpg" delay="2.1s" objectPos="80% 5%" />
           <VarlokDuoCard />
           <PerformerCard name="Артистка 3" image="/images/performer3.png" delay="2.1s" />
           <PerformerCard name="Артистка 4" image="/images/performer4.png" delay="2.0s" />
