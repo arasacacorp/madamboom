@@ -3,130 +3,6 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
-/* ─── Performer data (side cards only) ─── */
-const performers = [
-  { id: 1, name: 'Артистка 1', image: '/images/performer1.png', posClass: 'performer-pos-1', flyDelay: '0s' },
-  { id: 2, name: 'Артистка 2', image: '/images/performer2.png', posClass: 'performer-pos-2', flyDelay: '0.15s' },
-  { id: 3, name: 'Артистка 3', image: '/images/performer3.png', posClass: 'performer-pos-3', flyDelay: '0.3s' },
-  { id: 4, name: 'Артистка 4', image: '/images/performer4.png', posClass: 'performer-pos-4', flyDelay: '0.1s' },
-]
-
-/* ─── Single performer card (sides) ─── */
-function PerformerCard({ name, image, posClass, flyDelay, visible }: {
-  name: string; image: string; posClass: string; flyDelay: string; visible: boolean
-}) {
-  return (
-    <div
-      className={`absolute hidden lg:block ${posClass}`}
-      style={{ zIndex: 5 }}
-    >
-      <div className="performer-card-inner">
-        <div
-          className="relative aspect-[3/4] rounded-lg overflow-hidden"
-          style={{
-            border: '1px solid rgba(123, 26, 43, 0.5)',
-            boxShadow: '0 0 24px rgba(123,26,43,0.3), 0 8px 32px rgba(0,0,0,0.5)',
-            opacity: visible ? undefined : 0,
-            animation: visible ? `cardFlyIn 1s cubic-bezier(0.22, 1, 0.36, 1) ${flyDelay} forwards` : 'none',
-          }}
-        >
-          <img
-            src={image}
-            alt={name}
-            className="w-full h-full object-cover object-top"
-            style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
-            loading="lazy"
-          />
-          {/* Gradient overlay */}
-          <div
-            className="absolute inset-0"
-            style={{ background: 'linear-gradient(180deg, transparent 35%, rgba(6,2,10,0.9) 100%)' }}
-          />
-          {/* Gold border accent top */}
-          <div
-            className="absolute top-0 inset-x-0 h-px"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.3), transparent)' }}
-          />
-          {/* Name */}
-          <div className="absolute inset-x-0 bottom-0 pb-3 px-2 text-center">
-            <p
-              className="tracking-[0.2em] uppercase leading-tight"
-              style={{
-                fontFamily: 'var(--font-playfair)',
-                color: '#C9A96E',
-                fontWeight: 500,
-                fontSize: 'clamp(9px, 1.1vw, 12px)',
-                textShadow: '0 2px 8px rgba(0,0,0,0.7)',
-              }}
-            >
-              {name}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/* ─── Varlok hand-held card ─── */
-function VarlokCard({ name, image, rotate, xShift, zIdx, delay, visible }: {
-  name: string; image: string; rotate: number; xShift: number; zIdx: number; delay: string; visible: boolean
-}) {
-  return (
-    <div
-      className="relative flex-shrink-0"
-      style={{
-        width: 'clamp(70px, 10vw, 110px)',
-        zIndex: zIdx,
-        opacity: visible ? undefined : 0,
-        transform: visible ? `rotate(${rotate}deg) translateX(${xShift}px)` : `rotate(${rotate}deg) translateX(${xShift}px) translateY(40px)`,
-        transition: visible
-          ? 'opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)'
-          : 'none',
-        transitionDelay: delay,
-      }}
-    >
-      <div
-        className="relative aspect-[3/4] rounded-lg overflow-hidden"
-        style={{
-          border: '1px solid rgba(123, 26, 43, 0.5)',
-          boxShadow: '0 0 24px rgba(123,26,43,0.3), 0 8px 32px rgba(0,0,0,0.5)',
-        }}
-      >
-        <img
-          src={image}
-          alt={name}
-          className="w-full h-full object-cover object-top"
-          style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
-          loading="lazy"
-        />
-        <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(180deg, transparent 35%, rgba(6,2,10,0.9) 100%)' }}
-        />
-        <div
-          className="absolute top-0 inset-x-0 h-px"
-          style={{ background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.3), transparent)' }}
-        />
-        <div className="absolute inset-x-0 bottom-0 pb-2 px-1.5 text-center">
-          <p
-            className="tracking-[0.2em] uppercase leading-tight"
-            style={{
-              fontFamily: 'var(--font-playfair)',
-              color: '#C9A96E',
-              fontWeight: 500,
-              fontSize: 'clamp(8px, 1vw, 11px)',
-              textShadow: '0 2px 8px rgba(0,0,0,0.7)',
-            }}
-          >
-            {name}
-          </p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 /* ─── Floating Particles ─── */
 function FloatingParticles() {
   const particles = Array.from({ length: 30 }, (_, i) => ({
@@ -168,6 +44,190 @@ function FloatingParticles() {
   )
 }
 
+/* ─── Single performer card ─── */
+function PerformerCard({ name, image, delay }: {
+  name: string; image: string; delay: string
+}) {
+  return (
+    <div
+      className="flex-shrink-0"
+      style={{
+        width: 'clamp(75px, 9vw, 120px)',
+        opacity: 0,
+        transform: 'translateY(30px)',
+        animation: `fadeSlideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay} forwards`,
+      }}
+    >
+      <div
+        className="relative aspect-[3/4] rounded-lg overflow-hidden"
+        style={{
+          border: '1px solid rgba(123, 26, 43, 0.5)',
+          boxShadow: '0 0 20px rgba(123,26,43,0.25), 0 6px 24px rgba(0,0,0,0.5)',
+        }}
+      >
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-full object-cover object-top"
+          style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
+          loading="lazy"
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(180deg, transparent 35%, rgba(6,2,10,0.9) 100%)' }}
+        />
+        <div
+          className="absolute top-0 inset-x-0 h-px"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.3), transparent)' }}
+        />
+        <div className="absolute inset-x-0 bottom-0 pb-2 px-1.5 text-center">
+          <p
+            className="tracking-[0.2em] uppercase leading-tight"
+            style={{
+              fontFamily: 'var(--font-playfair)',
+              color: '#C9A96E',
+              fontWeight: 500,
+              fontSize: 'clamp(8px, 1vw, 11px)',
+              textShadow: '0 2px 8px rgba(0,0,0,0.7)',
+            }}
+          >
+            {name}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Varlok Duo Card ─── */
+function VarlokDuoCard() {
+  return (
+    <div
+      className="flex-shrink-0"
+      style={{
+        width: 'clamp(160px, 20vw, 260px)',
+        opacity: 0,
+        transform: 'translateY(30px) scale(0.95)',
+        animation: 'fadeSlideUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.2s forwards',
+      }}
+    >
+      <div
+        className="relative flex rounded-lg overflow-hidden"
+        style={{
+          border: '1px solid rgba(201, 169, 110, 0.3)',
+          boxShadow: '0 0 40px rgba(123,26,43,0.35), 0 0 15px rgba(201,169,110,0.08), 0 10px 40px rgba(0,0,0,0.6)',
+        }}
+      >
+        {/* Left — Анна */}
+        <div className="relative w-1/2" style={{ aspectRatio: '3/4' }}>
+          <img
+            src="/images/varlok-anna.jpg"
+            alt="Анна Варлок"
+            className="w-full h-full object-cover object-top"
+            style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(6,2,10,0.85) 100%)' }}
+          />
+          <div className="absolute inset-x-0 bottom-0 pb-2 px-2 text-center">
+            <p
+              className="tracking-[0.2em] uppercase"
+              style={{
+                fontFamily: 'var(--font-playfair)',
+                color: '#C9A96E',
+                fontWeight: 500,
+                fontSize: 'clamp(9px, 1.2vw, 13px)',
+                textShadow: '0 2px 8px rgba(0,0,0,0.7)',
+              }}
+            >
+              Анна
+            </p>
+          </div>
+        </div>
+
+        {/* Right — Сергей */}
+        <div className="relative w-1/2" style={{ aspectRatio: '3/4' }}>
+          <img
+            src="/images/varlok-sergey.jpg"
+            alt="Сергей Варлок"
+            className="w-full h-full object-cover object-top"
+            style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(6,2,10,0.85) 100%)' }}
+          />
+          <div className="absolute inset-x-0 bottom-0 pb-2 px-2 text-center">
+            <p
+              className="tracking-[0.2em] uppercase"
+              style={{
+                fontFamily: 'var(--font-playfair)',
+                color: '#C9A96E',
+                fontWeight: 500,
+                fontSize: 'clamp(9px, 1.2vw, 13px)',
+                textShadow: '0 2px 8px rgba(0,0,0,0.7)',
+              }}
+            >
+              Сергей
+            </p>
+          </div>
+        </div>
+
+        {/* Gold center divider */}
+        <div
+          className="absolute top-[12%] bottom-[12%] left-1/2 -translate-x-1/2"
+          style={{
+            width: '1px',
+            background: 'linear-gradient(180deg, transparent, rgba(201,169,110,0.4) 25%, rgba(201,169,110,0.6) 50%, rgba(201,169,110,0.4) 75%, transparent)',
+            zIndex: 2,
+          }}
+        />
+        {/* Diamond ornament center */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            width: '10px',
+            height: '10px',
+            border: '1px solid rgba(201,169,110,0.7)',
+            transform: 'translate(-50%, -50%) rotate(45deg)',
+            background: 'rgba(6,2,10,0.95)',
+            zIndex: 3,
+          }}
+        />
+
+        {/* Top gold accent */}
+        <div
+          className="absolute top-0 inset-x-0 h-px"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.4), transparent)', zIndex: 2 }}
+        />
+
+        {/* Shared surname banner */}
+        <div
+          className="absolute inset-x-0 bottom-0 text-center py-2"
+          style={{
+            background: 'linear-gradient(180deg, transparent, rgba(6,2,10,0.95) 50%)',
+            zIndex: 3,
+          }}
+        >
+          <p
+            className="tracking-[0.4em] uppercase"
+            style={{
+              fontFamily: 'var(--font-inter)',
+              color: '#F5E6D3',
+              fontWeight: 300,
+              fontSize: 'clamp(8px, 1.1vw, 11px)',
+              opacity: 0.45,
+            }}
+          >
+            Варлок
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /* ─── Hero Section ─── */
 interface HeroProps {
   animate: boolean
@@ -179,6 +239,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
   const subtitleRef = useRef<HTMLDivElement>(null)
   const lineRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
+  const cardsRowRef = useRef<HTMLDivElement>(null)
   const stageBgRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -186,7 +247,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
 
     const tl = gsap.timeline({ defaults: { ease: 'power2.out' } })
 
-    // Stage background fades in first
     tl.fromTo(
       stageBgRef.current,
       { opacity: 0, scale: 1.1 },
@@ -194,7 +254,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
       0
     )
 
-    // Title
     tl.fromTo(
       titleRef.current,
       { opacity: 0, y: 60, scale: 0.95 },
@@ -202,7 +261,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
       0.3
     )
 
-    // Gold line
     tl.fromTo(
       lineRef.current,
       { opacity: 0, scaleX: 0 },
@@ -210,7 +268,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
       0.8
     )
 
-    // Subtitle
     tl.fromTo(
       subtitleRef.current,
       { opacity: 0, y: 20 },
@@ -218,12 +275,18 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
       1.0
     )
 
-    // CTA + Varlok cards row
     tl.fromTo(
       ctaRef.current,
       { opacity: 0, y: 25 },
       { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
-      1.8
+      1.6
+    )
+
+    tl.fromTo(
+      cardsRowRef.current,
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
+      1.9
     )
 
     return () => {
@@ -234,16 +297,12 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* === BACKGROUND LAYERS === */}
-
-      {/* Layer 1: Deep burgundy base */}
       <div
         className="absolute inset-0"
         style={{
           background: 'linear-gradient(180deg, #06020A 0%, #1A0812 30%, #2D0F1A 60%, #1A0812 85%, #06020A 100%)',
         }}
       />
-
-      {/* Layer 2: Stage background image */}
       <div
         ref={stageBgRef}
         className="absolute inset-0 opacity-0"
@@ -255,8 +314,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           zIndex: 1,
         }}
       />
-
-      {/* Layer 3: Burgundy radial glow */}
       <div
         className="absolute inset-0"
         style={{
@@ -264,8 +321,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           zIndex: 2,
         }}
       />
-
-      {/* Layer 4: Spotlight effects */}
       <div
         className="absolute inset-0"
         style={{
@@ -276,30 +331,11 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           zIndex: 3,
         }}
       />
-
-      {/* Layer 5: Vignette */}
       <div className="vignette" />
-
-      {/* Layer 6: Particles */}
       <FloatingParticles />
 
-      {/* === PERFORMER CARDS ON SIDES (4 original) === */}
-      {performers.map((p) => (
-        <PerformerCard
-          key={p.id}
-          name={p.name}
-          image={p.image}
-          posClass={p.posClass}
-          flyDelay={p.flyDelay}
-          visible={animate}
-        />
-      ))}
-
       {/* === MOBILE HERO BACKGROUND === */}
-      <div
-        className="absolute inset-0 lg:hidden"
-        style={{ zIndex: 1 }}
-      >
+      <div className="absolute inset-0 lg:hidden" style={{ zIndex: 1 }}>
         <div
           className="hero-mobile-bg-pulse absolute inset-0"
           style={{
@@ -312,18 +348,16 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         />
         <div
           className="absolute inset-0"
-          style={{
-            background: 'radial-gradient(ellipse at center, transparent 15%, rgba(6,2,10,0.9) 60%)',
-          }}
+          style={{ background: 'radial-gradient(ellipse at center, transparent 15%, rgba(6,2,10,0.9) 60%)' }}
         />
       </div>
 
       {/* === CENTER CONTENT === */}
       <div
-        className="relative flex flex-col items-center gap-5 px-4"
+        className="relative flex flex-col items-center gap-4 px-4 w-full"
         style={{ zIndex: 6 }}
       >
-        {/* Decorative element above title */}
+        {/* Decorative element */}
         <div
           className="flex items-center gap-3"
           ref={(el) => {
@@ -334,12 +368,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         >
           <div style={{ width: '35px', height: '1px', background: '#C9A96E' }} />
           <div
-            style={{
-              width: '7px',
-              height: '7px',
-              border: '1px solid #C9A96E',
-              transform: 'rotate(45deg)',
-            }}
+            style={{ width: '7px', height: '7px', border: '1px solid #C9A96E', transform: 'rotate(45deg)' }}
           />
           <div style={{ width: '35px', height: '1px', background: '#C9A96E' }} />
         </div>
@@ -371,129 +400,91 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         <div ref={subtitleRef} className="opacity-0 text-center">
           <p
             className="tracking-[0.5em] uppercase"
-            style={{
-              fontFamily: 'var(--font-cormorant)',
-              color: '#C9A96E',
-              fontWeight: 400,
-              fontSize: 'clamp(12px, 2vw, 20px)',
-            }}
+            style={{ fontFamily: 'var(--font-cormorant)', color: '#C9A96E', fontWeight: 400, fontSize: 'clamp(12px, 2vw, 20px)' }}
           >
             Бурлеск-Кабаре
           </p>
           <p
             className="tracking-[0.35em] uppercase mt-1"
-            style={{
-              fontFamily: 'var(--font-inter)',
-              color: '#F5E6D3',
-              opacity: 0.3,
-              fontWeight: 300,
-              fontSize: 'clamp(8px, 1vw, 11px)',
-            }}
+            style={{ fontFamily: 'var(--font-inter)', color: '#F5E6D3', opacity: 0.3, fontWeight: 300, fontSize: 'clamp(8px, 1vw, 11px)' }}
           >
             Санкт-Петербург
           </p>
         </div>
 
-        {/* ═══ CTA + Varlok cards (hand-held style) ═══ */}
+        {/* CTA Button */}
+        <div ref={ctaRef} className="flex flex-col items-center gap-3 mt-2 opacity-0">
+          <button
+            className="cta-button px-10 py-4 rounded-sm transition-all duration-400 cursor-pointer"
+            style={{
+              background: 'rgba(90, 15, 26, 0.85)',
+              border: '1px solid rgba(201, 169, 110, 0.5)',
+              color: '#C9A96E',
+              fontFamily: 'var(--font-inter)',
+              fontWeight: 400,
+              fontSize: '11px',
+              letterSpacing: '0.25em',
+              backdropFilter: 'blur(6px)',
+            }}
+            onClick={onBookingClick}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(123, 26, 43, 0.95)'
+              e.currentTarget.style.borderColor = '#C9A96E'
+              e.currentTarget.style.boxShadow = '0 0 30px rgba(201,169,110,0.3), inset 0 0 25px rgba(201,169,110,0.08)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(90, 15, 26, 0.85)'
+              e.currentTarget.style.borderColor = 'rgba(201,169,110,0.5)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}
+          >
+            БРОНИРОВАТЬ СТОЛ
+          </button>
+          <p
+            style={{ fontFamily: 'var(--font-inter)', color: '#C9A96E', fontSize: '9px', letterSpacing: '0.15em', fontWeight: 300, opacity: 0.5 }}
+          >
+            или позвоните +7 (812) 123-45-67
+          </p>
+        </div>
+
+        {/* ═══ BOTTOM: ALL CARDS IN A ROW ═══ */}
         <div
-          ref={ctaRef}
-          className="flex items-center gap-0 mt-4 opacity-0"
-          style={{ perspective: '800px' }}
+          ref={cardsRowRef}
+          className="flex items-end justify-center gap-3 mt-6 pb-4 opacity-0"
+          style={{ maxWidth: '100%' }}
         >
-          {/* Left card — Анна Варлок */}
-          <div style={{ marginRight: '-12px' }}>
-            <VarlokCard
-              name="Анна Варлок"
-              image="/images/varlok-anna.jpg"
-              rotate={-8}
-              xShift={-6}
-              zIdx={1}
-              delay="2.2s"
-              visible={animate}
-            />
-          </div>
-
-          {/* Center — CTA button */}
-          <div className="relative flex flex-col items-center gap-3 mx-2">
-            <button
-              className="cta-button px-10 py-4 rounded-sm transition-all duration-400 cursor-pointer"
-              style={{
-                background: 'rgba(90, 15, 26, 0.85)',
-                border: '1px solid rgba(201, 169, 110, 0.5)',
-                color: '#C9A96E',
-                fontFamily: 'var(--font-inter)',
-                fontWeight: 400,
-                fontSize: '11px',
-                letterSpacing: '0.25em',
-                backdropFilter: 'blur(6px)',
-              }}
-              onClick={onBookingClick}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(123, 26, 43, 0.95)'
-                e.currentTarget.style.borderColor = '#C9A96E'
-                e.currentTarget.style.boxShadow = '0 0 30px rgba(201,169,110,0.3), inset 0 0 25px rgba(201,169,110,0.08)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(90, 15, 26, 0.85)'
-                e.currentTarget.style.borderColor = 'rgba(201,169,110,0.5)'
-                e.currentTarget.style.boxShadow = 'none'
-              }}
-            >
-              БРОНИРОВАТЬ СТОЛ
-            </button>
-            <p
-              style={{
-                fontFamily: 'var(--font-inter)',
-                color: '#C9A96E',
-                fontSize: '9px',
-                letterSpacing: '0.15em',
-                fontWeight: 300,
-                opacity: 0.5,
-              }}
-            >
-              или позвоните +7 (812) 123-45-67
-            </p>
-          </div>
-
-          {/* Right card — Сергей Варлок */}
-          <div style={{ marginLeft: '-12px' }}>
-            <VarlokCard
-              name="Сергей Варлок"
-              image="/images/varlok-sergey.jpg"
-              rotate={8}
-              xShift={6}
-              zIdx={1}
-              delay="2.4s"
-              visible={animate}
-            />
-          </div>
+          <PerformerCard name="Артистка 1" image="/images/performer1.png" delay="2.0s" />
+          <PerformerCard name="Артистка 2" image="/images/performer2.png" delay="2.1s" />
+          <VarlokDuoCard />
+          <PerformerCard name="Артистка 3" image="/images/performer3.png" delay="2.1s" />
+          <PerformerCard name="Артистка 4" image="/images/performer4.png" delay="2.0s" />
         </div>
       </div>
 
       {/* Scroll indicator */}
       <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        style={{ zIndex: 6, opacity: animate ? 1 : 0, transition: 'opacity 1s ease 2.5s' }}
+        className="absolute bottom-3 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        style={{ zIndex: 6, opacity: animate ? 1 : 0, transition: 'opacity 1s ease 3s' }}
       >
         <p
           className="text-[7px] tracking-[0.3em] uppercase"
-          style={{
-            fontFamily: 'var(--font-inter)',
-            color: '#C9A96E',
-            opacity: 0.35,
-            fontWeight: 300,
-          }}
+          style={{ fontFamily: 'var(--font-inter)', color: '#C9A96E', opacity: 0.35, fontWeight: 300 }}
         >
           Scroll
         </p>
         <div
-          className="w-px h-10"
-          style={{
-            background: 'linear-gradient(to bottom, rgba(201,169,110,0.4), transparent)',
-            animation: 'scrollPulse 2.5s ease-in-out infinite',
-          }}
+          className="w-px h-8"
+          style={{ background: 'linear-gradient(to bottom, rgba(201,169,110,0.4), transparent)', animation: 'scrollPulse 2.5s ease-in-out infinite' }}
         />
       </div>
+
+      {/* Fade slide up animation */}
+      <style>{`
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(30px) scale(var(--scale, 1)); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+      `}</style>
     </section>
   )
 }
