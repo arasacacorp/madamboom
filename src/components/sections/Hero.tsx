@@ -463,7 +463,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
               className="afisha-card flex items-center justify-center gap-2 rounded-sm transition-all duration-300"
               style={{
                 width: 'clamp(100px, 18vw, 150px)',
-                padding: '8px 6px',
+                padding: '12px 6px',
                 border: '1px solid rgba(201,169,110,0.15)',
                 background: 'rgba(201,169,110,0.04)',
               }}
@@ -588,7 +588,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
               className="afisha-card flex items-center justify-center gap-2 rounded-sm transition-all duration-300"
               style={{
                 width: 'clamp(100px, 18vw, 150px)',
-                padding: '8px 6px',
+                padding: '12px 6px',
                 border: '1px solid rgba(201,169,110,0.15)',
                 background: 'rgba(201,169,110,0.04)',
               }}
