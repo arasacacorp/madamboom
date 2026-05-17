@@ -622,32 +622,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           </a>
         </div>
 
-        {/* "Ближайшие шоу" label */}
-        <div
-          className="flex items-center gap-2 mt-1"
-          ref={(el) => {
-            if (el && animate) {
-              gsap.fromTo(el, { opacity: 0 }, { opacity: 0.4, duration: 0.8, delay: 2.2 })
-            }
-          }}
-        >
-          <div style={{ width: '20px', height: '0.5px', background: 'rgba(201,169,110,0.3)' }} />
-          <span
-            style={{
-              fontFamily: 'var(--font-inter)',
-              color: '#C9A96E',
-              fontSize: 'clamp(6px, 1.2vw, 8px)',
-              letterSpacing: '0.25em',
-              fontWeight: 300,
-              textTransform: 'uppercase',
-              opacity: 0.6,
-            }}
-          >
-            Ближайшие шоу
-          </span>
-          <div style={{ width: '20px', height: '0.5px', background: 'rgba(201,169,110,0.3)' }} />
-        </div>
-
         {/* ═══ BOTTOM: ALL CARDS IN A ROW ═══ */}
         {/* Desktop: centered flex row | Mobile: horizontal swipe carousel */}
         <div
