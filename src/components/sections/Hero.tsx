@@ -429,8 +429,10 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             style={{ textDecoration: 'none' }}
           >
             <div
-              className="flex items-center gap-2 px-4 py-2.5 rounded-sm transition-all duration-300"
+              className="flex items-center justify-center gap-2 rounded-sm transition-all duration-300"
               style={{
+                width: 'clamp(110px, 12vw, 150px)',
+                padding: '10px 0',
                 border: '1px solid rgba(201,169,110,0.15)',
                 background: 'rgba(201,169,110,0.04)',
               }}
@@ -488,7 +490,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             style={{
               background: 'rgba(90, 15, 26, 0.85)',
               border: '1px solid rgba(201, 169, 110, 0.5)',
-              padding: '10px 24px',
+              padding: '10px 32px',
               textDecoration: 'none',
             }}
             onMouseEnter={(e) => {
@@ -540,7 +542,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
                 marginTop: '2px',
               }}
             >
-              Забронировать →
+              Забронировать стол
             </p>
           </a>
 
@@ -553,8 +555,10 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             style={{ textDecoration: 'none' }}
           >
             <div
-              className="flex items-center gap-2 px-4 py-2.5 rounded-sm transition-all duration-300"
+              className="flex items-center justify-center gap-2 rounded-sm transition-all duration-300"
               style={{
+                width: 'clamp(110px, 12vw, 150px)',
+                padding: '10px 0',
                 border: '1px solid rgba(201,169,110,0.15)',
                 background: 'rgba(201,169,110,0.04)',
               }}
@@ -605,6 +609,19 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         </div>
 
         {/* ═══ BOTTOM: ALL CARDS IN A ROW ═══ */}
+        <p
+          style={{
+            fontFamily: 'var(--font-inter)',
+            color: '#C9A96E',
+            fontSize: 'clamp(7px, 0.8vw, 9px)',
+            letterSpacing: '0.25em',
+            fontWeight: 300,
+            textTransform: 'uppercase',
+            opacity: 0.35,
+          }}
+        >
+          Ближайшие шоу
+        </p>
         <div
           ref={cardsRowRef}
           className="flex items-end justify-center gap-3 mt-6 pb-4 opacity-0"
