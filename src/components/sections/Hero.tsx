@@ -128,7 +128,7 @@ function VarlokDuoCard() {
         {/* Left — Сергей */}
         <div className="relative w-1/2 varlok-half" style={{ aspectRatio: '3/4' }}>
           <img
-            src={"/images/varlok-sergey.jpg`}
+            src="/images/varlok-sergey.jpg"
             alt="Сергей Варлок"
             className="w-full h-full object-cover object-top"
             style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
@@ -156,7 +156,7 @@ function VarlokDuoCard() {
         {/* Right — Анна */}
         <div className="relative w-1/2 varlok-half" style={{ aspectRatio: '3/4' }}>
           <img
-            src={"/images/varlok-anna.jpg`}
+            src="/images/varlok-anna.jpg"
             alt="Анна Варлок"
             className="w-full h-full object-cover object-top"
             style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
@@ -347,7 +347,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         ref={stageBgRef}
         className="absolute inset-0 opacity-0"
         style={{
-          backgroundImage: `url(${BASE}/images/stage-bg.png)`,
+          backgroundImage: `url(/images/stage-bg.png)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           filter: 'brightness(0.3) saturate(0.7)',
@@ -379,7 +379,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url(${BASE}/images/stage-bg.png)`,
+            backgroundImage: `url(/images/stage-bg.png)`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             filter: 'brightness(0.5) saturate(0.8)',
@@ -650,11 +650,11 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           {/* Mobile left spacer — centers the first card initially */}
           <div className="cards-spacer" aria-hidden="true" />
 
-          <PerformerCard name="Олеся Волык" image={"/images/performer-olesya.jpg`} delay="2.0s" />
-          <PerformerCard name="Сапфая Тайгресс" image={"/images/performer-saphaya.jpg`} delay="2.1s" objectPos="80% 5%" />
+          <PerformerCard name="Олеся Волык" image="/images/performer-olesya.jpg" delay="2.0s" />
+          <PerformerCard name="Сапфая Тайгресс" image="/images/performer-saphaya.jpg" delay="2.1s" objectPos="80% 5%" />
           <VarlokDuoCard />
-          <PerformerCard name="Инна Айвори" image={"/images/performer-inna.jpg`} delay="2.1s" objectPos="65% top" />
-          <PerformerCard name="Кристал Дейзи" image={"/images/performer-crystal.jpg`} delay="2.0s" />
+          <PerformerCard name="Инна Айвори" image="/images/performer-inna.jpg" delay="2.1s" objectPos="65% top" />
+          <PerformerCard name="Кристал Дейзи" image="/images/performer-crystal.jpg" delay="2.0s" />
 
           {/* Mobile right spacer */}
           <div className="cards-spacer" aria-hidden="true" />
