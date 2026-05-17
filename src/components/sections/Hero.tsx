@@ -109,9 +109,9 @@ function PerformerCard({ name, image, delay, wide, objectPos }: {
 function VarlokDuoCard() {
   return (
     <div
-      className="flex-shrink-0 card-snap-item"
+      className="flex-shrink-0 card-snap-item varlok-duo"
       style={{
-        width: 'clamp(160px, 20vw, 260px)',
+        width: 'clamp(180px, 24vw, 280px)',
         opacity: 0,
         transform: 'translateY(30px) scale(0.95)',
         animation: 'fadeSlideUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.2s forwards',
@@ -361,26 +361,24 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
       <div className="vignette" />
       <FloatingParticles />
 
-      {/* === MOBILE HERO BACKGROUND === */}
+      {/* === MOBILE — brighter stage background === */}
       <div className="absolute inset-0 lg:hidden" style={{ zIndex: 1 }}>
         <div
-          className="hero-mobile-bg-pulse absolute inset-0"
+          className="absolute inset-0"
           style={{
-            opacity: 0.55,
-            backgroundImage: 'url(/images/varlok-sergey.jpg)',
+            backgroundImage: 'url(/images/stage-bg.png)',
             backgroundSize: 'cover',
-            backgroundPosition: 'center 25%',
-            filter: 'brightness(0.75) saturate(0.8)',
+            backgroundPosition: 'center',
+            filter: 'brightness(0.5) saturate(0.8)',
           }}
         />
         <div
           className="absolute inset-0"
-          style={{ background: 'radial-gradient(ellipse at center, transparent 20%, rgba(6,2,10,0.65) 65%, rgba(6,2,10,0.85) 100%)' }}
+          style={{ background: 'radial-gradient(ellipse at center, transparent 25%, rgba(6,2,10,0.5) 60%, rgba(6,2,10,0.75) 100%)' }}
         />
-        {/* Subtle warm spotlight */}
         <div
           className="absolute inset-0"
-          style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 40%, rgba(90, 15, 26, 0.3) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 40%, rgba(90, 15, 26, 0.25) 0%, transparent 70%)' }}
         />
       </div>
 
@@ -717,8 +715,8 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             min-width: calc(50vw - 70px);
           }
 
-          /* ── Bigger performer cards on mobile ── */
-          .card-snap-item > div {
+          /* ── Bigger performer cards on mobile (skip Varlok duo card) ── */
+          .card-snap-item:not(.varlok-duo) > div {
             aspect-ratio: 3/4 !important;
           }
 
