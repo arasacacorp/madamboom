@@ -3,17 +3,15 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
-/* ─── Performer data ─── */
+/* ─── Performer data (side cards only) ─── */
 const performers = [
   { id: 1, name: 'Артистка 1', image: '/images/performer1.png', posClass: 'performer-pos-1', flyDelay: '0s' },
   { id: 2, name: 'Артистка 2', image: '/images/performer2.png', posClass: 'performer-pos-2', flyDelay: '0.15s' },
   { id: 3, name: 'Артистка 3', image: '/images/performer3.png', posClass: 'performer-pos-3', flyDelay: '0.3s' },
   { id: 4, name: 'Артистка 4', image: '/images/performer4.png', posClass: 'performer-pos-4', flyDelay: '0.1s' },
-  { id: 5, name: 'Сергей Варлок', image: '/images/varlok-sergey.jpg', posClass: 'performer-pos-5', flyDelay: '0.4s' },
-  { id: 6, name: 'Анна Варлок', image: '/images/varlok-anna.jpg', posClass: 'performer-pos-6', flyDelay: '0.25s' },
 ]
 
-/* ─── Single performer card ─── */
+/* ─── Single performer card (sides) ─── */
 function PerformerCard({ name, image, posClass, flyDelay, visible }: {
   name: string; image: string; posClass: string; flyDelay: string; visible: boolean
 }) {
@@ -64,6 +62,65 @@ function PerformerCard({ name, image, posClass, flyDelay, visible }: {
               {name}
             </p>
           </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Varlok hand-held card ─── */
+function VarlokCard({ name, image, rotate, xShift, zIdx, delay, visible }: {
+  name: string; image: string; rotate: number; xShift: number; zIdx: number; delay: string; visible: boolean
+}) {
+  return (
+    <div
+      className="relative flex-shrink-0"
+      style={{
+        width: 'clamp(70px, 10vw, 110px)',
+        zIndex: zIdx,
+        opacity: visible ? undefined : 0,
+        transform: visible ? `rotate(${rotate}deg) translateX(${xShift}px)` : `rotate(${rotate}deg) translateX(${xShift}px) translateY(40px)`,
+        transition: visible
+          ? 'opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)'
+          : 'none',
+        transitionDelay: delay,
+      }}
+    >
+      <div
+        className="relative aspect-[3/4] rounded-lg overflow-hidden"
+        style={{
+          border: '1px solid rgba(123, 26, 43, 0.5)',
+          boxShadow: '0 0 24px rgba(123,26,43,0.3), 0 8px 32px rgba(0,0,0,0.5)',
+        }}
+      >
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-full object-cover object-top"
+          style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
+          loading="lazy"
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(180deg, transparent 35%, rgba(6,2,10,0.9) 100%)' }}
+        />
+        <div
+          className="absolute top-0 inset-x-0 h-px"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.3), transparent)' }}
+        />
+        <div className="absolute inset-x-0 bottom-0 pb-2 px-1.5 text-center">
+          <p
+            className="tracking-[0.2em] uppercase leading-tight"
+            style={{
+              fontFamily: 'var(--font-playfair)',
+              color: '#C9A96E',
+              fontWeight: 500,
+              fontSize: 'clamp(8px, 1vw, 11px)',
+              textShadow: '0 2px 8px rgba(0,0,0,0.7)',
+            }}
+          >
+            {name}
+          </p>
         </div>
       </div>
     </div>
@@ -129,7 +186,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
 
     const tl = gsap.timeline({ defaults: { ease: 'power2.out' } })
 
-    // Stage background fades in first — cinematic reveal
+    // Stage background fades in first
     tl.fromTo(
       stageBgRef.current,
       { opacity: 0, scale: 1.1 },
@@ -137,7 +194,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
       0
     )
 
-    // Title — dramatic entrance from below with slight scale
+    // Title
     tl.fromTo(
       titleRef.current,
       { opacity: 0, y: 60, scale: 0.95 },
@@ -145,7 +202,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
       0.3
     )
 
-    // Gold line expands from center
+    // Gold line
     tl.fromTo(
       lineRef.current,
       { opacity: 0, scaleX: 0 },
@@ -161,7 +218,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
       1.0
     )
 
-    // CTA button
+    // CTA + Varlok cards row
     tl.fromTo(
       ctaRef.current,
       { opacity: 0, y: 25 },
@@ -186,7 +243,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         }}
       />
 
-      {/* Layer 2: Stage background image — cinematic theater */}
+      {/* Layer 2: Stage background image */}
       <div
         ref={stageBgRef}
         className="absolute inset-0 opacity-0"
@@ -199,7 +256,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         }}
       />
 
-      {/* Layer 3: Rich burgundy radial glow from center */}
+      {/* Layer 3: Burgundy radial glow */}
       <div
         className="absolute inset-0"
         style={{
@@ -208,7 +265,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         }}
       />
 
-      {/* Layer 4: Spotlight effects — 2 beams from above */}
+      {/* Layer 4: Spotlight effects */}
       <div
         className="absolute inset-0"
         style={{
@@ -220,13 +277,13 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         }}
       />
 
-      {/* Layer 5: Vignette — dark edges */}
+      {/* Layer 5: Vignette */}
       <div className="vignette" />
 
-      {/* Layer 6: Floating gold particles */}
+      {/* Layer 6: Particles */}
       <FloatingParticles />
 
-      {/* === PERFORMER CARDS ON SIDES === */}
+      {/* === PERFORMER CARDS ON SIDES (4 original) === */}
       {performers.map((p) => (
         <PerformerCard
           key={p.id}
@@ -266,7 +323,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         className="relative flex flex-col items-center gap-5 px-4"
         style={{ zIndex: 6 }}
       >
-        {/* Small decorative element above title */}
+        {/* Decorative element above title */}
         <div
           className="flex items-center gap-3"
           ref={(el) => {
@@ -287,7 +344,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           <div style={{ width: '35px', height: '1px', background: '#C9A96E' }} />
         </div>
 
-        {/* Main Title — big and dramatic */}
+        {/* Title */}
         <h1
           ref={titleRef}
           className="text-center leading-[0.85] opacity-0"
@@ -337,49 +394,79 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           </p>
         </div>
 
-        {/* CTA Button */}
+        {/* ═══ CTA + Varlok cards (hand-held style) ═══ */}
         <div
           ref={ctaRef}
-          className="flex flex-col items-center gap-3 mt-4 opacity-0"
+          className="flex items-center gap-0 mt-4 opacity-0"
+          style={{ perspective: '800px' }}
         >
-          <button
-            className="cta-button px-10 py-4 rounded-sm transition-all duration-400 cursor-pointer"
-            style={{
-              background: 'rgba(90, 15, 26, 0.85)',
-              border: '1px solid rgba(201, 169, 110, 0.5)',
-              color: '#C9A96E',
-              fontFamily: 'var(--font-inter)',
-              fontWeight: 400,
-              fontSize: '11px',
-              letterSpacing: '0.25em',
-              backdropFilter: 'blur(6px)',
-            }}
-            onClick={onBookingClick}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(123, 26, 43, 0.95)'
-              e.currentTarget.style.borderColor = '#C9A96E'
-              e.currentTarget.style.boxShadow = '0 0 30px rgba(201,169,110,0.3), inset 0 0 25px rgba(201,169,110,0.08)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(90, 15, 26, 0.85)'
-              e.currentTarget.style.borderColor = 'rgba(201,169,110,0.5)'
-              e.currentTarget.style.boxShadow = 'none'
-            }}
-          >
-            БРОНИРОВАТЬ СТОЛ
-          </button>
-          <p
-            style={{
-              fontFamily: 'var(--font-inter)',
-              color: '#C9A96E',
-              fontSize: '9px',
-              letterSpacing: '0.15em',
-              fontWeight: 300,
-              opacity: 0.5,
-            }}
-          >
-            или позвоните +7 (812) 123-45-67
-          </p>
+          {/* Left card — Анна Варлок */}
+          <div style={{ marginRight: '-12px' }}>
+            <VarlokCard
+              name="Анна Варлок"
+              image="/images/varlok-anna.jpg"
+              rotate={-8}
+              xShift={-6}
+              zIdx={1}
+              delay="2.2s"
+              visible={animate}
+            />
+          </div>
+
+          {/* Center — CTA button */}
+          <div className="relative flex flex-col items-center gap-3 mx-2">
+            <button
+              className="cta-button px-10 py-4 rounded-sm transition-all duration-400 cursor-pointer"
+              style={{
+                background: 'rgba(90, 15, 26, 0.85)',
+                border: '1px solid rgba(201, 169, 110, 0.5)',
+                color: '#C9A96E',
+                fontFamily: 'var(--font-inter)',
+                fontWeight: 400,
+                fontSize: '11px',
+                letterSpacing: '0.25em',
+                backdropFilter: 'blur(6px)',
+              }}
+              onClick={onBookingClick}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(123, 26, 43, 0.95)'
+                e.currentTarget.style.borderColor = '#C9A96E'
+                e.currentTarget.style.boxShadow = '0 0 30px rgba(201,169,110,0.3), inset 0 0 25px rgba(201,169,110,0.08)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(90, 15, 26, 0.85)'
+                e.currentTarget.style.borderColor = 'rgba(201,169,110,0.5)'
+                e.currentTarget.style.boxShadow = 'none'
+              }}
+            >
+              БРОНИРОВАТЬ СТОЛ
+            </button>
+            <p
+              style={{
+                fontFamily: 'var(--font-inter)',
+                color: '#C9A96E',
+                fontSize: '9px',
+                letterSpacing: '0.15em',
+                fontWeight: 300,
+                opacity: 0.5,
+              }}
+            >
+              или позвоните +7 (812) 123-45-67
+            </p>
+          </div>
+
+          {/* Right card — Сергей Варлок */}
+          <div style={{ marginLeft: '-12px' }}>
+            <VarlokCard
+              name="Сергей Варлок"
+              image="/images/varlok-sergey.jpg"
+              rotate={8}
+              xShift={6}
+              zIdx={1}
+              delay="2.4s"
+              visible={animate}
+            />
+          </div>
         </div>
       </div>
 

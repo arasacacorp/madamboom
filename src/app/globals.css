@@ -480,15 +480,6 @@ body.curtain-active {
   right: 1%;
   top: 10%;
 }
-/* Варлок — внизу по бокам */
-.performer-pos-5 {
-  left: 2%;
-  top: 58%;
-}
-.performer-pos-6 {
-  right: 2%;
-  top: 60%;
-}
 
 /* xl (1280px+) — wider spacing */
 @media (min-width: 1280px) {
@@ -507,14 +498,6 @@ body.curtain-active {
   .performer-pos-4 {
     right: 4%;
     top: 10%;
-  }
-  .performer-pos-5 {
-    left: 5%;
-    top: 57%;
-  }
-  .performer-pos-6 {
-    right: 5%;
-    top: 59%;
   }
 }
 
@@ -634,16 +617,6 @@ button:focus-visible {
   --card-x: 200px;
   --card-y: -80px;
   --card-rot: 15deg;
-}
-.performer-pos-5 {
-  --card-x: -160px;
-  --card-y: 120px;
-  --card-rot: -8deg;
-}
-.performer-pos-6 {
-  --card-x: 160px;
-  --card-y: 120px;
-  --card-rot: 8deg;
 }
 
 /* Smooth font rendering */
