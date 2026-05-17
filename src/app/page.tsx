@@ -31,7 +31,7 @@ export default function Home() {
       {/* Плашка «Сайт в разработке» — точно по центру */}
       {curtainComplete && (
         <div
-          className="fixed inset-x-0 top-5 flex justify-center z-50 pointer-events-none"
+          className="fixed inset-x-0 top-3 flex justify-center z-50 pointer-events-none"
         >
           <div
             className="flex items-center gap-2.5 px-4 py-1.5 rounded-sm pointer-events-auto"
