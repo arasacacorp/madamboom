@@ -416,29 +416,81 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           >
             Бурлеск-Кабаре
           </p>
-          <p
-            className="tracking-[0.35em] uppercase mt-1"
-            style={{ fontFamily: 'var(--font-inter)', color: '#F5E6D3', opacity: 0.3, fontWeight: 300, fontSize: 'clamp(8px, 1vw, 11px)' }}
-          >
-            Санкт-Петербург
-          </p>
         </div>
 
-        {/* CTA Button */}
-        <div ref={ctaRef} className="flex flex-col items-center gap-3 mt-2 opacity-0">
-          <button
-            className="cta-button px-10 py-4 rounded-sm transition-all duration-400 cursor-pointer"
+        {/* ═══ SHOWS NAVIGATION ═══ */}
+        <div ref={ctaRef} className="flex items-center justify-center gap-5 mt-4 opacity-0 flex-wrap px-2">
+          {/* Left — Афиша СПб */}
+          <a
+            href="https://madamboomdouglas.ticketscloud.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex flex-col items-center gap-1.5 transition-all duration-300"
+            style={{ textDecoration: 'none' }}
+          >
+            <div
+              className="flex items-center gap-2 px-4 py-2.5 rounded-sm transition-all duration-300"
+              style={{
+                border: '1px solid rgba(201,169,110,0.15)',
+                background: 'rgba(201,169,110,0.04)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(201,169,110,0.35)'
+                e.currentTarget.style.background = 'rgba(201,169,110,0.08)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(201,169,110,0.15)'
+                e.currentTarget.style.background = 'rgba(201,169,110,0.04)'
+              }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ color: '#C9A96E', opacity: 0.6, flexShrink: 0 }}>
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                <circle cx="12" cy="9" r="2.5" />
+              </svg>
+              <div className="text-center">
+                <p
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    color: '#C9A96E',
+                    fontSize: 'clamp(7px, 0.9vw, 9px)',
+                    letterSpacing: '0.2em',
+                    fontWeight: 400,
+                    textTransform: 'uppercase',
+                    whiteSpace: 'nowrap',
+                    opacity: 0.7,
+                  }}
+                >
+                  Афиша
+                </p>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    color: '#F5E6D3',
+                    fontSize: 'clamp(7px, 0.8vw, 8px)',
+                    letterSpacing: '0.1em',
+                    fontWeight: 300,
+                    whiteSpace: 'nowrap',
+                    opacity: 0.4,
+                  }}
+                >
+                  Санкт-Петербург
+                </p>
+              </div>
+            </div>
+          </a>
+
+          {/* Center — Ближайшее шоу */}
+          <a
+            href="https://23may.ticketscloud.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cta-button group flex flex-col items-center gap-1.5 rounded-sm transition-all duration-300 cursor-pointer"
             style={{
               background: 'rgba(90, 15, 26, 0.85)',
               border: '1px solid rgba(201, 169, 110, 0.5)',
-              color: '#C9A96E',
-              fontFamily: 'var(--font-inter)',
-              fontWeight: 400,
-              fontSize: '11px',
-              letterSpacing: '0.25em',
-              backdropFilter: 'blur(6px)',
+              padding: '10px 24px',
+              textDecoration: 'none',
             }}
-            onClick={onBookingClick}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'rgba(123, 26, 43, 0.95)'
               e.currentTarget.style.borderColor = '#C9A96E'
@@ -450,8 +502,106 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
               e.currentTarget.style.boxShadow = 'none'
             }}
           >
-            БРОНИРОВАТЬ СТОЛ
-          </button>
+            <p
+              style={{
+                fontFamily: 'var(--font-inter)',
+                color: '#C9A96E',
+                fontSize: 'clamp(7px, 0.9vw, 9px)',
+                letterSpacing: '0.2em',
+                fontWeight: 400,
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Ближайшее шоу
+            </p>
+            <p
+              style={{
+                fontFamily: 'var(--font-playfair)',
+                color: '#F5E6D3',
+                fontSize: 'clamp(11px, 1.3vw, 15px)',
+                fontWeight: 500,
+                letterSpacing: '0.15em',
+                whiteSpace: 'nowrap',
+                textShadow: '0 0 20px rgba(201,169,110,0.2)',
+              }}
+            >
+              23 МАЯ
+            </p>
+            <p
+              style={{
+                fontFamily: 'var(--font-inter)',
+                color: '#C9A96E',
+                fontSize: 'clamp(7px, 0.8vw, 9px)',
+                letterSpacing: '0.15em',
+                fontWeight: 300,
+                whiteSpace: 'nowrap',
+                opacity: 0.6,
+                marginTop: '2px',
+              }}
+            >
+              Забронировать →
+            </p>
+          </a>
+
+          {/* Right — Афиша Москва */}
+          <a
+            href="https://madamboomshow.ticketscloud.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex flex-col items-center gap-1.5 transition-all duration-300"
+            style={{ textDecoration: 'none' }}
+          >
+            <div
+              className="flex items-center gap-2 px-4 py-2.5 rounded-sm transition-all duration-300"
+              style={{
+                border: '1px solid rgba(201,169,110,0.15)',
+                background: 'rgba(201,169,110,0.04)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(201,169,110,0.35)'
+                e.currentTarget.style.background = 'rgba(201,169,110,0.08)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(201,169,110,0.15)'
+                e.currentTarget.style.background = 'rgba(201,169,110,0.04)'
+              }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ color: '#C9A96E', opacity: 0.6, flexShrink: 0 }}>
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                <circle cx="12" cy="9" r="2.5" />
+              </svg>
+              <div className="text-center">
+                <p
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    color: '#C9A96E',
+                    fontSize: 'clamp(7px, 0.9vw, 9px)',
+                    letterSpacing: '0.2em',
+                    fontWeight: 400,
+                    textTransform: 'uppercase',
+                    whiteSpace: 'nowrap',
+                    opacity: 0.7,
+                  }}
+                >
+                  Афиша
+                </p>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    color: '#F5E6D3',
+                    fontSize: 'clamp(7px, 0.8vw, 8px)',
+                    letterSpacing: '0.1em',
+                    fontWeight: 300,
+                    whiteSpace: 'nowrap',
+                    opacity: 0.4,
+                  }}
+                >
+                  Москва
+                </p>
+              </div>
+            </div>
+          </a>
         </div>
 
         {/* ═══ BOTTOM: ALL CARDS IN A ROW ═══ */}
