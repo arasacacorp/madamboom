@@ -1,12 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
-  // Если будет свой домен — уберите basePath
-  basePath: "/madamboom",
-  images: {
-    unoptimized: true,
-  },
+  output: "standalone",
   typescript: {
     ignoreBuildErrors: true,
   },
