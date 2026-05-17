@@ -526,6 +526,48 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
+/* Fade-up animation for coming soon elements */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Slow diamond spin */
+@keyframes spinSlow {
+  from { transform: rotate(45deg); }
+  to   { transform: rotate(405deg); }
+}
+
+.spin-slow {
+  animation: spinSlow 12s linear infinite;
+}
+
+/* Date badge glow pulse */
+@keyframes badgeGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(201, 169, 110, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px 2px rgba(201, 169, 110, 0.08);
+  }
+}
+
+.date-badge {
+  animation: badgeGlow 4s ease-in-out infinite;
+}
+
 /* Smooth font rendering */
 body {
   -webkit-font-smoothing: antialiased;
