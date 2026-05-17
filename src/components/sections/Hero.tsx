@@ -465,7 +465,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           className="flex items-end justify-center gap-3 mt-6 pb-4 opacity-0"
           style={{ maxWidth: '100%' }}
         >
-          <PerformerCard name="Олеся Волык" image="/images/performer-olesya.jpg" delay="2.0s" wide />
+          <PerformerCard name="Олеся Волык" image="/images/performer-olesya.jpg" delay="2.0s" />
           <PerformerCard name="Артистка 2" image="/images/performer2.png" delay="2.1s" />
           <VarlokDuoCard />
           <PerformerCard name="Артистка 3" image="/images/performer3.png" delay="2.1s" />
