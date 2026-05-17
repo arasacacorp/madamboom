@@ -660,6 +660,33 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           <div className="cards-spacer" aria-hidden="true" />
         </div>
 
+        {/* ═══ "и другие звезды" ═══ */}
+        <div
+          ref={(el) => {
+            if (el && animate) {
+              gsap.fromTo(el, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.8, delay: 3.0, ease: 'power2.out' })
+            }
+          }}
+          className="flex items-center justify-center gap-3 mt-1 lg:mt-2"
+          style={{ zIndex: 6 }}
+        >
+          <div style={{ width: '24px', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.3))' }} />
+          <p
+            style={{
+              fontFamily: 'var(--font-cormorant)',
+              fontStyle: 'italic',
+              color: 'rgba(201,169,110,0.45)',
+              fontSize: 'clamp(11px, 1.6vw, 15px)',
+              fontWeight: 400,
+              letterSpacing: '0.12em',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            и другие звезды
+          </p>
+          <div style={{ width: '24px', height: '1px', background: 'linear-gradient(90deg, rgba(201,169,110,0.3), transparent)' }} />
+        </div>
+
         {/* Mobile swipe hint */}
         <div ref={swipeHintRef} className="lg:hidden flex items-center justify-center gap-2 pb-2 opacity-0" style={{ zIndex: 6 }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ color: 'rgba(201,169,110,0.35)' }}>
