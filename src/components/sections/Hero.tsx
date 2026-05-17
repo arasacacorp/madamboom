@@ -738,23 +738,10 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             aspect-ratio: 9/19 !important;
           }
 
-          /* ── Bigger CTA / afisha cards on mobile ── */
+          /* Bigger poster/afisha cards on mobile */
           .afisha-card {
-            width: clamp(120px, 30vw, 170px) !important;
-            padding: 12px 10px !important;
-          }
-
-          .cta-button {
-            padding: clamp(10px, 2vw, 14px) clamp(20px, 5vw, 42px) !important;
-          }
-          .cta-button p:first-child {
-            font-size: clamp(7px, 2vw, 10px) !important;
-          }
-          .cta-button p:nth-child(2) {
-            font-size: clamp(14px, 3.2vw, 18px) !important;
-          }
-          .cta-button p:last-child {
-            font-size: clamp(7px, 1.8vw, 10px) !important;
+            width: clamp(105px, 26vw, 155px) !important;
+            padding: 10px 8px !important;
           }
         }
 
