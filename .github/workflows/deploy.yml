@@ -35,13 +35,17 @@ jobs:
           import type { NextConfig } from "next";
           const nextConfig: NextConfig = {
             output: "export",
-            basePath: "/madamboom",
+            basePath: "",
             images: { unoptimized: true },
             typescript: { ignoreBuildErrors: true },
             reactStrictMode: false,
+            assetPrefix: "/",
           };
           export default nextConfig;
           EOF
+
+      - name: Add CNAME file
+        run: echo "madamboom.ru" > public/CNAME
 
       - name: Build with Next.js
         run: bun run build
