@@ -59,8 +59,9 @@ function PerformerCard({ name, image, delay, wide }: {
       }}
     >
       <div
-        className="relative aspect-[3/4] rounded-lg overflow-hidden"
+        className="relative rounded-lg overflow-hidden"
         style={{
+          aspectRatio: wide ? '3/2' : '3/4',
           border: wide ? '1px solid rgba(201, 169, 110, 0.3)' : '1px solid rgba(123, 26, 43, 0.5)',
           boxShadow: wide
             ? '0 0 40px rgba(123,26,43,0.35), 0 0 15px rgba(201,169,110,0.08), 0 10px 40px rgba(0,0,0,0.6)'
