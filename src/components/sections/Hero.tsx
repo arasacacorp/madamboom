@@ -109,6 +109,7 @@ function PerformerCard({ name, image, delay, wide, objectPos }: {
 function VarlokDuoCard() {
   return (
     <div
+      id="varlok-card"
       className="flex-shrink-0 card-snap-item varlok-duo"
       style={{
         width: 'clamp(180px, 24vw, 280px)',
@@ -125,7 +126,7 @@ function VarlokDuoCard() {
         }}
       >
         {/* Left — Сергей */}
-        <div className="relative w-1/2" style={{ aspectRatio: '3/4' }}>
+        <div className="relative w-1/2 varlok-half" style={{ aspectRatio: '3/4' }}>
           <img
             src="/images/varlok-sergey.jpg"
             alt="Сергей Варлок"
@@ -153,7 +154,7 @@ function VarlokDuoCard() {
         </div>
 
         {/* Right — Анна */}
-        <div className="relative w-1/2" style={{ aspectRatio: '3/4' }}>
+        <div className="relative w-1/2 varlok-half" style={{ aspectRatio: '3/4' }}>
           <img
             src="/images/varlok-anna.jpg"
             alt="Анна Варлок"
@@ -315,6 +316,18 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         delay: 7,
       })
     }
+
+    // On mobile: scroll to center the Varlok card after animations finish
+    tl.eventCallback('onComplete', () => {
+      if (window.innerWidth < 1024 && cardsRowRef.current) {
+        const varlokEl = document.getElementById('varlok-card')
+        if (varlokEl) {
+          const container = cardsRowRef.current
+          const scrollLeft = varlokEl.offsetLeft - container.offsetWidth / 2 + varlokEl.offsetWidth / 2
+          container.scrollTo({ left: scrollLeft, behavior: 'smooth' })
+        }
+      }
+    })
 
     return () => {
       tl.kill()
@@ -718,6 +731,11 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           /* ── Bigger performer cards on mobile (skip Varlok duo card) ── */
           .card-snap-item:not(.varlok-duo) > div {
             aspect-ratio: 3/4 !important;
+          }
+
+          /* ── Varlok duo: taller halves on mobile to match regular card height ── */
+          .varlok-duo .varlok-half {
+            aspect-ratio: 9/19 !important;
           }
 
           /* Bigger poster/afisha cards on mobile */
