@@ -45,25 +45,14 @@ export default function Curtain({ onComplete }: CurtainProps) {
       0
     )
 
-    // Gold line shimmer appears
-    const goldLine = logoRef.current?.querySelector('.curtain-gold-line')
-    if (goldLine) {
-      tl.fromTo(
-        goldLine,
-        { scaleX: 0, opacity: 0 },
-        { scaleX: 1, opacity: 1, duration: 0.8, ease: 'power2.out' },
-        0.6
-      )
-    }
-
     // Subtitle appears
     const subtitle = logoRef.current?.querySelector('.curtain-subtitle')
     if (subtitle) {
       tl.fromTo(
         subtitle,
         { opacity: 0, y: 10 },
-        { opacity: 0.6, y: 0, duration: 0.6, ease: 'power2.out' },
-        0.9
+        { opacity: 0.7, y: 0, duration: 0.6, ease: 'power2.out' },
+        0.6
       )
     }
 
@@ -270,17 +259,7 @@ export default function Curtain({ onComplete }: CurtainProps) {
           className="absolute inset-0 flex flex-col items-center justify-center"
           style={{ zIndex: 10 }}
         >
-          <div ref={logoRef} className="flex flex-col items-center gap-5">
-            {/* Small decorative diamond */}
-            <div
-              className="mb-2"
-              style={{
-                width: '10px',
-                height: '10px',
-                border: '1.5px solid rgba(201,169,110,0.6)',
-                transform: 'rotate(45deg)',
-              }}
-            />
+          <div ref={logoRef} className="flex flex-col items-center gap-4">
             <h1
               className="text-4xl md:text-6xl lg:text-7xl tracking-[0.18em] font-bold text-center"
               style={{
@@ -292,21 +271,16 @@ export default function Curtain({ onComplete }: CurtainProps) {
             >
               МАДАМ БУМ
             </h1>
-            {/* Gold separator line */}
-            <div
-              className="curtain-gold-line gold-line-shimmer"
-              style={{ width: '90px', height: '1px', transformOrigin: 'center' }}
-            />
             <p
-              className="curtain-subtitle text-xs md:text-sm tracking-[0.45em] uppercase"
+              className="curtain-subtitle text-xs md:text-sm tracking-[0.4em] uppercase"
               style={{
-                fontFamily: 'var(--font-inter)',
+                fontFamily: 'var(--font-cormorant)',
                 color: '#C9A96E',
                 opacity: 0,
-                fontWeight: 300,
+                fontWeight: 400,
               }}
             >
-              Бурлеск-Кабаре
+              представляет
             </p>
           </div>
         </div>
