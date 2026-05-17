@@ -446,58 +446,76 @@ body.curtain-active {
   animation: heroBgPulse 6s ease-in-out infinite;
 }
 
-/* Performer card responsive sizing */
+/* Performer card responsive sizing — 3 cards per side */
 .performer-card-inner {
-  width: 130px;
+  width: 105px;
 }
 
 @media (min-width: 1280px) {
   .performer-card-inner {
-    width: 180px;
+    width: 140px;
   }
 }
 
 @media (min-width: 1536px) {
   .performer-card-inner {
-    width: 200px;
+    width: 160px;
   }
 }
 
 /* Performer card positions — lg (1024px+) */
+/* Left column */
 .performer-pos-1 {
   left: 1%;
-  top: 8%;
+  top: 3%;
 }
 .performer-pos-2 {
-  left: 14%;
-  top: 26%;
+  left: 12%;
+  top: 27%;
 }
-.performer-pos-3 {
-  right: 14%;
-  top: 30%;
+.performer-pos-5 {
+  left: 1%;
+  top: 53%;
 }
+/* Right column */
 .performer-pos-4 {
   right: 1%;
-  top: 10%;
+  top: 5%;
+}
+.performer-pos-3 {
+  right: 12%;
+  top: 30%;
+}
+.performer-pos-6 {
+  right: 1%;
+  top: 55%;
 }
 
 /* xl (1280px+) — wider spacing */
 @media (min-width: 1280px) {
   .performer-pos-1 {
-    left: 4%;
-    top: 8%;
+    left: 3%;
+    top: 3%;
   }
   .performer-pos-2 {
-    left: 20%;
-    top: 24%;
+    left: 18%;
+  top: 25%;
   }
-  .performer-pos-3 {
-    right: 20%;
-    top: 28%;
+  .performer-pos-5 {
+    left: 4%;
+    top: 52%;
   }
   .performer-pos-4 {
+    right: 3%;
+    top: 5%;
+  }
+  .performer-pos-3 {
+    right: 18%;
+    top: 28%;
+  }
+  .performer-pos-6 {
     right: 4%;
-    top: 10%;
+    top: 54%;
   }
 }
 
@@ -617,6 +635,16 @@ button:focus-visible {
   --card-x: 200px;
   --card-y: -80px;
   --card-rot: 15deg;
+}
+.performer-pos-5 {
+  --card-x: -160px;
+  --card-y: 120px;
+  --card-rot: -8deg;
+}
+.performer-pos-6 {
+  --card-x: 160px;
+  --card-y: 120px;
+  --card-rot: 8deg;
 }
 
 /* Smooth font rendering */

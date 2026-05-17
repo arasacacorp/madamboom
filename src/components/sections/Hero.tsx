@@ -3,6 +3,74 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
+/* ─── Performer data ─── */
+const performers = [
+  { id: 1, name: 'Артистка 1', image: '/images/performer1.png', posClass: 'performer-pos-1', flyDelay: '0s' },
+  { id: 2, name: 'Артистка 2', image: '/images/performer2.png', posClass: 'performer-pos-2', flyDelay: '0.15s' },
+  { id: 3, name: 'Артистка 3', image: '/images/performer3.png', posClass: 'performer-pos-3', flyDelay: '0.3s' },
+  { id: 4, name: 'Артистка 4', image: '/images/performer4.png', posClass: 'performer-pos-4', flyDelay: '0.1s' },
+  { id: 5, name: 'Сергей Варлок', image: '/images/varlok-sergey.jpg', posClass: 'performer-pos-5', flyDelay: '0.4s' },
+  { id: 6, name: 'Анна Варлок', image: '/images/varlok-anna.jpg', posClass: 'performer-pos-6', flyDelay: '0.25s' },
+]
+
+/* ─── Single performer card ─── */
+function PerformerCard({ name, image, posClass, flyDelay, visible }: {
+  name: string; image: string; posClass: string; flyDelay: string; visible: boolean
+}) {
+  return (
+    <div
+      className={`absolute hidden lg:block ${posClass}`}
+      style={{ zIndex: 5 }}
+    >
+      <div className="performer-card-inner">
+        <div
+          className="relative aspect-[3/4] rounded-lg overflow-hidden"
+          style={{
+            border: '1px solid rgba(123, 26, 43, 0.5)',
+            boxShadow: '0 0 24px rgba(123,26,43,0.3), 0 8px 32px rgba(0,0,0,0.5)',
+            opacity: visible ? undefined : 0,
+            animation: visible ? `cardFlyIn 1s cubic-bezier(0.22, 1, 0.36, 1) ${flyDelay} forwards` : 'none',
+          }}
+        >
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-full object-cover object-top"
+            style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
+            loading="lazy"
+          />
+          {/* Gradient overlay */}
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(180deg, transparent 35%, rgba(6,2,10,0.9) 100%)' }}
+          />
+          {/* Gold border accent top */}
+          <div
+            className="absolute top-0 inset-x-0 h-px"
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.3), transparent)' }}
+          />
+          {/* Name */}
+          <div className="absolute inset-x-0 bottom-0 pb-3 px-2 text-center">
+            <p
+              className="tracking-[0.2em] uppercase leading-tight"
+              style={{
+                fontFamily: 'var(--font-playfair)',
+                color: '#C9A96E',
+                fontWeight: 500,
+                fontSize: 'clamp(9px, 1.1vw, 12px)',
+                textShadow: '0 2px 8px rgba(0,0,0,0.7)',
+              }}
+            >
+              {name}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Floating Particles ─── */
 function FloatingParticles() {
   const particles = Array.from({ length: 30 }, (_, i) => ({
     id: i,
@@ -43,6 +111,7 @@ function FloatingParticles() {
   )
 }
 
+/* ─── Hero Section ─── */
 interface HeroProps {
   animate: boolean
   onBookingClick?: () => void
@@ -53,7 +122,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
   const subtitleRef = useRef<HTMLDivElement>(null)
   const lineRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
-  const duoCardRef = useRef<HTMLDivElement>(null)
   const stageBgRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -91,14 +159,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
       { opacity: 0, y: 20 },
       { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
       1.0
-    )
-
-    // Duo card — cinematic reveal
-    tl.fromTo(
-      duoCardRef.current,
-      { opacity: 0, y: 50, scale: 0.92 },
-      { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out' },
-      1.3
     )
 
     // CTA button
@@ -165,6 +225,18 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
 
       {/* Layer 6: Floating gold particles */}
       <FloatingParticles />
+
+      {/* === PERFORMER CARDS ON SIDES === */}
+      {performers.map((p) => (
+        <PerformerCard
+          key={p.id}
+          name={p.name}
+          image={p.image}
+          posClass={p.posClass}
+          flyDelay={p.flyDelay}
+          visible={animate}
+        />
+      ))}
 
       {/* === MOBILE HERO BACKGROUND === */}
       <div
@@ -263,114 +335,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           >
             Санкт-Петербург
           </p>
-        </div>
-
-        {/* ═══ DUO CARD: Сергей & Анна Варлок ═══ */}
-        <div
-          ref={duoCardRef}
-          className="mt-6 opacity-0"
-          style={{ maxWidth: '420px', width: '100%' }}
-        >
-          <div
-            className="relative flex rounded-lg overflow-hidden"
-            style={{
-              border: '1px solid rgba(123, 26, 43, 0.5)',
-              boxShadow: '0 0 30px rgba(123,26,43,0.35), 0 8px 32px rgba(0,0,0,0.6)',
-            }}
-          >
-            {/* Left photo — Сергей */}
-            <div className="relative flex-1" style={{ aspectRatio: '3/4' }}>
-              <img
-                src="/images/varlok-sergey.jpg"
-                alt="Сергей Варлок"
-                className="w-full h-full object-cover object-top"
-                style={{ filter: 'saturate(0.8) contrast(1.1) brightness(0.85)' }}
-              />
-              {/* Gradient overlay */}
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(6,2,10,0.85) 100%)' }} />
-              {/* Name */}
-              <div className="absolute inset-x-0 bottom-0 pb-3 px-3 text-center">
-                <p
-                  className="tracking-[0.25em] uppercase"
-                  style={{
-                    fontFamily: 'var(--font-playfair)',
-                    color: '#C9A96E',
-                    fontWeight: 500,
-                    fontSize: 'clamp(10px, 1.5vw, 13px)',
-                  }}
-                >
-                  Сергей
-                </p>
-              </div>
-            </div>
-
-            {/* Center divider */}
-            <div
-              className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center"
-              style={{ width: '48px', zIndex: 2 }}
-            >
-              {/* Vertical gold line */}
-              <div className="absolute top-[15%] bottom-[15%]" style={{ width: '1px', background: 'linear-gradient(180deg, transparent, rgba(201,169,110,0.4) 30%, rgba(201,169,110,0.6) 50%, rgba(201,169,110,0.4) 70%, transparent)' }} />
-              {/* Diamond ornament */}
-              <div
-                style={{
-                  width: '8px',
-                  height: '8px',
-                  border: '1px solid rgba(201,169,110,0.6)',
-                  transform: 'rotate(45deg)',
-                  background: 'rgba(6,2,10,0.9)',
-                }}
-              />
-            </div>
-
-            {/* Right photo — Анна */}
-            <div className="relative flex-1" style={{ aspectRatio: '3/4' }}>
-              <img
-                src="/images/varlok-anna.jpg"
-                alt="Анна Варлок"
-                className="w-full h-full object-cover object-top"
-                style={{ filter: 'saturate(0.8) contrast(1.1) brightness(0.85)' }}
-              />
-              {/* Gradient overlay */}
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(6,2,10,0.85) 100%)' }} />
-              {/* Name */}
-              <div className="absolute inset-x-0 bottom-0 pb-3 px-3 text-center">
-                <p
-                  className="tracking-[0.25em] uppercase"
-                  style={{
-                    fontFamily: 'var(--font-playfair)',
-                    color: '#C9A96E',
-                    fontWeight: 500,
-                    fontSize: 'clamp(10px, 1.5vw, 13px)',
-                  }}
-                >
-                  Анна
-                </p>
-              </div>
-            </div>
-
-            {/* Bottom banner with shared surname */}
-            <div
-              className="absolute inset-x-0 bottom-0 text-center py-2.5"
-              style={{
-                background: 'linear-gradient(180deg, transparent, rgba(6,2,10,0.95) 40%)',
-                zIndex: 3,
-              }}
-            >
-              <p
-                className="tracking-[0.4em] uppercase"
-                style={{
-                  fontFamily: 'var(--font-inter)',
-                  color: '#F5E6D3',
-                  fontWeight: 300,
-                  fontSize: 'clamp(9px, 1.3vw, 12px)',
-                  opacity: 0.5,
-                }}
-              >
-                ВАРЛОК
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* CTA Button */}
