@@ -216,20 +216,20 @@ function VarlokDuoCard() {
         <div
           className="absolute inset-x-0 bottom-0 text-center"
           style={{
-            background: 'linear-gradient(180deg, transparent, rgba(6,2,10,0.95) 60%)',
+            background: 'linear-gradient(180deg, transparent, rgba(6,2,10,0.85) 70%)',
             paddingTop: '14px',
             paddingBottom: '6px',
             zIndex: 3,
           }}
         >
           <p
-            className="tracking-[0.4em] uppercase"
+            className="tracking-[0.3em] uppercase"
             style={{
               fontFamily: 'var(--font-playfair)',
               color: '#C9A96E',
               fontWeight: 500,
-              fontSize: 'clamp(8px, 1.1vw, 11px)',
-              opacity: 0.5,
+              fontSize: 'clamp(10px, 1.2vw, 13px)',
+              textShadow: '0 2px 8px rgba(0,0,0,0.7)',
             }}
           >
             Варлок
@@ -452,11 +452,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           >
             БРОНИРОВАТЬ СТОЛ
           </button>
-          <p
-            style={{ fontFamily: 'var(--font-inter)', color: '#C9A96E', fontSize: '9px', letterSpacing: '0.15em', fontWeight: 300, opacity: 0.5 }}
-          >
-            или позвоните +7 (812) 123-45-67
-          </p>
         </div>
 
         {/* ═══ BOTTOM: ALL CARDS IN A ROW ═══ */}
@@ -473,22 +468,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div
-        className="absolute bottom-3 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        style={{ zIndex: 6, opacity: animate ? 1 : 0, transition: 'opacity 1s ease 3s' }}
-      >
-        <p
-          className="text-[7px] tracking-[0.3em] uppercase"
-          style={{ fontFamily: 'var(--font-inter)', color: '#C9A96E', opacity: 0.35, fontWeight: 300 }}
-        >
-          Scroll
-        </p>
-        <div
-          className="w-px h-8"
-          style={{ background: 'linear-gradient(to bottom, rgba(201,169,110,0.4), transparent)', animation: 'scrollPulse 2.5s ease-in-out infinite' }}
-        />
-      </div>
+
 
       {/* Fade slide up animation */}
       <style>{`

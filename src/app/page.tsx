@@ -35,8 +35,8 @@ export default function Home() {
           <div
             className="flex items-center gap-3 px-5 py-2 rounded-sm pointer-events-auto"
             style={{
-              background: 'rgba(6, 2, 10, 0.8)',
-              border: '1px solid rgba(201, 169, 110, 0.15)',
+              background: 'linear-gradient(135deg, rgba(201,169,110,0.15) 0%, rgba(201,169,110,0.08) 100%)',
+              border: '1px solid rgba(201, 169, 110, 0.35)',
               backdropFilter: 'blur(12px)',
               opacity: 0,
               animation: 'fadeUpBadge 0.8s ease 0.3s forwards',
@@ -46,10 +46,10 @@ export default function Home() {
             <span
               style={{
                 fontFamily: 'var(--font-inter)',
-                color: 'rgba(245, 230, 211, 0.5)',
+                color: '#C9A96E',
                 fontSize: '10px',
                 letterSpacing: '0.2em',
-                fontWeight: 300,
+                fontWeight: 400,
                 textTransform: 'uppercase',
                 whiteSpace: 'nowrap',
               }}
