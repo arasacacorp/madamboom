@@ -469,7 +469,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           <PerformerCard name="Сапфая Тайгресс" image="/images/performer-saphaya.jpg" delay="2.1s" objectPos="80% 5%" />
           <VarlokDuoCard />
           <PerformerCard name="Инна Айвори" image="/images/performer-inna.jpg" delay="2.1s" objectPos="65% top" />
-          <PerformerCard name="Артистка 4" image="/images/performer4.png" delay="2.0s" />
+          <PerformerCard name="Кристал Дейзи" image="/images/performer-crystal.jpg" delay="2.0s" />
         </div>
       </div>
 
