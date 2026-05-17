@@ -45,8 +45,8 @@ function FloatingParticles() {
 }
 
 /* ─── Single performer card ─── */
-function PerformerCard({ name, image, delay, wide }: {
-  name: string; image: string; delay: string; wide?: boolean
+function PerformerCard({ name, image, delay, wide, objectPos }: {
+  name: string; image: string; delay: string; wide?: boolean; objectPos?: string
 }) {
   return (
     <div
@@ -72,7 +72,7 @@ function PerformerCard({ name, image, delay, wide }: {
           src={image}
           alt={name}
           className="w-full h-full object-cover object-top"
-          style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)' }}
+          style={{ filter: 'saturate(0.85) contrast(1.08) brightness(0.8)', objectPosition: objectPos || 'center top' }}
           loading="lazy"
         />
         <div
@@ -466,7 +466,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           style={{ maxWidth: '100%' }}
         >
           <PerformerCard name="Олеся Волык" image="/images/performer-olesya.jpg" delay="2.0s" />
-          <PerformerCard name="Сапфая Тайгресс" image="/images/performer-saphaya.jpg" delay="2.1s" />
+          <PerformerCard name="Сапфая Тайгресс" image="/images/performer-saphaya.jpg" delay="2.1s" objectPos="65% top" />
           <VarlokDuoCard />
           <PerformerCard name="Артистка 3" image="/images/performer3.png" delay="2.1s" />
           <PerformerCard name="Артистка 4" image="/images/performer4.png" delay="2.0s" />
