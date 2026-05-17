@@ -609,19 +609,6 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         </div>
 
         {/* ═══ BOTTOM: ALL CARDS IN A ROW ═══ */}
-        <p
-          style={{
-            fontFamily: 'var(--font-inter)',
-            color: '#C9A96E',
-            fontSize: 'clamp(7px, 0.8vw, 9px)',
-            letterSpacing: '0.25em',
-            fontWeight: 300,
-            textTransform: 'uppercase',
-            opacity: 0.35,
-          }}
-        >
-          Ближайшие шоу
-        </p>
         <div
           ref={cardsRowRef}
           className="flex items-end justify-center gap-3 mt-6 pb-4 opacity-0"
