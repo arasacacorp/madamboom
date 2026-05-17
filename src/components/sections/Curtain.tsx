@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import gsap from 'gsap'
 
 interface CurtainProps {
@@ -13,7 +13,7 @@ export default function Curtain({ onComplete }: CurtainProps) {
   const rightPanelRef = useRef<HTMLDivElement>(null)
   const cordRef = useRef<HTMLDivElement>(null)
   const logoRef = useRef<HTMLDivElement>(null)
-  const [flashVisible, setFlashVisible] = useState(false)
+
 
   const handleComplete = useCallback(() => {
     onComplete()
@@ -24,11 +24,8 @@ export default function Curtain({ onComplete }: CurtainProps) {
 
     const tl = gsap.timeline({
       onComplete: () => {
-        setFlashVisible(true)
-        setTimeout(() => {
-          document.body.classList.remove('curtain-active')
-          handleComplete()
-        }, 600)
+        document.body.classList.remove('curtain-active')
+        handleComplete()
       },
     })
 
@@ -295,17 +292,7 @@ export default function Curtain({ onComplete }: CurtainProps) {
         </div>
       </div>
 
-      {/* Gold flash overlay on curtain open */}
-      {flashVisible && (
-        <div
-          className="fixed inset-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(ellipse at center, rgba(201, 169, 110, 0.5) 0%, rgba(201, 169, 110, 0.1) 40%, transparent 70%)',
-            zIndex: 9999,
-            animation: 'flashFade 0.8s ease-out forwards',
-          }}
-        />
-      )}
+
     </>
   )
 }
