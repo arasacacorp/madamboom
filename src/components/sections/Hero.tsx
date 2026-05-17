@@ -675,11 +675,15 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             style={{
               fontFamily: 'var(--font-cormorant)',
               fontStyle: 'italic',
-              color: 'rgba(201,169,110,0.45)',
+              color: '#C9A96E',
               fontSize: 'clamp(11px, 1.6vw, 15px)',
               fontWeight: 400,
               letterSpacing: '0.12em',
               whiteSpace: 'nowrap',
+              background: 'rgba(201,169,110,0.08)',
+              border: '1px solid rgba(201,169,110,0.2)',
+              borderRadius: '2px',
+              padding: '3px 14px',
             }}
           >
             и другие звезды
