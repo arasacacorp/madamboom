@@ -45,8 +45,8 @@ function FloatingParticles() {
 }
 
 /* ─── Single performer card ─── */
-function PerformerCard({ name, image, delay }: {
-  name: string; image: string; delay: string
+function PerformerCard({ name, image, delay, role }: {
+  name: string; image: string; delay: string; role?: string
 }) {
   return (
     <div
@@ -81,6 +81,21 @@ function PerformerCard({ name, image, delay }: {
           style={{ background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.3), transparent)' }}
         />
         <div className="absolute inset-x-0 bottom-0 pb-2 px-1.5 text-center">
+          {role && (
+            <p
+              className="tracking-[0.1em] uppercase"
+              style={{
+                fontFamily: 'var(--font-inter)',
+                color: '#F5E6D3',
+                fontWeight: 300,
+                fontSize: 'clamp(6px, 0.7vw, 8px)',
+                opacity: 0.4,
+                marginBottom: '2px',
+              }}
+            >
+              {role}
+            </p>
+          )}
           <p
             className="tracking-[0.2em] uppercase leading-tight"
             style={{
@@ -459,7 +474,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           className="flex items-end justify-center gap-3 mt-6 pb-4 opacity-0"
           style={{ maxWidth: '100%' }}
         >
-          <PerformerCard name="Артистка 1" image="/images/performer1.png" delay="2.0s" />
+          <PerformerCard name="Олеся Волык" image="/images/performer-olesya.jpg" delay="2.0s" role="Художественный руководитель" />
           <PerformerCard name="Артистка 2" image="/images/performer2.png" delay="2.1s" />
           <VarlokDuoCard />
           <PerformerCard name="Артистка 3" image="/images/performer3.png" delay="2.1s" />
