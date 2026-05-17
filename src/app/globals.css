@@ -446,76 +446,75 @@ body.curtain-active {
   animation: heroBgPulse 6s ease-in-out infinite;
 }
 
-/* Performer card responsive sizing — 3 cards per side */
+/* Performer card responsive sizing */
 .performer-card-inner {
-  width: 105px;
+  width: 130px;
 }
 
 @media (min-width: 1280px) {
   .performer-card-inner {
-    width: 140px;
+    width: 180px;
   }
 }
 
 @media (min-width: 1536px) {
   .performer-card-inner {
-    width: 160px;
+    width: 200px;
   }
 }
 
 /* Performer card positions — lg (1024px+) */
-/* Left column */
 .performer-pos-1 {
   left: 1%;
-  top: 3%;
+  top: 8%;
 }
 .performer-pos-2 {
-  left: 12%;
-  top: 27%;
-}
-.performer-pos-5 {
-  left: 1%;
-  top: 53%;
-}
-/* Right column */
-.performer-pos-4 {
-  right: 1%;
-  top: 5%;
+  left: 14%;
+  top: 26%;
 }
 .performer-pos-3 {
-  right: 12%;
+  right: 14%;
   top: 30%;
 }
-.performer-pos-6 {
+.performer-pos-4 {
   right: 1%;
-  top: 55%;
+  top: 10%;
+}
+/* Варлок — внизу по бокам */
+.performer-pos-5 {
+  left: 2%;
+  top: 58%;
+}
+.performer-pos-6 {
+  right: 2%;
+  top: 60%;
 }
 
 /* xl (1280px+) — wider spacing */
 @media (min-width: 1280px) {
   .performer-pos-1 {
-    left: 3%;
-    top: 3%;
+    left: 4%;
+    top: 8%;
   }
   .performer-pos-2 {
-    left: 18%;
-  top: 25%;
-  }
-  .performer-pos-5 {
-    left: 4%;
-    top: 52%;
-  }
-  .performer-pos-4 {
-    right: 3%;
-    top: 5%;
+    left: 20%;
+    top: 24%;
   }
   .performer-pos-3 {
-    right: 18%;
+    right: 20%;
     top: 28%;
   }
-  .performer-pos-6 {
+  .performer-pos-4 {
     right: 4%;
-    top: 54%;
+    top: 10%;
+  }
+  .performer-pos-5 {
+    left: 5%;
+    top: 57%;
+  }
+  .performer-pos-6 {
+    right: 5%;
+    top: 59%;
   }
 }
 
