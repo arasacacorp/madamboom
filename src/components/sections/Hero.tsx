@@ -422,7 +422,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           className="text-center leading-[0.85] opacity-0"
           style={{
             fontFamily: 'var(--font-playfair)',
-            fontSize: 'clamp(48px, 10vw, 120px)',
+            fontSize: 'clamp(42px, 8.5vw, 105px)',
             fontWeight: 900,
             color: '#F5E6D3',
             letterSpacing: '0.06em',
