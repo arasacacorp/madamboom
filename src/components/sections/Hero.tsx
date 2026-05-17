@@ -3,13 +3,6 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
-const performers = [
-  { id: 1, name: 'ДИАНА РУБИ', role: 'Примадонна', image: '/images/performer1.png' },
-  { id: 2, name: 'ВИКТОРИЯ НОЙР', role: 'Танцовщица', image: '/images/performer2.png' },
-  { id: 3, name: 'ЕВА СИЛЬВА', role: 'Иллюзионистка', image: '/images/performer3.png' },
-  { id: 4, name: 'МАРГО ФЛЁР', role: 'Шоугёл', image: '/images/performer4.png' },
-]
-
 function FloatingParticles() {
   const particles = Array.from({ length: 30 }, (_, i) => ({
     id: i,
@@ -60,7 +53,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
   const subtitleRef = useRef<HTMLDivElement>(null)
   const lineRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
-  const cardsRef = useRef<HTMLDivElement>(null)
+  const duoCardRef = useRef<HTMLDivElement>(null)
   const stageBgRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -100,25 +93,20 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
       1.0
     )
 
-    // Bottom-row performer cards — fly in from below
-    const cards = cardsRef.current?.querySelectorAll('.performer-card')
-    if (cards) {
-      cards.forEach((card, i) => {
-        tl.fromTo(
-          card,
-          { opacity: 0, y: 40, scale: 0.85 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' },
-          1.4 + i * 0.12
-        )
-      })
-    }
+    // Duo card — cinematic reveal
+    tl.fromTo(
+      duoCardRef.current,
+      { opacity: 0, y: 50, scale: 0.92 },
+      { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out' },
+      1.3
+    )
 
-    // CTA group
+    // CTA button
     tl.fromTo(
       ctaRef.current,
-      { opacity: 0, y: 30 },
+      { opacity: 0, y: 25 },
       { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
-      2.2
+      1.8
     )
 
     return () => {
@@ -187,7 +175,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           className="hero-mobile-bg-pulse absolute inset-0"
           style={{
             opacity: 0.2,
-            backgroundImage: 'url(/images/performer1.png)',
+            backgroundImage: 'url(/images/varlok-sergey.jpg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center top',
             filter: 'brightness(0.6) saturate(0.7)',
@@ -277,112 +265,157 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
           </p>
         </div>
 
-        {/* Bottom row: 2 cards + CTA + 2 cards */}
+        {/* ═══ DUO CARD: Сергей & Анна Варлок ═══ */}
+        <div
+          ref={duoCardRef}
+          className="mt-6 opacity-0"
+          style={{ maxWidth: '420px', width: '100%' }}
+        >
+          <div
+            className="relative flex rounded-lg overflow-hidden"
+            style={{
+              border: '1px solid rgba(123, 26, 43, 0.5)',
+              boxShadow: '0 0 30px rgba(123,26,43,0.35), 0 8px 32px rgba(0,0,0,0.6)',
+            }}
+          >
+            {/* Left photo — Сергей */}
+            <div className="relative flex-1" style={{ aspectRatio: '3/4' }}>
+              <img
+                src="/images/varlok-sergey.jpg"
+                alt="Сергей Варлок"
+                className="w-full h-full object-cover object-top"
+                style={{ filter: 'saturate(0.8) contrast(1.1) brightness(0.85)' }}
+              />
+              {/* Gradient overlay */}
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(6,2,10,0.85) 100%)' }} />
+              {/* Name */}
+              <div className="absolute inset-x-0 bottom-0 pb-3 px-3 text-center">
+                <p
+                  className="tracking-[0.25em] uppercase"
+                  style={{
+                    fontFamily: 'var(--font-playfair)',
+                    color: '#C9A96E',
+                    fontWeight: 500,
+                    fontSize: 'clamp(10px, 1.5vw, 13px)',
+                  }}
+                >
+                  Сергей
+                </p>
+              </div>
+            </div>
+
+            {/* Center divider */}
+            <div
+              className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center"
+              style={{ width: '48px', zIndex: 2 }}
+            >
+              {/* Vertical gold line */}
+              <div className="absolute top-[15%] bottom-[15%]" style={{ width: '1px', background: 'linear-gradient(180deg, transparent, rgba(201,169,110,0.4) 30%, rgba(201,169,110,0.6) 50%, rgba(201,169,110,0.4) 70%, transparent)' }} />
+              {/* Diamond ornament */}
+              <div
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  border: '1px solid rgba(201,169,110,0.6)',
+                  transform: 'rotate(45deg)',
+                  background: 'rgba(6,2,10,0.9)',
+                }}
+              />
+            </div>
+
+            {/* Right photo — Анна */}
+            <div className="relative flex-1" style={{ aspectRatio: '3/4' }}>
+              <img
+                src="/images/varlok-anna.jpg"
+                alt="Анна Варлок"
+                className="w-full h-full object-cover object-top"
+                style={{ filter: 'saturate(0.8) contrast(1.1) brightness(0.85)' }}
+              />
+              {/* Gradient overlay */}
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(6,2,10,0.85) 100%)' }} />
+              {/* Name */}
+              <div className="absolute inset-x-0 bottom-0 pb-3 px-3 text-center">
+                <p
+                  className="tracking-[0.25em] uppercase"
+                  style={{
+                    fontFamily: 'var(--font-playfair)',
+                    color: '#C9A96E',
+                    fontWeight: 500,
+                    fontSize: 'clamp(10px, 1.5vw, 13px)',
+                  }}
+                >
+                  Анна
+                </p>
+              </div>
+            </div>
+
+            {/* Bottom banner with shared surname */}
+            <div
+              className="absolute inset-x-0 bottom-0 text-center py-2.5"
+              style={{
+                background: 'linear-gradient(180deg, transparent, rgba(6,2,10,0.95) 40%)',
+                zIndex: 3,
+              }}
+            >
+              <p
+                className="tracking-[0.4em] uppercase"
+                style={{
+                  fontFamily: 'var(--font-inter)',
+                  color: '#F5E6D3',
+                  fontWeight: 300,
+                  fontSize: 'clamp(9px, 1.3vw, 12px)',
+                  opacity: 0.5,
+                }}
+              >
+                ВАРЛОК
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Button */}
         <div
           ref={ctaRef}
-          className="flex items-end justify-center gap-3 md:gap-5 mt-8 opacity-0"
+          className="flex flex-col items-center gap-3 mt-4 opacity-0"
         >
-          {/* Left cards (mobile: hidden) */}
-          <div className="hidden md:flex items-end gap-3 md:gap-4">
-            {[performers[0], performers[1]].map((p, i) => (
-              <div key={p.id} className="performer-card group cursor-pointer">
-                <div
-                  className="rounded-lg overflow-hidden transition-all duration-500 group-hover:scale-[1.05]"
-                  style={{
-                    border: '1px solid rgba(123, 26, 43, 0.5)',
-                    boxShadow: '0 0 20px rgba(123,26,43,0.3), 0 6px 24px rgba(0,0,0,0.5)',
-                    width: 'clamp(70px, 9vw, 110px)',
-                  }}
-                >
-                  <div className="relative" style={{ aspectRatio: '3/4' }}>
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      className="w-full h-full object-cover transition-all duration-500 group-hover:brightness-90"
-                      style={{ filter: 'saturate(0.85) contrast(1.1) brightness(0.8)' }}
-                    />
-                    <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 40%, rgba(6,2,10,0.9) 100%)' }} />
-                    <div className="absolute inset-x-0 bottom-0 pb-2 px-2 text-center">
-                      <p className="text-[7px] tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-inter)', color: '#C9A96E', fontWeight: 400 }}>{p.name}</p>
-                      <p className="text-[5.5px] tracking-[0.15em] uppercase mt-0.5" style={{ fontFamily: 'var(--font-inter)', color: '#F5E6D3', opacity: 0.35, fontWeight: 300 }}>{p.role}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA button — center */}
-          <div className="flex flex-col items-center gap-3 shrink-0">
-            <button
-              className="cta-button px-10 py-4 rounded-sm transition-all duration-400 cursor-pointer"
-              style={{
-                background: 'rgba(90, 15, 26, 0.85)',
-                border: '1px solid rgba(201, 169, 110, 0.5)',
-                color: '#C9A96E',
-                fontFamily: 'var(--font-inter)',
-                fontWeight: 400,
-                fontSize: '11px',
-                letterSpacing: '0.25em',
-                backdropFilter: 'blur(6px)',
-              }}
-              onClick={onBookingClick}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(123, 26, 43, 0.95)'
-                e.currentTarget.style.borderColor = '#C9A96E'
-                e.currentTarget.style.boxShadow = '0 0 30px rgba(201,169,110,0.3), inset 0 0 25px rgba(201,169,110,0.08)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(90, 15, 26, 0.85)'
-                e.currentTarget.style.borderColor = 'rgba(201,169,110,0.5)'
-                e.currentTarget.style.boxShadow = 'none'
-              }}
-            >
-              БРОНИРОВАТЬ СТОЛ
-            </button>
-            <p
-              style={{
-                fontFamily: 'var(--font-inter)',
-                color: '#C9A96E',
-                fontSize: '9px',
-                letterSpacing: '0.15em',
-                fontWeight: 300,
-                opacity: 0.5,
-              }}
-            >
-              или позвоните +7 (812) 123-45-67
-            </p>
-          </div>
-
-          {/* Right cards (mobile: hidden) */}
-          <div className="hidden md:flex items-end gap-3 md:gap-4">
-            {[performers[2], performers[3]].map((p, i) => (
-              <div key={p.id} className="performer-card group cursor-pointer">
-                <div
-                  className="rounded-lg overflow-hidden transition-all duration-500 group-hover:scale-[1.05]"
-                  style={{
-                    border: '1px solid rgba(123, 26, 43, 0.5)',
-                    boxShadow: '0 0 20px rgba(123,26,43,0.3), 0 6px 24px rgba(0,0,0,0.5)',
-                    width: 'clamp(70px, 9vw, 110px)',
-                  }}
-                >
-                  <div className="relative" style={{ aspectRatio: '3/4' }}>
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      className="w-full h-full object-cover transition-all duration-500 group-hover:brightness-90"
-                      style={{ filter: 'saturate(0.85) contrast(1.1) brightness(0.8)' }}
-                    />
-                    <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 40%, rgba(6,2,10,0.9) 100%)' }} />
-                    <div className="absolute inset-x-0 bottom-0 pb-2 px-2 text-center">
-                      <p className="text-[7px] tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-inter)', color: '#C9A96E', fontWeight: 400 }}>{p.name}</p>
-                      <p className="text-[5.5px] tracking-[0.15em] uppercase mt-0.5" style={{ fontFamily: 'var(--font-inter)', color: '#F5E6D3', opacity: 0.35, fontWeight: 300 }}>{p.role}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <button
+            className="cta-button px-10 py-4 rounded-sm transition-all duration-400 cursor-pointer"
+            style={{
+              background: 'rgba(90, 15, 26, 0.85)',
+              border: '1px solid rgba(201, 169, 110, 0.5)',
+              color: '#C9A96E',
+              fontFamily: 'var(--font-inter)',
+              fontWeight: 400,
+              fontSize: '11px',
+              letterSpacing: '0.25em',
+              backdropFilter: 'blur(6px)',
+            }}
+            onClick={onBookingClick}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(123, 26, 43, 0.95)'
+              e.currentTarget.style.borderColor = '#C9A96E'
+              e.currentTarget.style.boxShadow = '0 0 30px rgba(201,169,110,0.3), inset 0 0 25px rgba(201,169,110,0.08)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(90, 15, 26, 0.85)'
+              e.currentTarget.style.borderColor = 'rgba(201,169,110,0.5)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}
+          >
+            БРОНИРОВАТЬ СТОЛ
+          </button>
+          <p
+            style={{
+              fontFamily: 'var(--font-inter)',
+              color: '#C9A96E',
+              fontSize: '9px',
+              letterSpacing: '0.15em',
+              fontWeight: 300,
+              opacity: 0.5,
+            }}
+          >
+            или позвоните +7 (812) 123-45-67
+          </p>
         </div>
       </div>
 
