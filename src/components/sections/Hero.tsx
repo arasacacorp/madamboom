@@ -52,7 +52,7 @@ function PerformerCard({ name, image, delay, wide, objectPos }: {
     <div
       className="flex-shrink-0 card-snap-item"
       style={{
-        width: wide ? 'clamp(160px, 20vw, 260px)' : 'clamp(75px, 9vw, 120px)',
+        width: wide ? 'clamp(160px, 20vw, 260px)' : 'clamp(110px, 28vw, 150px)',
         opacity: 0,
         transform: 'translateY(30px)',
         animation: `fadeSlideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay} forwards`,
@@ -93,7 +93,7 @@ function PerformerCard({ name, image, delay, wide, objectPos }: {
               fontFamily: 'var(--font-playfair)',
               color: '#C9A96E',
               fontWeight: 500,
-              fontSize: wide ? 'clamp(11px, 1.3vw, 15px)' : 'clamp(8px, 1vw, 11px)',
+              fontSize: wide ? 'clamp(11px, 1.3vw, 15px)' : 'clamp(9px, 1.8vw, 12px)',
               textShadow: '0 2px 8px rgba(0,0,0,0.7)',
             }}
           >
@@ -111,7 +111,7 @@ function VarlokDuoCard() {
     <div
       className="flex-shrink-0 card-snap-item"
       style={{
-        width: 'clamp(160px, 20vw, 260px)',
+        width: 'clamp(200px, 42vw, 280px)',
         opacity: 0,
         transform: 'translateY(30px) scale(0.95)',
         animation: 'fadeSlideUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.2s forwards',
@@ -366,16 +366,21 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
         <div
           className="hero-mobile-bg-pulse absolute inset-0"
           style={{
-            opacity: 0.2,
+            opacity: 0.55,
             backgroundImage: 'url(/images/varlok-sergey.jpg)',
             backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            filter: 'brightness(0.6) saturate(0.7)',
+            backgroundPosition: 'center 25%',
+            filter: 'brightness(0.75) saturate(0.8)',
           }}
         />
         <div
           className="absolute inset-0"
-          style={{ background: 'radial-gradient(ellipse at center, transparent 15%, rgba(6,2,10,0.9) 60%)' }}
+          style={{ background: 'radial-gradient(ellipse at center, transparent 20%, rgba(6,2,10,0.65) 65%, rgba(6,2,10,0.85) 100%)' }}
+        />
+        {/* Subtle warm spotlight */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 40%, rgba(90, 15, 26, 0.3) 0%, transparent 70%)' }}
         />
       </div>
 
