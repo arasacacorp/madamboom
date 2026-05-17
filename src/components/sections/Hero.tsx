@@ -52,7 +52,7 @@ function PerformerCard({ name, image, delay, wide, objectPos }: {
     <div
       className="flex-shrink-0 card-snap-item"
       style={{
-        width: wide ? 'clamp(160px, 20vw, 260px)' : 'clamp(110px, 28vw, 150px)',
+        width: wide ? 'clamp(160px, 20vw, 260px)' : 'clamp(75px, 9vw, 120px)',
         opacity: 0,
         transform: 'translateY(30px)',
         animation: `fadeSlideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay} forwards`,
@@ -93,7 +93,7 @@ function PerformerCard({ name, image, delay, wide, objectPos }: {
               fontFamily: 'var(--font-playfair)',
               color: '#C9A96E',
               fontWeight: 500,
-              fontSize: wide ? 'clamp(11px, 1.3vw, 15px)' : 'clamp(9px, 1.8vw, 12px)',
+              fontSize: wide ? 'clamp(11px, 1.3vw, 15px)' : 'clamp(8px, 1vw, 11px)',
               textShadow: '0 2px 8px rgba(0,0,0,0.7)',
             }}
           >
@@ -111,7 +111,7 @@ function VarlokDuoCard() {
     <div
       className="flex-shrink-0 card-snap-item"
       style={{
-        width: 'clamp(200px, 42vw, 280px)',
+        width: 'clamp(160px, 20vw, 260px)',
         opacity: 0,
         transform: 'translateY(30px) scale(0.95)',
         animation: 'fadeSlideUp 1s cubic-bezier(0.22, 1, 0.36, 1) 2.2s forwards',
@@ -449,7 +449,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             style={{ textDecoration: 'none' }}
           >
             <div
-              className="flex items-center justify-center gap-2 rounded-sm transition-all duration-300"
+              className="afisha-card flex items-center justify-center gap-2 rounded-sm transition-all duration-300"
               style={{
                 width: 'clamp(100px, 18vw, 150px)',
                 padding: '8px 6px',
@@ -574,7 +574,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             style={{ textDecoration: 'none' }}
           >
             <div
-              className="flex items-center justify-center gap-2 rounded-sm transition-all duration-300"
+              className="afisha-card flex items-center justify-center gap-2 rounded-sm transition-all duration-300"
               style={{
                 width: 'clamp(100px, 18vw, 150px)',
                 padding: '8px 6px',
@@ -694,7 +694,7 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
             -webkit-overflow-scrolling: touch;
             padding-left: 0;
             padding-right: 0;
-            scroll-padding: 0 calc(50vw - 55px);
+            scroll-padding: 0 calc(50vw - 70px);
             mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
             -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
           }
@@ -713,8 +713,41 @@ export default function Hero({ animate, onBookingClick }: HeroProps) {
 
           .cards-spacer {
             flex-shrink: 0;
-            width: calc(50vw - 55px);
-            min-width: calc(50vw - 55px);
+            width: calc(50vw - 70px);
+            min-width: calc(50vw - 70px);
+          }
+
+          /* ── Bigger performer cards on mobile ── */
+          .card-snap-item > div {
+            aspect-ratio: 3/4 !important;
+          }
+
+          /* Bigger poster/afisha cards on mobile */
+          .afisha-card {
+            width: clamp(105px, 26vw, 155px) !important;
+            padding: 10px 8px !important;
+          }
+          .afisha-card .afisha-title {
+            font-size: clamp(7px, 2vw, 9px) !important;
+          }
+          .afisha-card .afisha-city {
+            font-size: clamp(6px, 1.6vw, 8px) !important;
+          }
+        }
+
+        @media (min-width: 360px) and (max-width: 1023px) {
+          .card-snap-item {
+            min-width: 130px;
+          }
+        }
+
+        @media (max-width: 359px) {
+          .card-snap-item {
+            min-width: 110px;
+          }
+          .cards-spacer {
+            width: calc(50vw - 60px) !important;
+            min-width: calc(50vw - 60px) !important;
           }
         }
 
