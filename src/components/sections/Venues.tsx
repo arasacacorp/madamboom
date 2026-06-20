@@ -50,6 +50,17 @@ function SectionParticles() {
 }
 
 /* ─── Venue Card ─── */
+interface VenueData {
+  backgroundImage?: string
+  useGradientBg?: boolean
+  city: string
+  venueName: string
+  description: string
+  address?: string
+  programs: string[]
+  highlighted?: boolean
+}
+
 function VenueCard({
   backgroundImage,
   useGradientBg,
@@ -58,19 +69,10 @@ function VenueCard({
   description,
   address,
   programs,
+  highlighted = false,
   delay,
   visible,
-}: {
-  backgroundImage?: string
-  useGradientBg?: boolean
-  city: string
-  venueName: string
-  description: string
-  address?: string
-  programs: string[]
-  delay: number
-  visible: boolean
-}) {
+}: VenueData & { delay: number; visible: boolean }) {
   return (
     <div
       className="venue-card-wrapper"
@@ -78,16 +80,24 @@ function VenueCard({
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0)' : 'translateY(30px)',
         transition: `opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
-        flex: '1 1 0%',
-        minWidth: 0,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
       }}
     >
       <div
-        className="venue-card relative rounded-md overflow-hidden cursor-pointer"
+        className={`venue-card relative rounded-md overflow-hidden cursor-pointer ${highlighted ? 'venue-card--featured' : ''}`}
         style={{
-          minHeight: '320px',
-          border: '1px solid rgba(201,169,110,0.15)',
-          transition: 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border-color 0.5s ease',
+          minHeight: '380px',
+          height: '100%',
+          width: '100%',
+          border: highlighted
+            ? '2px solid rgba(201,169,110,0.5)'
+            : '1px solid rgba(201,169,110,0.15)',
+          boxShadow: highlighted
+            ? '0 0 35px rgba(201,169,110,0.1), 0 0 60px rgba(123,26,43,0.15), 0 8px 32px rgba(0,0,0,0.5)'
+            : '0 4px 20px rgba(0,0,0,0.3)',
+          transition: 'box-shadow 0.5s ease, border-color 0.5s ease',
         }}
       >
         {/* Background layer */}
@@ -129,7 +139,10 @@ function VenueCard({
         <div
           className="absolute top-0 inset-x-0 h-px"
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.4), transparent)',
+            top: '-1px',
+            background: highlighted
+              ? 'linear-gradient(90deg, transparent, rgba(232,213,163,0.8), transparent)'
+              : 'linear-gradient(90deg, transparent, rgba(201,169,110,0.4), transparent)',
             zIndex: 3,
           }}
         />
@@ -153,19 +166,23 @@ function VenueCard({
           <div
             className="inline-block mb-3"
             style={{
-              background: 'linear-gradient(135deg, #C9A96E 0%, #E8D5A3 50%, #C9A96E 100%)',
+              background: highlighted
+                ? 'linear-gradient(135deg, #E8D5A3 0%, #C9A96E 50%, #E8D5A3 100%)'
+                : 'linear-gradient(135deg, #C9A96E 0%, #E8D5A3 50%, #C9A96E 100%)',
               borderRadius: '9999px',
-              padding: '3px 14px',
+              padding: '3px 12px',
+              maxWidth: '100%',
             }}
           >
             <span
               style={{
                 fontFamily: 'var(--font-inter)',
                 color: '#06020A',
-                fontSize: '11px',
+                fontSize: '10px',
                 fontWeight: 600,
-                letterSpacing: '0.12em',
+                letterSpacing: '0.08em',
                 textTransform: 'uppercase',
+                whiteSpace: 'nowrap',
               }}
             >
               {city}
@@ -176,9 +193,9 @@ function VenueCard({
           <h3
             style={{
               fontFamily: 'var(--font-playfair)',
-              color: '#F5E6D3',
-              fontSize: 'clamp(20px, 2.2vw, 28px)',
-              fontWeight: 600,
+              color: highlighted ? '#E8D5A3' : '#F5E6D3',
+              fontSize: 'clamp(20px, 2.2vw, 26px)',
+              fontWeight: highlighted ? 700 : 600,
               letterSpacing: '0.04em',
               lineHeight: 1.3,
               marginBottom: '10px',
@@ -193,7 +210,7 @@ function VenueCard({
             style={{
               fontFamily: 'var(--font-cormorant)',
               color: 'rgba(245, 230, 211, 0.75)',
-              fontSize: 'clamp(14px, 1.3vw, 17px)',
+              fontSize: 'clamp(14px, 1.3vw, 16px)',
               fontWeight: 400,
               lineHeight: 1.65,
               letterSpacing: '0.02em',
@@ -208,11 +225,12 @@ function VenueCard({
             <p
               style={{
                 fontFamily: 'var(--font-inter)',
-                color: 'rgba(201, 169, 110, 0.45)',
-                fontSize: '12px',
-                fontWeight: 300,
+                color: 'rgba(201, 169, 110, 0.55)',
+                fontSize: '11px',
+                fontWeight: 400,
                 letterSpacing: '0.06em',
                 marginBottom: '14px',
+                lineHeight: 1.5,
               }}
             >
               {address}
@@ -285,8 +303,8 @@ export default function Venues() {
     <section
       ref={sectionRef}
       id="venues"
-      className="relative py-16 md:py-24 lg:py-32 overflow-hidden"
-      style={{ backgroundColor: '#06020A' }}
+      className="relative py-14 md:py-20 lg:py-24 overflow-hidden"
+      style={{ backgroundColor: '#06020A', paddingTop: 'clamp(24px, 2.5vw, 32px)' }}
     >
       {/* ── Background layers ── */}
       <div
@@ -318,105 +336,150 @@ export default function Venues() {
       <div className="vignette" style={{ position: 'absolute' }} />
 
       {/* ── Content ── */}
-      <div className="relative flex flex-col items-center w-full" style={{ zIndex: 6 }}>
-
-        {/* Section header: diamond ornament + gold lines → heading → gold shimmer line → subtitle */}
+      <div className="relative max-w-6xl mx-auto px-4 md:px-8" style={{ zIndex: 6 }}>
+        {/* ═══ Gold Separator (плавный переход от Calendar) ═══ */}
         <div
-          className="flex flex-col items-center gap-4 mb-10 md:mb-14 lg:mb-16"
+          className="flex items-center gap-4 mx-auto mb-10 md:mb-14"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transition: 'opacity 0.8s ease 0.1s',
+            width: '100%',
+            maxWidth: '700px',
+          }}
+        >
+          <div
+            style={{
+              flex: 1,
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.3))',
+            }}
+          />
+          <div
+            style={{
+              width: '8px',
+              height: '8px',
+              border: '1px solid rgba(201,169,110,0.6)',
+              transform: 'rotate(45deg)',
+              background: 'rgba(6,2,10,0.9)',
+            }}
+          />
+          <div
+            style={{
+              flex: 1,
+              height: '1px',
+              background: 'linear-gradient(90deg, rgba(201,169,110,0.3), transparent)',
+            }}
+          />
+        </div>
+
+        {/* Section header — centered */}
+        <div
+          className="mb-10 md:mb-14 flex flex-col items-center"
           style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
             transition: 'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
-          {/* Decorative diamond + gold lines */}
-          <div className="flex items-center gap-3">
+          <h2
+            style={{
+              fontFamily: 'var(--font-playfair)',
+              fontSize: 'clamp(30px, 4.5vw, 56px)',
+              fontWeight: 700,
+              color: '#C9A96E',
+              letterSpacing: '0.02em',
+              lineHeight: 1.1,
+              textShadow: '0 0 60px rgba(201,169,110,0.15), 0 4px 20px rgba(0,0,0,0.5)',
+              textAlign: 'center',
+            }}
+          >
+            <span style={{ fontStyle: 'italic', color: '#E8D5A3' }}>Площадки</span>
+          </h2>
+
+          {/* Subtitle with symmetrical gold lines */}
+          <div className="flex items-center gap-3 mt-6">
             <div
               style={{
-                width: 'clamp(30px, 5vw, 60px)',
+                width: 'clamp(40px, 5vw, 60px)',
                 height: '1px',
                 background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.5))',
               }}
             />
-            <div
+            <span
+              className="uppercase"
               style={{
-                width: '8px',
-                height: '8px',
-                border: '1px solid rgba(201,169,110,0.7)',
-                transform: 'rotate(45deg)',
-                background: 'rgba(6,2,10,0.9)',
+                fontFamily: 'var(--font-cormorant)',
+                color: 'rgba(201,169,110,0.65)',
+                fontSize: 'clamp(12px, 1.2vw, 15px)',
+                fontWeight: 400,
+                letterSpacing: '0.22em',
+                whiteSpace: 'nowrap',
               }}
-            />
+            >
+              Где проходят наши шоу
+            </span>
             <div
               style={{
-                width: 'clamp(30px, 5vw, 60px)',
+                width: 'clamp(40px, 5vw, 60px)',
                 height: '1px',
                 background: 'linear-gradient(90deg, rgba(201,169,110,0.5), transparent)',
               }}
             />
           </div>
-
-          {/* "Площадки" heading */}
-          <h2
-            style={{
-              fontFamily: 'var(--font-playfair)',
-              fontSize: 'clamp(28px, 4vw, 52px)',
-              fontWeight: 700,
-              color: '#C9A96E',
-              letterSpacing: '0.1em',
-              textShadow: '0 0 60px rgba(201,169,110,0.15), 0 4px 20px rgba(0,0,0,0.5)',
-              lineHeight: 1.1,
-            }}
-          >
-            Площадки
-          </h2>
-
-          {/* Gold shimmer line */}
-          <div className="gold-line-shimmer" style={{ width: '80px', height: '1px' }} />
-
-          {/* "ГДЕ ПРОХОДЯТ НАШИ ШОУ" subtitle */}
-          <p
-            className="tracking-[0.35em] uppercase"
-            style={{
-              fontFamily: 'var(--font-cormorant)',
-              color: 'rgba(201,169,110,0.7)',
-              fontWeight: 400,
-              fontSize: 'clamp(11px, 1.4vw, 15px)',
-            }}
-          >
-            Где проходят наши шоу
-          </p>
         </div>
 
-        {/* ── Venue Cards ── */}
-        <div className="flex flex-col md:flex-row items-stretch justify-center gap-6 md:gap-8 w-full max-w-5xl px-4 md:px-8 mb-8 md:mb-10">
-          {/* Card 1: Москва — Клуб «Гримёрка» */}
-          <VenueCard
-            backgroundImage="/images/venue-grimerka.jpg"
-            city="Москва"
-            venueName="Клуб-ресторан «Гримёрка»"
-            description="Атмосферное пространство в историческом центре столицы рядом с Кузнецким Мостом. Регулярные показы шоу «Мадам Бум» и программы «Джазовый бунт»."
-            address="Москва, ул. Кузнецкий Мост"
-            programs={['Мадам Бум', 'Джазовый бунт']}
-            delay={0.2}
-            visible={isVisible}
-          />
+        {/* ═══ Venue Cards — horizontal scroll ═══ */}
+        <div
+          className="relative"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transition: 'opacity 0.8s ease 0.2s',
+          }}
+        >
+          {/* Static grid — 3 карточки одинаковой высоты, Гримёрка по центру */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 items-stretch">
+            {/* Card 1: Ибица (СПб) */}
+            <VenueCard
+              useGradientBg
+              city="Санкт-Петербург"
+              venueName="Клуб-ресторан «Ibiza»"
+              description="Один из самых крупных и технологичных клубов Северной столицы. ~1000 кв.м, 200 посадочных мест, большая концертная площадка, 3 VIP-зоны. Интерьер в стиле ар-деко с элементами средиземноморского острова."
+              address="Санкт-Петербург, ул. Садовая, 12"
+              programs={['Джазовый бунт']}
+              delay={0.25}
+              visible={isVisible}
+            />
 
-          {/* Card 2: Санкт-Петербург */}
-          <VenueCard
-            useGradientBg
-            city="Санкт-Петербург"
-            venueName="Площадки города"
-            description="Проект активно развивается в Санкт-Петербурге — колыбели русского бурлеска. Следите за афишей, чтобы не пропустить ближайшие шоу."
-            programs={['Мадам Бум']}
-            delay={0.35}
-            visible={isVisible}
-          />
+            {/* Card 2: Гримёрка (Москва) — highlighted, по центру */}
+            <VenueCard
+              backgroundImage="/images/venue-grimerka.jpg"
+              city="Москва"
+              venueName="Клуб-ресторан «Гримёрка»"
+              description="Атмосферное пространство в историческом центре столицы рядом с Кузнецким Мостом. Регулярные показы шоу «Мадам Бум» и программы «Джазовый бунт»."
+              address="Москва, ул. Пушечная, 9/6"
+              programs={['Мадам Бум', 'Джазовый бунт']}
+              highlighted={true}
+              delay={0.35}
+              visible={isVisible}
+            />
+
+            {/* Card 3: Unity (СПб) */}
+            <VenueCard
+              useGradientBg
+              city="Санкт-Петербург"
+              venueName="Ресторан «Unity Sennaya»"
+              description="Стильный ресторан в центре Петербурга. Светлый интерьер с яркими дизайнерскими элементами — столики под мрамор, золотые люстры. Идеальное место для дружеских встреч и камерных шоу."
+              address="Санкт-Петербург, пер. Гривцова, 4"
+              programs={['Мадам Бум']}
+              delay={0.45}
+              visible={isVisible}
+            />
+          </div>
         </div>
 
         {/* ── Subtle "А также гастроли" row ── */}
         <div
-          className="flex items-center justify-center gap-3"
+          className="flex items-center justify-center gap-3 mt-10 md:mt-12"
           style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -455,41 +518,18 @@ export default function Venues() {
 
       {/* ═══ INLINE STYLES ═══ */}
       <style>{`
-        /* Venue card hover effects — lift, glow increase, border brighten */
+        /* Venue card hover effects */
         .venue-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 0 30px rgba(123,26,43,0.3), 0 0 12px rgba(201,169,110,0.06), 0 8px 30px rgba(0,0,0,0.5);
-          border-color: rgba(201,169,110,0.35) !important;
+          box-shadow: 0 0 30px rgba(123,26,43,0.3), 0 0 12px rgba(201,169,110,0.1), 0 8px 30px rgba(0,0,0,0.5) !important;
+          border-color: rgba(201,169,110,0.6) !important;
+        }
+        .venue-card--featured:hover {
+          box-shadow: 0 0 40px rgba(201,169,110,0.25), 0 0 60px rgba(123,26,43,0.3), 0 10px 35px rgba(0,0,0,0.6) !important;
+          border-color: rgba(232,213,163,0.8) !important;
         }
 
         .venue-card:hover .venue-card-glow {
           opacity: 1 !important;
-        }
-
-        /* Venue card border glow on hover */
-        .venue-card::after {
-          content: '';
-          position: absolute;
-          inset: -1px;
-          border-radius: inherit;
-          border: 1px solid rgba(201,169,110,0);
-          transition: border-color 0.5s ease;
-          pointer-events: none;
-          z-index: 4;
-        }
-
-        .venue-card:hover::after {
-          border-color: rgba(201,169,110,0.25);
-        }
-
-        /* Gradient bg subtle animation for SPb card */
-        @keyframes gradientShift {
-          0%, 100% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
         }
       `}</style>
     </section>

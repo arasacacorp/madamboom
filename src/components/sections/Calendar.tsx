@@ -889,7 +889,7 @@ export default function Calendar() {
 
       {/* ── Content ── */}
       <div
-        className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24"
+        className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-8 sm:pb-10"
         style={{ zIndex: 6 }}
       >
         {/* ═══ Section Header ═══ */}

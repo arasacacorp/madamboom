@@ -2,10 +2,12 @@
 
 import Navbar from '@/components/sections/Navbar'
 import About from '@/components/sections/About'
+import WhyUs from '@/components/sections/WhyUs'
 import Footer from '@/components/sections/Footer'
 
 /* ═══ About Page (/about) ═══
  * Hero = About component (editorial layout with producer photo + text)
+ * Then WhyUs block (Почему Мадам Бум?)
  * Then Footer.
  *
  * No Curtain preloader (direct content for secondary page).
@@ -28,6 +30,9 @@ export default function AboutPage() {
 
       {/* Hero — About section (editorial: title + producer photo + text + CTA) */}
       <About />
+
+      {/* Почему Мадам Бум? — 6 фишек шоу */}
+      <WhyUs />
 
       {/* Footer (with id="contacts") */}
       <Footer />

@@ -1,19 +1,40 @@
+'use client'
+
+import { Ticket, Calendar } from 'lucide-react'
+
 /* ═══ Footer Component ═══
  * Shared between main page and /about page.
- * Contains: tagline, cities, social links, 18+ marker, copyright.
+ * Contains: logo, tagline, CTA buttons, social links, 18+ marker, copyright.
  * id="contacts" for navbar anchor link.
  */
 export default function Footer() {
   return (
     <footer
       id="contacts"
-      className="relative w-full py-12 mt-auto"
+      className="relative w-full py-14 md:py-16 mt-auto"
       style={{
         background: 'linear-gradient(180deg, transparent 0%, #06020A 30%)',
-        borderTop: '1px solid rgba(201, 169, 110, 0.1)',
+        borderTop: '1px solid rgba(201, 169, 110, 0.12)',
       }}
     >
-      <div className="flex flex-col items-center gap-6 px-4">
+      <div className="flex flex-col items-center gap-7 px-4">
+        {/* ═══ Logo ═══ */}
+        <a
+          href="/"
+          className="transition-opacity duration-300 hover:opacity-80"
+          style={{
+            fontFamily: 'var(--font-playfair)',
+            color: '#C9A96E',
+            fontSize: 'clamp(22px, 3vw, 30px)',
+            fontWeight: 700,
+            letterSpacing: '0.14em',
+            textDecoration: 'none',
+            textShadow: '0 0 30px rgba(201,169,110,0.15)',
+          }}
+        >
+          МАДАМ БУМ
+        </a>
+
         {/* Decorative separator */}
         <div className="flex items-center gap-3">
           <div style={{ width: '50px', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.4))' }} />
@@ -48,8 +69,53 @@ export default function Footer() {
           САНКТ-ПЕТЕРБУРГ&ensp;·&ensp;МОСКВА&ensp;·&ensp;ГАСТРОЛИ
         </p>
 
-        {/* Social links */}
-        <div className="flex items-center gap-4">
+        {/* ═══ CTA Buttons ═══ */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 mt-1">
+          {/* Билеты */}
+          <a
+            href="https://madamboomgrimerka.ticketscloud.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-6 py-3 rounded-sm transition-all duration-400 hover:scale-105"
+            style={{
+              fontFamily: 'var(--font-inter)',
+              background: 'linear-gradient(135deg, #C9A96E 0%, #B8963D 100%)',
+              color: '#06020A',
+              fontSize: '12px',
+              fontWeight: 600,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              border: '1px solid rgba(232,213,163,0.4)',
+            }}
+          >
+            <Ticket size={14} strokeWidth={2} />
+            Билеты
+          </a>
+
+          {/* Заказать мероприятие */}
+          <a
+            href="mailto:info@madamboom.ru?subject=Заказ выступления Мадам Бум"
+            className="flex items-center gap-2 px-6 py-3 rounded-sm transition-all duration-400 hover:scale-105"
+            style={{
+              fontFamily: 'var(--font-inter)',
+              background: 'transparent',
+              color: '#C9A96E',
+              fontSize: '12px',
+              fontWeight: 500,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              border: '1px solid rgba(201,169,110,0.35)',
+            }}
+          >
+            <Calendar size={14} strokeWidth={1.8} />
+            Заказать мероприятие
+          </a>
+        </div>
+
+        {/* ═══ Social links ═══ */}
+        <div className="flex items-center gap-4 mt-2">
           <a
             href="https://t.me/madamboom"
             target="_blank"

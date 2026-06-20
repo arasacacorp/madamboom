@@ -8,10 +8,12 @@ import Afisha from '@/components/sections/Afisha'
 import WhatIsBurlesque from '@/components/sections/WhatIsBurlesque'
 import Calendar from '@/components/sections/Calendar'
 import Cast from '@/components/sections/Cast'
+import Gallery from '@/components/sections/Gallery'
 import Venues from '@/components/sections/Venues'
 import Programs from '@/components/sections/Programs'
 import Corporate from '@/components/sections/Corporate'
-import WhyUs from '@/components/sections/WhyUs'
+import CtaTickets from '@/components/sections/CtaTickets'
+import CtaPrivate from '@/components/sections/CtaPrivate'
 import Footer from '@/components/sections/Footer'
 
 export default function Home() {
@@ -43,23 +45,30 @@ export default function Home() {
       {/* 3. WhatIsBurlesque — что такое бурлеск + шоу-программа */}
       {curtainComplete && <WhatIsBurlesque />}
 
-      {/* 4. Calendar — календарь событий */}
-      {curtainComplete && <Calendar />}
+      {/* 4. Cast — наши звёзды бурлеска */}
+      {curtainComplete && <Cast />}
 
       {/* 5. Programs — программы */}
       {curtainComplete && <Programs />}
 
-      {/* 6. Cast — состав перформеров */}
-      {curtainComplete && <Cast />}
+      {/* 6. Calendar — календарь событий */}
+      {curtainComplete && <Calendar />}
 
       {/* 7. Venues — площадки */}
       {curtainComplete && <Venues />}
 
-      {/* 8. Corporate — гастроли и корпоративы */}
-      {curtainComplete && <Corporate />}
+      {/* 8. Corporate — гастроли и корпоративы (ВРЕМЕННО СКРЫТО) */}
+      {/* Чтобы вернуть: заменить false на curtainComplete */}
+      {false && curtainComplete && <Corporate />}
 
-      {/* 9. WhyUs — почему Мадам Бум */}
-      {curtainComplete && <WhyUs />}
+      {/* 9. CTA — купить билеты */}
+      {curtainComplete && <CtaTickets />}
+
+      {/* 10. Gallery — галерея (кадры с выступлений) */}
+      {curtainComplete && <Gallery />}
+
+      {/* 11. CTA — частное выступление */}
+      {curtainComplete && <CtaPrivate />}
 
       {/* Footer (with id="contacts") */}
       {curtainComplete && <Footer />}

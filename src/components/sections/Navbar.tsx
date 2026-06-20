@@ -21,7 +21,7 @@ const NAV_ITEMS: NavItem[] = [
     label: 'О шоу',
     items: [
       { label: 'О Мадам Бум', href: '/about' },
-      { label: 'Состав', href: '/#cast' },
+      { label: 'Состав', href: '/cast' },
       { label: 'Галерея', href: '/#gallery' },
     ],
   },

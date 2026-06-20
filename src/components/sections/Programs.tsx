@@ -96,10 +96,11 @@ function ProgramCard({
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0)' : 'translateY(40px)',
         transition: `opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
+        display: 'flex',
       }}
     >
       <div
-        className="program-card-inner relative rounded-md overflow-hidden"
+        className="program-card-inner relative rounded-md overflow-hidden flex flex-col w-full"
         style={{
           backgroundColor: 'rgba(26, 10, 16, 0.8)',
           border: highlighted
@@ -133,7 +134,7 @@ function ProgramCard({
         )}
 
         {/* Inner content */}
-        <div className="p-6 md:p-8">
+        <div className="p-6 md:p-8 flex flex-col flex-1">
           {/* Program name */}
           <h3
             style={{
@@ -220,40 +221,62 @@ function ProgramCard({
             </div>
           )}
 
-          {/* CTA button */}
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="program-cta-btn inline-flex items-center gap-2"
-            style={{
-              fontFamily: 'var(--font-inter)',
-              background: 'linear-gradient(135deg, #C9A96E 0%, #B8963D 100%)',
-              color: '#06020A',
-              fontSize: 'clamp(11px, 0.95vw, 14px)',
-              fontWeight: 600,
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase' as const,
-              textDecoration: 'none',
-              borderRadius: '3px',
-              padding: '10px 28px',
-              border: '1px solid rgba(232,213,163,0.4)',
-              transition: 'all 0.4s ease',
-            }}
-          >
-            Билеты
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              style={{ transition: 'transform 0.3s ease' }}
+          {/* CTA buttons — Билеты + О программе */}
+          <div className="flex items-center gap-3 mt-auto">
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="program-cta-btn inline-flex items-center gap-2"
+              style={{
+                fontFamily: 'var(--font-inter)',
+                background: 'linear-gradient(135deg, #C9A96E 0%, #B8963D 100%)',
+                color: '#06020A',
+                fontSize: 'clamp(11px, 0.95vw, 14px)',
+                fontWeight: 600,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase' as const,
+                textDecoration: 'none',
+                borderRadius: '3px',
+                padding: '10px 22px',
+                border: '1px solid rgba(232,213,163,0.4)',
+                transition: 'all 0.4s ease',
+              }}
             >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
+              Билеты
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                style={{ transition: 'transform 0.3s ease' }}
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a
+              href="#programs"
+              className="program-info-btn inline-flex items-center gap-2"
+              style={{
+                fontFamily: 'var(--font-inter)',
+                background: 'transparent',
+                color: '#C9A96E',
+                fontSize: 'clamp(11px, 0.95vw, 14px)',
+                fontWeight: 500,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase' as const,
+                textDecoration: 'none',
+                borderRadius: '3px',
+                padding: '10px 18px',
+                border: '1px solid rgba(201,169,110,0.35)',
+                transition: 'all 0.4s ease',
+              }}
+            >
+              О программе
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -370,7 +393,7 @@ export default function Programs() {
               lineHeight: 1.1,
             }}
           >
-            Программы
+            Программы текущих шоу
           </h2>
 
           {/* Gold shimmer line */}
@@ -493,6 +516,13 @@ export default function Programs() {
 
         .program-cta-btn:hover svg {
           transform: translateX(3px);
+        }
+
+        /* Info button (О программе) hover */
+        .program-info-btn:hover {
+          background: rgba(201,169,110,0.08) !important;
+          border-color: rgba(201,169,110,0.6) !important;
+          color: #E8D5A3 !important;
         }
 
         /* Subtle border glow on hover via pseudo-element */

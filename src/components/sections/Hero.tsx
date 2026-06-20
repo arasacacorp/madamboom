@@ -334,16 +334,9 @@ export default function Hero({ animate }: HeroProps) {
             Билеты
           </a>
 
-          {/* Outlined — О проекте */}
+          {/* Outlined — О шоу */}
           <a
-            href="#about"
-            onClick={(e) => {
-              e.preventDefault()
-              const target = document.querySelector('#about')
-              if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }
-            }}
+            href="/about"
             className="flex items-center gap-2 px-7 py-3 rounded-sm transition-all duration-400 hover:scale-105"
             style={{
               fontFamily: 'var(--font-inter)',
@@ -358,7 +351,7 @@ export default function Hero({ animate }: HeroProps) {
             }}
           >
             <ChevronDown size={16} strokeWidth={1.8} />
-            О проекте
+            О шоу
           </a>
         </div>
       </div>
