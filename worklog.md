@@ -1130,3 +1130,662 @@ export function getWidgetUrl(venueId, eventTitle): string | null
 
 ### Примечание:
 Во время работы обнаружилось, что `.env` файл был случайно перезаписан (остался только `DATABASE_URL`). Восстановлены `TC_API_KEY` и `TC_API_BASE`. В будущем нужно быть аккуратнее с перезапуском dev-сервера.
+
+---
+
+## Этап 13: Push в GitHub ветку dev (текущая сессия)
+
+### Задача:
+Создать ветку `dev` на GitHub (https://github.com/arasacacorp/madamboom.git) и запушить код.
+
+### 🚨 Критическая проблема безопасности (обнаружена и исправлена):
+
+При проверке git состояния перед пушем обнаружено:
+1. **`.env` файл с API-ключом TicketsCloud попал в git tracking** (в 5 коммитах ветки main)
+2. **API-ключ `4fecb5ca...` был в worklog.md** (строка 837)
+
+Причина: `.env` был в `.gitignore`, но файл был принудительно добавлен в tracking ранее (через `git add -f` или до обновления `.gitignore`).
+
+### Что сделано для безопасности:
+
+1. **Удалён ключ из worklog.md** — заменён на `<ваш_API_ключ_из_ЛК_TicketsCloud>`
+2. **Создана orphan branch `dev`** (без истории main) — это гарантирует, что история с .env НЕ попадёт на GitHub
+3. **`.env` убран из staging** на dev ветке (`git rm --cached .env`)
+4. **Финальная проверка**: ключа нет ни в одном файле dev коммита, .env нет в коммите
+5. **GitHub токен** использован только в URL для push, НЕ сохранён в `.git/config`
+
+### Результат push:
+
+```
+* [new branch]      dev -> dev
+remote: Create a pull request for 'dev' on GitHub by visiting:
+remote:      https://github.com/arasacacorp/madamboom/pull/new/dev
+```
+
+- ✅ Ветка `dev` создана на GitHub
+- ✅ Локальный dev == remote dev (хеши совпадают: `fad8bdd`)
+- ✅ Upstream tracking настроен: `dev` → `origin/dev`
+- ✅ 106 файлов в коммите (весь проект кроме .env)
+- ✅ GitHub токен не сохранён в config
+- ✅ API-ключ TicketsCloud не в коммите
+
+### Ссылка:
+https://github.com/arasacacorp/madamboom/tree/dev
+
+### ⚠ ВАЖНЫЕ ПРЕДУПРЕЖДЕНИЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ:
+
+1. **Локальная ветка `main` содержит .env с ключом в истории (5 коммитов)**
+   - НЕ пушить main на GitHub!
+   - В будущем: рекомендуется перевыпустить API-ключ в ЛК TicketsCloud (rotating), так как он был в локальной git истории
+
+2. **Файл `.env` исключён из git** (правильно!)
+   - При клонировании репозитория на новый машине нужно создать `.env` вручную:
+     ```
+     DATABASE_URL=file:/path/to/db/custom.db
+     TC_API_KEY=<ваш_API_ключ_из_ЛК_TicketsCloud>
+     TC_API_BASE=https://ticketscloud.com
+     ```
+
+3. **`db/custom.db` включён в коммит** — содержит только пустые тестовые таблицы (User/Post из Prisma schema). В будущем лучше добавить `db/*.db` в `.gitignore`.
+
+### Команда для будущего push (без токена в config):
+```bash
+git push origin dev
+# Если потребуется токен снова:
+git push https://<token>@github.com/arasacacorp/madamboom.git dev
+```
+
+### Структура коммита dev:
+- 106 файлов
+- 1 чистый коммит (orphan branch, без истории main)
+- Все секции сайта, API routes, конфиги, изображения
+- Исключены: `.env`, `node_modules/`, `.next/`, `skills/`, `upload/`, `tool-results/`, скриншоты
+
+---
+
+## Этап 14: Редизайн шапки навигации (текущая сессия)
+
+### Задача:
+Новая структура навигации:
+1. **О шоу** (dropdown) → О Мадам Бум / Состав / Галерея
+2. **Афиша**
+3. **Календарь событий**
+4. **Программы**
+5. **Контакты**
+6. **Заказать мероприятие** (выделенная кнопка)
+7. **Билеты** (остаётся как есть, primary CTA)
+
+### Что изменилось в `src/components/sections/Navbar.tsx`:
+
+#### 1. Новая типизированная структура NAV_ITEMS
+```typescript
+type NavItem =
+  | { type: 'link'; label: string; href: string }
+  | { type: 'dropdown'; label: string; items: { label: string; href: string }[] }
+  | { type: 'button-outline'; label: string; href: string }
+
+const NAV_ITEMS: NavItem[] = [
+  { type: 'dropdown', label: 'О шоу', items: [
+    { label: 'О Мадам Бум', href: '#about' },
+    { label: 'Состав', href: '#cast' },
+    { label: 'Галерея', href: '#gallery' },  // секция пока не существует
+  ]},
+  { type: 'link', label: 'Афиша', href: '#afisha' },
+  { type: 'link', label: 'Календарь событий', href: '#calendar' },
+  { type: 'link', label: 'Программы', href: '#programs' },
+  { type: 'link', label: 'Контакты', href: '#contacts' },  // → footer
+  { type: 'button-outline', label: 'Заказать мероприятие', href: '#corporate' },
+]
+```
+
+#### 2. Dropdown «О шоу» (desktop)
+- Открывается по **hover** (с задержкой 150мс для избежания мерцания)
+- Также работает по **клик** (toggle)
+- Закрывается по клику вне элемента (mousedown listener)
+- Анимация: fade-in + slide-down (0.25s)
+- Декоративная стрелка-треугольник сверху
+- Тёмный фон с blur, золотая рамка
+- Каждый подпункт: uppercase, hover → padding-left + золотой цвет + лёгкий фон
+- Chevron иконка вращается на 180° при открытии
+
+#### 3. Кнопка «Заказать мероприятие» (button-outline)
+- Визуально отделена от обычных ссылок
+- Outline стиль: прозрачный фон + золотая рамка 1px
+- Иконка Calendar слева
+- Hover: лёгкий золотой tint + усиление рамки + glow
+- НЕ такая яркая как «Билеты» (primary CTA остаётся выделенным)
+
+#### 4. Мобильный drawer
+- «О шоу» — expandable button (не dropdown)
+- При клике разворачивает подпункты с анимацией max-height
+- Подпункты с префиксом «—» для визуальной вложенности
+- Chevron вращается при раскрытии
+- Клик по подпункту: закрывает drawer + скроллит к секции
+
+#### 5. Изменения в `src/app/page.tsx`
+- Добавлен `id="contacts"` к `<footer>` — теперь «Контакты» скроллит к футеру с соцсетями
+
+### Верификация (Agent Browser):
+
+**Десктоп (1440×900):**
+- ✅ Структура: О ШОУ (button) | АФИША | КАЛЕНДАРЬ СОБЫТИЙ | ПРОГРАММЫ | КОНТАКТЫ | ЗАКАЗАТЬ МЕРОПРИЯТИЕ | БИЛЕТЫ
+- ✅ Клик «О шоу» → dropdown открывается (aria-expanded=true)
+- ✅ 3 подпункта видны: О МАДАМ БУМ, СОСТАВ, ГАЛЕРЕЯ
+- ✅ Клик «О Мадам Бум» → скролл к #about (top: 0)
+- ✅ Клик «Афиша» → скролл к #afisha (top: 0)
+- ✅ Клик «Календарь событий» → скролл к #calendar (top: 0)
+- ✅ Клик «Программы» → скролл к #programs (top: 0)
+- ✅ Клик «Контакты» → скролл к #contacts/footer (top: 562)
+- ✅ Клик «Заказать мероприятие» → скролл к #corporate (top: 0)
+
+**Мобильная (375×812):**
+- ✅ Drawer открывается
+- ✅ Все пункты видны: О ШОУ, АФИША, КАЛЕНДАРЬ СОБЫТИЙ, ПРОГРАММЫ, КОНТАКТЫ, ЗАКАЗАТЬ МЕРОПРИЯТИЕ, БИЛЕТЫ
+- ✅ Клик «О шоу» → раскрывается список подпунктов
+- ✅ Подпункты: «—О МАДАМ БУМ», «—СОСТАВ», «—ГАЛЕРЕЯ»
+- ✅ Клик «О Мадам Бум» → drawer закрывается + скролл к #about (top: 0)
+
+**Сервер и lint:**
+- ✅ Lint чист (0 errors, 0 warnings)
+- ✅ Сервер стабилен (HTTP 200)
+- ✅ Ошибок в консоли нет
+
+### Примечания:
+- **«Галерея» (#gallery)** — секция пока не существует на странице. Ссылка добавлена, но при клике ничего не происходит (element not found). Когда секция Галерея будет добавлена — ссылка заработает автоматически.
+- Брейкпоинт для desktop навигации изменён с `md` (768px) на `lg` (1024px), так как пунктов стало больше и на средних экранах они не помещались.
+
+---
+
+## Этап 15: Новый блок «Что такое бурлеск + шоу-программа» (текущая сессия)
+
+### Задача:
+Создать новый блок после Афиши — объединить описание жанра бурлеск и шоу-программы «Мадам Бум» в одном блоке.
+
+### Создан компонент `src/components/sections/WhatIsBurlesque.tsx`
+
+### Дизайн-концепция:
+Двухуровневый блок с золотым разделителем посередине. Каждый уровень имеет свой заголовок + контент.
+
+**Часть 1: «Что такое бурлеск?»**
+- Eyebrow «О жанре» + главный заголовок с italic-акцентом
+- Сетка 7:5 (текст слева / 2 карточки справа на десктопе)
+- Левая колонка:
+  - Лид-абзац с золотой вертикальной линией слева (border-left)
+  - 2 body-абзаца (полный текст пользователя)
+  - Заключительная italic-цитата с золотой точкой
+- Правая колонка — 2 карточки:
+  - «Классический бурлеск» (Sparkles icon, gold)
+  - «Бурлеск с перцем» (Theater icon, cream)
+
+**Золотой разделитель** (центрированный, с ромбом)
+
+**Часть 2: «Шоу-программа «Мадам Бум»»**
+- Eyebrow «Программа» + заголовок с italic-акцентом
+- Описание конферанса (центрированный, max-w-3xl) с подсветкой слова «конферанса»
+- Лейбл «В программе представлены» (центрированный с золотыми линиями)
+- Сетка из 7 элементов программы (иконки в кругах + подписи):
+  1. Классический бурлеск (Theater)
+  2. Авторские постановки (Sparkles)
+  3. Живой вокал (Music)
+  4. Джазовые композиции (Stars)
+  5. Ментализм и магия (Eye)
+  6. Интерактив со зрителями (Users)
+  7. Элементы кабаре (Flower2)
+- 2 выделенные карточки (md:grid-cols-2):
+  - «Девушка в бокале» (Wine icon) — eyebrow «Легендарный номер», полный текст про 2 номера в бокале
+  - «Анна и Сергей Варлоки» (Eye icon) — eyebrow «Ментализм и магия»
+
+### Адаптивность:
+- Десктоп (lg): 7+5 сетка для Part 1, 7 колонок для program elements, 2 колонки для highlights
+- Планшет (md): 2 колонки для highlights, 4 колонки для program elements
+- Мобильный (sm): всё стекается вертикально, program elements 2-3 колонки
+
+### Анимации:
+- IntersectionObserver (threshold 0.08, rootMargin bottom -60px)
+- Staggered reveal: заголовок → текст → карточки → разделитель → Part 2
+- Hover-эффекты: все карточки приподнимаются + glow, program element иконки масштабируются
+
+### Интеграция в `src/app/page.tsx`:
+Новый порядок секций:
+1. Hero
+2. Afisha
+3. **WhatIsBurlesque** ← НОВЫЙ
+4. Calendar
+5. About (оставлен как есть — пользователь сказал «пока оставим»)
+6. Programs (оставлен как есть)
+7. Cast
+8. Venues
+9. Corporate
+10. WhyUs
+
+### Верификация (Agent Browser):
+
+**Десктоп (1440×900):**
+- ✅ Порядок секций: hero → afisha → **what-is-burlesque** → calendar → about → ...
+- ✅ Part 1: «Что такое бурлеск?» + лид + 2 body + цитата + 2 карточки
+- ✅ Part 2: «Шоу-программа «Мадам Бум»» + конферанс + 7 элементов + 2 хайлайт-карточки
+- ✅ Хайлайт-карточки: «Девушка в бокале» (Легендарный номер) + «Анна и Сергей Варлоки» (Ментализм и магия)
+- ✅ 7 элементов программы: Классический бурлеск, Авторские постановки, Живой вокал, Джазовые композиции, Ментализм и магия, Интерактив со зрителями, Элементы кабаре
+
+**Мобильная (375×812):**
+- ✅ 2 burlesque cards + 2 highlight cards + 7 program elements
+- ✅ Адаптивная сетка
+
+**Сервер и lint:**
+- ✅ Lint чист (0 errors, 0 warnings)
+- ✅ Сервер стабилен (HTTP 200)
+- ✅ Ошибок в консоли нет
+
+### Скриншоты:
+- `screenshot-whatisburlesque-part1.png` — верх блока (заголовок + текст)
+- `screenshot-whatisburlesque-cards.png` — Part 1 с карточками
+- `screenshot-whatisburlesque-part2.png` — Part 2 (программа)
+- `screenshot-whatisburlesque-highlights.png` — хайлайт-карточки (Бокал + Варлоки)
+- `screenshot-whatisburlesque-mobile.png` — мобильная версия
+
+### Использованные иконки (lucide-react):
+Wine (бокал), Sparkles (постановки/классика), Music (вокал), Stars (джаз), Eye (ментализм), Users (интерактив), Flower2 (кабаре), Theater (бурлеск с перцем), Mic2 (импортирован но не использован — можно убрать)
+
+### Примечание:
+Существующие блоки About («Что такое бурлеск?») и Programs — оставлены как есть по просьбе пользователя. В будущем можно будет удалить дублирующий контент из About или сделать About более кратким.
+
+---
+
+## Этап 16: Центрирование заголовка блока «Что такое бурлеск?» (текущая сессия)
+
+### Задача:
+1. Убрать eyebrow «О жанре»
+2. Сделать заголовок «Что такое бурлеск?» по центру
+3. Сделать подзаголовок «Искусство кабаре · Музыка · Театральность» по центру (с симметричными золотыми линиями)
+
+### Что изменилось в `src/components/sections/WhatIsBurlesque.tsx`:
+
+#### Part 1 title block (был left-aligned → стал centered)
+
+**Удалено:**
+- Eyebrow «О жанре» с левой золотой линией
+
+**Изменено:**
+- Контейнер: добавлен `flex flex-col items-center` для центрирования
+- Заголовок h2: `textAlign: 'left'` → `textAlign: 'center'`
+- Подзаголовок: добавлена правая золотая линия (симметрично левой)
+- Добавлен `whiteSpace: 'nowrap'` к подзаголовку — чтобы не переносился
+
+**Было (левая линия + текст):**
+```
+┌─ О жанре
+│
+Что такое бурлеск?
+── Искусство кабаре · Музыка · Театральность
+```
+
+**Стало (центрированный заголовок + симметричный подзаголовок):**
+```
+              Что такое бурлеск?
+   ── Искусство кабаре · Музыка · Театральность ──
+```
+
+### Верификация (Agent Browser):
+- ✅ Eyebrow «О жанре» убран (exists: false)
+- ✅ Заголовок «Что такое бурлеск?» — textAlign: center
+- ✅ Подзаголовок «Искусство кабаре · Музыка · Театральность» на месте
+- ✅ Идеальное центрирование: h2 center X = 720, container center X = 720, diff = 0px
+- ✅ Lint чист, ошибок нет
+
+---
+
+## Этап 17: Уменьшение отступа до блока «Что такое бурлеск?» (текущая сессия)
+
+### Задача:
+Отступ от Afisha до WhatIsBurlesque был слишком большим. Сделать гармоничным, ближе к эталону (Hero→Afisha = 128px).
+
+### Замеры до изменений (десктоп):
+- Hero → Afisha: 128px (эталон)
+- **Afisha → WhatIsBurlesque: 240px** ← слишком большой
+- WhatIsBurlesque → Calendar: 112px
+
+Причина: padding-bottom Afisha (128) + padding-top WhatIsBurlesque (112) = 240px суммарно.
+
+### Что изменилось в `src/components/sections/WhatIsBurlesque.tsx`:
+
+**Padding section:**
+```diff
+- className="relative py-16 md:py-24 lg:py-28 overflow-hidden"
++ className="relative py-14 md:py-20 lg:py-24 overflow-hidden"
+```
+
+**Inline paddingTop override** (уменьшает верхний отступ на всех брейкпоинтах):
+```diff
+- style={{ backgroundColor: '#06020A' }}
++ style={{ backgroundColor: '#06020A', paddingTop: 'clamp(24px, 2.5vw, 32px)' }}
+```
+
+Inline-стиль `paddingTop` переопределяет Tailwind `py-*` для верха, оставляя `paddingBottom` из `py-14 md:py-20 lg:py-24` (для баланса с Calendar ниже).
+
+### Замеры после изменений (десктоп):
+- Hero → Afisha: **128px** (эталон)
+- **Afisha → WhatIsBurlesque: 160px** ← было 240, стало 160 (сбалансировано)
+- WhatIsBurlesque → Calendar: 96px (чуть меньше, но гармонично — плавный переход)
+
+### Замеры на мобильном (375px):
+- Hero → Afisha: 64px
+- Afisha → WhatIsBurlesque: 88px (было 120)
+- WhatIsBurlesque → Calendar: 56px
+
+### Верификация:
+- ✅ Lint чист
+- ✅ Отступы сбалансированы: 128 → 160 → 96 (было 128 → 240 → 112)
+- ✅ Визуально гармонично с соседними блоками
+
+160px немного больше 128, но это даёт визуальное «дыхание» перед новым содержательным блоком — выглядит естественнее, чем равные отступы.
+
+---
+
+## Этап 18: Центрирование заголовка Part 2 «Шоу-программа «Мадам Бум»» (текущая сессия)
+
+### Задача:
+1. Убрать eyebrow «Программа» из Part 2
+2. Центрировать заголовок «Шоу-программа «Мадам Бум»»
+
+### Что изменилось в `src/components/sections/WhatIsBurlesque.tsx`:
+
+#### Part 2 title block (был left-aligned → стал centered)
+
+**Удалено:**
+- Eyebrow «Программа» с левой золотой линией
+
+**Изменено:**
+- Контейнер: добавлен `flex flex-col items-center` для центрирования
+- Заголовок h2: `textAlign: 'left'` → `textAlign: 'center'`
+
+Теперь оба заголовка блока (Part 1 «Что такое бурлеск?» и Part 2 «Шоу-программа «Мадам Бум»») центрированы одинаково — визуальная консистентность.
+
+### Верификация (Agent Browser):
+- ✅ Eyebrow «Программа» убран (exists: false)
+- ✅ Заголовок «Шоу-программа «Мадам Бум»» — textAlign: center
+- ✅ Идеальное центрирование: center diff = 0px
+- ✅ Lint чист, ошибок нет
+
+---
+
+## Этап 19: Исправление пропадающей обводки карточек при hover (текущая сессия)
+
+### Задача:
+При наведении на карточки «Классический бурлеск», «Бурлеск с перцем», «Девушка в бокале», «Анна и Сергей Варлоки» — обводка (border) пропадала.
+
+### Причина:
+1. Hover менял только `border-color` на 0.45, но визуально это было слабо заметно на фоне тёмного фона
+2. Box-shadow содержал бордовый цвет `rgba(123,26,43,0.2-0.25)`, который конфликтовал с золотой рамкой (создавал визуальный «шум» вокруг, делая рамку менее заметной)
+3. Inline-стиль `border: '1px solid rgba(...,0.25)'` мог конфликтовать с hover-правилом `border-color` в некоторых браузерах
+
+### Что изменилось в `src/components/sections/WhatIsBurlesque.tsx` (CSS hover):
+
+**Burlesque cards (Part 1):**
+```diff
+.burlesque-card-inner:hover {
+  transform: translateY(-4px);
+- box-shadow: 0 0 30px rgba(123,26,43,0.2), 0 0 12px rgba(201,169,110,0.08), 0 8px 30px rgba(0,0,0,0.5);
+- border-color: rgba(201,169,110,0.45) !important;
++ box-shadow: 0 0 28px rgba(201,169,110,0.18), 0 8px 30px rgba(0,0,0,0.5);
++ border: 1px solid rgba(201,169,110,0.7) !important;
++ border-color: rgba(201,169,110,0.7) !important;
+}
+```
+
+**Highlight cards (Part 2):**
+```diff
+.highlight-card-inner:hover {
+  transform: translateY(-4px);
+- box-shadow: 0 0 35px rgba(123,26,43,0.25), 0 0 14px rgba(201,169,110,0.1), 0 10px 35px rgba(0,0,0,0.5);
+- border-color: rgba(201,169,110,0.45) !important;
++ box-shadow: 0 0 32px rgba(201,169,110,0.22), 0 10px 35px rgba(0,0,0,0.5);
++ border: 1px solid rgba(201,169,110,0.7) !important;
++ border-color: rgba(201,169,110,0.7) !important;
+}
+```
+
+**Program element icons:**
+- border-color: 0.45 → 0.55 (чуть ярче)
+- box-shadow: 0.15 → 0.2
+
+### Изменения:
+1. **Border-color: 0.45 → 0.7** — рамка стала в 1.5× ярче при hover
+2. **Явный `border: 1px solid` + `border-color`** — надёжнее, чем только border-color (не зависит от inline-стиля)
+3. **Box-shadow**: убран бордовый `rgba(123,26,43,...)` — оставлен только золотой `rgba(201,169,110,...)`, теперь свечение совпадает по цвету с рамкой, усиливая визуальный эффект вместо конфликта
+
+### Верификация (Agent Browser, реальный mouse hover):
+- ✅ Base state: `border: 1px solid rgba(201,169,110,0.25)` (слабая рамка)
+- ✅ Hover state: `border: 1px solid rgba(201,169,110,0.7)` (яркая золотая рамка)
+- ✅ Box-shadow: `rgba(201,169,110,0.18) 0px 0px 28px` — золотое свечение
+- ✅ Transform: `translateY(-4px)` — карточка приподнимается
+- ✅ Lint чист, ошибок нет
+
+---
+
+## Этап 20: Финальное исправление — верхняя обводка при hover (текущая сессия)
+
+### Задача:
+При наведении на карточки верхняя часть обводки всё ещё была не видна (несмотря на предыдущее исправление border-color).
+
+### Причина:
+В каждой карточке есть **абсолютный gold accent line** `position: absolute; top: 0; height: 1px` — он **перекрывает верхнюю часть border**. Даже когда border-color становится яркой (0.7), она скрыта под этим accent line.
+
+Найдено 3 accent lines:
+1. В `HighlightCard` (для «Девушка в бокале» и «Варлоки»)
+2. В карточке «Классический бурлеск» (burlesque-card-inner)
+3. В карточке «Бурлеск с перцем» (burlesque-card-inner)
+
+### Что изменилось в `src/components/sections/WhatIsBurlesque.tsx`:
+
+Для всех 3 accent lines добавлено:
+```diff
+  <div
+    className="absolute top-0 inset-x-0 h-px"
+    style={{
++     top: '-1px',
+      background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.6), transparent)',
++     zIndex: 2,
+    }}
+  />
+```
+
+Изменения:
+1. **`top: '-1px'`** — accent line смещён на 1px вверх, теперь он поверх рамки (а не внутри, перекрывая верхний border)
+2. **`zIndex: 2`** — accent line гарантированно выше других элементов
+
+Теперь accent line становится **декоративным элементом поверх рамки**, а не заменяет верхнюю часть border.
+
+### Верификация (Agent Browser, реальный mouse hover):
+- ✅ Base state: `border: 1px solid rgba(201,169,110,0.25)` (слабая рамка)
+- ✅ Hover state: `border-top: 1px solid rgba(201,169,110,0.7)` — **верхняя рамка теперь видна!**
+- ✅ border: 1px solid 0.7 — все 4 стороны рамки на месте
+- ✅ boxShadow: золотое свечение
+- ✅ Lint чист, ошибок нет
+
+### Итог:
+При наведении на любую из 4 карточек («Классический бурлеск», «Бурлеск с перцем», «Девушка в бокале», «Анна и Сергей Варлоки») — теперь видна полная яркая золотая обводка со всех 4 сторон.
+
+---
+
+## Этап 21: Финальный фикс — верхний border не уходит выше при hover (текущая сессия)
+
+### Задача:
+При наведении на карточки верхний бордюр уходил выше (под вышележащий элемент) и был не виден.
+
+### Причина:
+`transform: translateY(-4px)` поднимал карточку на 4px вверх. Верхний край карточки (вместе с border) уходил под вышележащий элемент (заголовок Part 2 или разделитель), который имел фон — и верхняя часть border становилась невидимой.
+
+### Что изменилось в `src/components/sections/WhatIsBurlesque.tsx`:
+
+#### 1. Убран `transform: translateY(-4px)` из hover
+```diff
+  .burlesque-card-inner:hover {
+-   transform: translateY(-4px);
+-   box-shadow: 0 0 28px rgba(201,169,110,0.18), 0 8px 30px rgba(0,0,0,0.5);
++   box-shadow: 0 0 32px rgba(201,169,110,0.28), 0 8px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(201,169,110,0.7) !important;
+    border-color: rgba(201,169,110,0.7) !important;
+  }
+
+  .highlight-card-inner:hover {
+-   transform: translateY(-4px);
+-   box-shadow: 0 0 32px rgba(201,169,110,0.22), 0 10px 35px rgba(0,0,0,0.5);
++   box-shadow: 0 0 36px rgba(201,169,110,0.32), 0 10px 35px rgba(0,0,0,0.5);
+    border: 1px solid rgba(201,169,110,0.7) !important;
+    border-color: rgba(201,169,110,0.7) !important;
+  }
+```
+
+Компенсация: усилил box-shadow (0.18→0.28 для burlesque, 0.22→0.32 для highlight) — визуальный hover-эффект сохранён через свечение вместо движения.
+
+#### 2. Убран `overflow: 'hidden'` со всех 3 карточек
+```diff
+  style={{
+    background: '...',
+    border: '1px solid rgba(201,169,110,0.25)',
+    padding: '22px 22px',
+-   transition: 'transform 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease',
+-   overflow: 'hidden',
++   transition: 'box-shadow 0.5s ease, border-color 0.5s ease',
+  }}
+```
+
+Причина: `overflow: hidden` обрезал accent line (`top: -1px`). Теперь accent line виден полностью, поверх border.
+
+Также убран `transform` из transition (он больше не используется).
+
+### Верификация (Agent Browser, реальный mouse hover):
+**Burlesque card (Классический бурлеск):**
+- ✅ transform: none (карточка не двигается)
+- ✅ border-top: 1px solid rgba(201,169,110,0.7) — верхняя рамка видна!
+- ✅ border: 1px solid 0.7 — все 4 стороны на месте
+- ✅ boxShadow: 0 0 32px rgba(201,169,110,0.28) — усиленное золотое свечение
+
+**Highlight card (Девушка в бокале):**
+- ✅ transform: none
+- ✅ border-top: 1px solid rgba(201,169,110,0.7) — верхняя рамка видна!
+- ✅ border: 1px solid 0.7 — все 4 стороны
+- ✅ boxShadow: 0 0 36px rgba(201,169,110,0.32) — усиленное свечение
+
+### Итог:
+При наведении на любую из 4 карточек («Классический бурлеск», «Бурлеск с перцем», «Девушка в бокале», «Анна и Сергей Варлоки»):
+- Карточка остаётся на месте (без подъёма)
+- Полная яркая золотая обводка видна со всех 4 сторон
+- Усиленное золотое свечение вокруг — визуальный hover-эффект сохранён
+- Lint чист, ошибок нет
+
+---
+
+## Этап 22: Создание страницы /about + перенос блока About (текущая сессия)
+
+### Задача:
+1. Создать отдельную страницу `/about` (О Мадам Бум)
+2. Сделать блок About (editorial layout с фото продюсера) первым блоком (Hero) на /about
+3. Убрать About с главной страницы
+4. Обновить навигацию: «О Мадам Бум» → `/about`
+
+### Что сделано:
+
+#### 1. Создан `src/components/sections/Footer.tsx` (новый компонент)
+- Извлечён footer из `src/app/page.tsx` в отдельный переиспользуемый компонент
+- Содержит: tagline, города, соцсети (TG/VK/IG), 18+, copyright
+- `id="contacts"` для якорной навигации
+- Используется на обеих страницах (main + /about)
+
+#### 2. Создан `src/app/about/page.tsx` (новая страница)
+- Navbar (фиксированный)
+- Spacer для очистки navbar (56px mobile, 64px desktop)
+- About компонент (как Hero/первый блок)
+- Footer
+- Без Curtain preloader (прямая загрузка для вторичной страницы)
+
+#### 3. Обновлён `src/app/page.tsx` (главная)
+- ❌ Удалён импорт About
+- ❌ Удалён `<About />` из секций
+- ❌ Удалён inline footer (130+ строк)
+- ✅ Добавлен импорт Footer
+- ✅ Footer используется как компонент: `{curtainComplete && <Footer />}`
+
+Новый порядок секций главной:
+1. Hero
+2. Afisha
+3. WhatIsBurlesque
+4. Calendar
+5. Programs
+6. Cast
+7. Venues
+8. Corporate
+9. WhyUs
+10. Footer
+
+#### 4. Обновлён `src/components/sections/Navbar.tsx` — навигация для cross-page
+**Ссылки изменены** (для работы с любой страницы):
+```diff
+- { label: 'О Мадам Бум', href: '#about' },
++ { label: 'О Мадам Бум', href: '/about' },
+- { label: 'Состав', href: '#cast' },
++ { label: 'Состав', href: '/#cast' },
+- { label: 'Галерея', href: '#gallery' },
++ { label: 'Галерея', href: '/#gallery' },
+- { label: 'Афиша', href: '#afisha' },
++ { label: 'Афиша', href: '/#afisha' },
+- { label: 'Календарь событий', href: '#calendar' },
++ { label: 'Календарь событий', href: '/#calendar' },
+- { label: 'Программы', href: '#programs' },
++ { label: 'Программы', href: '/#programs' },
+- { label: 'Контакты', href: '#contacts' },
++ { label: 'Контакты', href: '/#contacts' },
+- { label: 'Заказать мероприятие', href: '#corporate' },
++ { label: 'Заказать мероприятие', href: '/#corporate' },
+```
+
+**handleNavClick обновлён** для различения same-page и cross-page:
+- `href.startsWith('#')` → smooth scroll (same-page)
+- `href.startsWith('/...')` → natural navigation (cross-page, без preventDefault)
+
+#### 5. Обновлён `src/components/sections/About.tsx` — CTA
+- Было: «Подробнее о проекте» → `/about` (бессмысленно на /about странице)
+- Стало: «Смотреть афишу» → `/#afisha` (возврат на главную к афише)
+
+### Верификация (Agent Browser):
+
+**Главная страница (/):**
+- ✅ HTTP 200
+- ✅ Порядок секций: hero → afisha → what-is-burlesque → calendar → programs → cast → venues → corporate → whyus (About убран)
+- ✅ Footer существует (id=contacts, tag=FOOTER)
+
+**Страница /about:**
+- ✅ HTTP 200
+- ✅ Заголовок: «Бурлеск-кабаре «Мадам Бум»»
+- ✅ Подпись: «Ксения Лапшина» (h4)
+- ✅ CTA: «Смотреть афишу» → /#afisha
+- ✅ Footer существует (id=contacts)
+- ✅ Navbar с dropdown «О ШОУ» работает
+
+**Cross-page навигация:**
+- ✅ С /about клик «Афиша» → переход на /#afisha → Afisha section видна
+- ✅ URL корректно меняется: /about → /#afisha
+
+**Сервер и lint:**
+- ✅ Lint чист (0 errors, 0 warnings)
+- ✅ Обе страницы: HTTP 200, ~30ms response
+- ✅ Ошибок в консоли нет
+
+### Архитектура:
+```
+/src/app/
+├── page.tsx          — главная (Hero, Afisha, WhatIsBurlesque, Calendar, Programs, Cast, Venues, Corporate, WhyUs, Footer)
+├── about/page.tsx    — /about (Navbar, spacer, About, Footer)
+└── api/calendar/     — TicketsCloud API
+
+/src/components/sections/
+├── Navbar.tsx        — обновлён для cross-page навигации
+├── Footer.tsx        — НОВЫЙ, переиспользуемый
+├── About.tsx         — обновлён CTA, используется на /about
+└── ... остальные секции
+```
+
+### Примечание:
+- Curtain preloader есть только на главной (для /about — прямая загрузка)
+- При переходе с /about на /#section — curtain срабатывает, но контент загружается корректно
+- /about доступен по прямой ссылке http://localhost:3000/about и через navbar dropdown «О Мадам Бум»

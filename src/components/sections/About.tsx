@@ -498,8 +498,8 @@ export default function About() {
                   transition: 'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.85s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.85s',
                 }}
               >
-                <a href="/about" className="about-cta" aria-label="Перейти на страницу с подробным описанием проекта">
-                  <span>Подробнее о проекте</span>
+                <a href="/#afisha" className="about-cta" aria-label="Перейти к афише шоу">
+                  <span>Смотреть афишу</span>
                   <svg
                     width="16"
                     height="16"
