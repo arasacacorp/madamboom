@@ -433,3 +433,27 @@ Stage Summary:
 - Modified: .env — TC_API_KEY set to real key 4fecb5ca855545ffbeb96a0a52188b35.
 - Calendar now displays real TicketsCloud events on all 3 pages: home (10 events, both cities), /msk (5 Moscow-only → madamboommsk widget), /spb (5 SPb-only → madamboomspb widget). City filter + widget override + caching all working end-to-end.
 - Security note: the real key is now in .env (which is gitignored). It is NOT committed to the repo. Do not share .env publicly.
+
+---
+Task ID: 34
+Agent: main (Z.ai Code)
+Task: Calendar — (1) beautifully mark МСК/СПБ next to event dates in the grid; (2) in the right sidebar, show the show type ("Мадам Бум" / "Джазовый бунт") instead of the identical long titles.
+
+Work Log:
+- Read worklog (Task 33) + inspected API event titles: all were "Бурлеск кабаре шоу МАДАМ БУМ" or "...МАДАМ БУМ «Джазовый бунт»" — identical prefix, only the jazz variant has the «Джазовый бунт» suffix. Inspected Calendar.tsx: day cell had a small city-color dot under the date; sidebar event card showed evt.title + city with MapPin icon; sidebar h3 said "Шоу этого месяца".
+- API (route.ts): added getShowType(title) helper — returns {showType: "Джазовый бунт", showTypeKey: "jazz"} if title matches /джазовый бунт/i, else {showType: "Мадам Бум", showTypeKey: "classic"}. Added showType + showTypeKey to CalendarEvent interface + transformEvent (spread ...getShowType(raw.title.text)).
+- Calendar.tsx interface: added showType: string + showTypeKey: 'jazz'|'classic'.
+- Day cell badge: replaced the small 5px city-color dot with a compact TEXT badge "МСК" / "СПБ" (Inter 7-9px, bold, colored by city — gold for МСК, burgundy for СПБ, with text-shadow glow). Positioned bottom of the cell, doesn't crowd the day number.
+- Sidebar event card: replaced evt.title (long identical) → evt.showType ("Мадам Бум" or "Джазовый бунт", Playfair 14-17px bold). Added a "Jazz" chip (gold-tinted pill) next to "Джазовый бунт" titles so the show type pops. Replaced the MapPin+city row with a colored city dot (cityColor) + city name — cleaner, color-coded by city matching the day-cell badge.
+- Sidebar h3: "Шоу этого месяца" → "Ближайшие шоу".
+- Lint: clean. API returns showType correctly verified (5 classic Мадам Бум, 3 jazz Джазовый бунт, matching the «Джазовый бунт» events on 11/18/25 июля).
+- Agent Browser verification:
+  • Day cells: 10 city badges (5 МСК + 5 СПБ), matching the 10 events ✓.
+  • Sidebar: title "Ближайшие шоу" ✓; 10 event cards with showType [Мадам Бум, Джазовый бунт, Мадам Бум, Мадам Бум, Джазовый бунт, ...] — no more "Бурлеск кабаре шоу" ✓; 3 "Jazz" chips for the jazz shows ✓.
+  • VLM confirms: "1) В календаре у дат с мероприятиями есть подписи МСК и СПБ. 2) В списке шоу — названия «Мадам Бум» и «Джазовый бунт»."
+- dev.log: no errors (calendar API 200s).
+
+Stage Summary:
+- Modified: src/app/api/calendar/route.ts (added showType/showTypeKey via getShowType helper); src/components/sections/Calendar.tsx (day-cell МСК/СПБ text badges, sidebar showType + Jazz chip + city-dot, "Ближайшие шоу" title).
+- Calendar now: dates marked МСК (gold) / СПБ (burgundy); sidebar lists "Мадам Бум" and "Джазовый бунт" distinctly with a Jazz accent chip on jazz shows.
+- All routes HTTP 200; lint clean; responsive.

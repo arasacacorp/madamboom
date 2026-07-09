@@ -47,6 +47,9 @@ interface CalendarEvent {
   }>
   widgetUrl: string | null
   cityMarker: 'М' | 'СПб' | null
+  /* Show type — "Мадам Бум" or "Джазовый бунт" */
+  showType: string
+  showTypeKey: 'jazz' | 'classic'
 }
 
 /* ─── Seeded pseudo-random for deterministic SSR ─── */
@@ -1203,21 +1206,25 @@ export default function Calendar({
                       {/* Day number */}
                       <span style={{ position: 'relative', zIndex: 1 }}>{getDate(day)}</span>
 
-                      {/* City marker dot below date */}
-                      {isEvent && cityColor && (
+                      {/* City text badge below date — МСК / СПБ */}
+                      {isEvent && cityMarker && (
                         <span
                           style={{
                             position: 'absolute',
-                            bottom: 'clamp(3px, 0.7vw, 7px)',
+                            bottom: 'clamp(2px, 0.6vw, 5px)',
                             zIndex: 1,
-                            display: 'inline-block',
-                            width: 5,
-                            height: 5,
-                            borderRadius: '50%',
-                            background: cityColor,
-                            boxShadow: `0 0 6px ${cityColor}`,
+                            fontFamily: 'var(--font-inter)',
+                            fontSize: 'clamp(7px, 0.9vw, 9px)',
+                            fontWeight: 700,
+                            letterSpacing: '0.08em',
+                            lineHeight: 1,
+                            color: cityColor,
+                            textShadow: `0 0 6px ${cityColor}80`,
+                            whiteSpace: 'nowrap',
                           }}
-                        />
+                        >
+                          {cityMarker === 'М' ? 'МСК' : 'СПБ'}
+                        </span>
                       )}
                     </button>
                   )
@@ -1271,7 +1278,7 @@ export default function Calendar({
                     letterSpacing: '0.06em',
                   }}
                 >
-                  {isLoading ? 'Загрузка...' : events.length > 0 ? 'Шоу этого месяца' : 'Шоу не найдены'}
+                  {isLoading ? 'Загрузка...' : events.length > 0 ? 'Ближайшие шоу' : 'Шоу не найдены'}
                 </h3>
               </div>
 
@@ -1394,28 +1401,64 @@ export default function Calendar({
 
                             {/* Event info */}
                             <div className="flex-1 min-w-0">
-                              <p
-                                className="truncate"
-                                style={{
-                                  fontFamily: 'var(--font-playfair)',
-                                  color: 'rgba(245,230,211,0.85)',
-                                  fontSize: 'clamp(13px, 1.4vw, 15px)',
-                                  fontWeight: 500,
-                                  letterSpacing: '0.03em',
-                                  lineHeight: 1.3,
-                                }}
-                              >
-                                {evt.title}
-                              </p>
-                              <div className="flex items-center gap-3 mt-1">
-                                <div className="flex items-center gap-1" style={{ color: 'rgba(201,169,110,0.5)' }}>
-                                  <MapPinIcon />
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <p
+                                  className="truncate"
+                                  style={{
+                                    fontFamily: 'var(--font-playfair)',
+                                    color: 'rgba(245,230,211,0.92)',
+                                    fontSize: 'clamp(14px, 1.5vw, 17px)',
+                                    fontWeight: 600,
+                                    letterSpacing: '0.02em',
+                                    lineHeight: 1.2,
+                                    margin: 0,
+                                  }}
+                                >
+                                  {evt.showType}
+                                </p>
+                                {/* Show-type accent — "Джазовый бунт" gets a jazz-tinted chip */}
+                                {evt.showTypeKey === 'jazz' && (
+                                  <span
+                                    style={{
+                                      fontFamily: 'var(--font-inter)',
+                                      fontSize: '8px',
+                                      fontWeight: 700,
+                                      letterSpacing: '0.12em',
+                                      textTransform: 'uppercase',
+                                      color: '#E8D5A3',
+                                      background: 'rgba(201,169,110,0.12)',
+                                      border: '1px solid rgba(201,169,110,0.3)',
+                                      borderRadius: '8px',
+                                      padding: '2px 6px',
+                                      lineHeight: 1.2,
+                                      whiteSpace: 'nowrap',
+                                      flexShrink: 0,
+                                    }}
+                                  >
+                                    Jazz
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-3 mt-1.5">
+                                {/* City badge with dot — colored by city */}
+                                <div className="flex items-center gap-1.5">
+                                  <span
+                                    style={{
+                                      width: 6,
+                                      height: 6,
+                                      borderRadius: '50%',
+                                      background: cityColor,
+                                      boxShadow: `0 0 6px ${cityColor}`,
+                                      flexShrink: 0,
+                                    }}
+                                  />
                                   <span
                                     style={{
                                       fontFamily: 'var(--font-inter)',
                                       fontSize: '11px',
-                                      fontWeight: 400,
+                                      fontWeight: 500,
                                       letterSpacing: '0.04em',
+                                      color: 'rgba(245,230,211,0.7)',
                                     }}
                                   >
                                     {evt.city}

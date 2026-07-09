@@ -100,6 +100,10 @@ export interface CalendarEvent {
   widgetUrl: string | null
   /* City marker for calendar: 'М' | 'СПб' | null */
   cityMarker: 'М' | 'СПб' | null
+  /* Show type — derived from title: "Джазовый бунт" if title contains it, else "Мадам Бум" */
+  showType: string
+  /* Machine key for show type: 'jazz' | 'classic' */
+  showTypeKey: 'jazz' | 'classic'
 }
 
 /* ─── Parse VEVENT lifetime → start/end Date (UTC) ─── */
@@ -190,6 +194,18 @@ function getCityMarker(city: string): 'М' | 'СПб' | null {
   return null
 }
 
+/* ─── Determine show type from event title ───
+ * TicketsCloud titles look like:
+ *   "Бурлеск кабаре шоу МАДАМ БУМ"                     → classic "Мадам Бум"
+ *   "Бурлеск кабаре шоу МАДАМ БУМ «Джазовый бунт»"     → jazz "Джазовый бунт"
+ * Returns { showType, showTypeKey }. */
+function getShowType(title: string): { showType: string; showTypeKey: 'jazz' | 'classic' } {
+  if (/джазовый бунт/i.test(title)) {
+    return { showType: 'Джазовый бунт', showTypeKey: 'jazz' }
+  }
+  return { showType: 'Мадам Бум', showTypeKey: 'classic' }
+}
+
 /* (getWidgetUrl импортирован из @/lib/tc-widget-config — см. конфиг-файл
  *  для добавления новых поддоменов виджетов продаж) */
 
@@ -236,6 +252,7 @@ function transformEvent(raw: RawTCEvent): CalendarEvent | null {
     sets,
     widgetUrl: getWidgetUrl(raw.venue.id, raw.title.text),
     cityMarker: getCityMarker(city),
+    ...getShowType(raw.title.text),
   }
 }
 
