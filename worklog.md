@@ -299,3 +299,22 @@ Work Log:
 Stage Summary:
 - Modified: src/components/sections/WhatIsBurlesque.tsx — closing quote card now full container width with richer framing (4 gold accent lines + large decorative quote mark + enlarged text + closing "МАДАМ БУМ" flourish).
 - All routes HTTP 200; lint clean; responsive; Part 2 + /about unaffected.
+
+---
+Task ID: 27
+Agent: main (Z.ai Code)
+Task: (1) Simplify the closing quote card to just a frame — remove the "МАДАМ БУМ" flourish at the bottom and all decorative diamonds/quote mark. (2) Remove the occasion chips grid above (Свидание/Девичник/День рождения/Корпоратив/Москва·СПб) and align the layout.
+
+Work Log:
+- Read worklog (Task 26) + inspected the occasion chips block (lines 538-626) + the rich closing quote card (lines 628-774 with diamond, large quote mark, side bars, flourish).
+- Edit 1 — Removed the entire "Когда прийти" occasion chips block (section label "Идеальный выбор для повода" + 5 chips grid with Heart/PartyPopper/Gift/Users/MapPin icons). The long "Если вы ищете..." paragraph text that the chips represented is already covered in the 3 feature cards above (the "Атмосфера настоящего кабаре" card mentions Moscow/SPb + occasions implicitly). Layout now flows: lead text → 3 feature cards → quote card → gold separator → Part 2.
+- Edit 2 — Simplified the closing quote card: removed the decorative diamond + lines row, the large decorative opening quote mark “, the left/right vertical gold accent bars, and the closing flourish ("МАДАМ Бум" eyebrow + lines). Now it's a clean framed card: burgundy gradient bg + gold border + top + bottom gold accent lines + centered italic quote text (maxWidth 880px). Restored «» guillemets around «Мадам Бум» in the text since the decorative quote mark is gone.
+- Cleaned unused icon imports: Heart, PartyPopper, Gift, MapPin (were only used in the deleted occasion chips).
+- Lint: clean. / → HTTP 200.
+- Agent Browser verification (desktop 1440): occasionBlockGone=true (no "Идеальный выбор для повода", no "Свидание", no "Москва · СПб"); featureCardCount=3 (unchanged); quoteCardPresent=true; quoteMarkPresent=false (decorative “ removed); flourishPresent=false ("МАДАМ БУМ" flourish removed). Mobile 390×844: no overflow, feature cards intact (3), quote card 358px full width.
+- dev.log: no compile/runtime errors.
+
+Stage Summary:
+- Modified: src/components/sections/WhatIsBurlesque.tsx — removed occasion chips block + simplified closing quote card to a clean frame (top+bottom gold lines, burgundy gradient, centered italic quote). Removed unused icon imports.
+- Part 1 now: lead text → 3 feature cards → simple framed quote card → gold separator → Part 2. Cleaner, aligned.
+- All routes HTTP 200; lint clean; responsive; Part 2 + /about unaffected.
