@@ -11,6 +11,9 @@ import {
   Stars,
   Flower2,
   Gem,
+  Heart,
+  PartyPopper,
+  Gift,
   Clapperboard,
 } from 'lucide-react'
 
@@ -529,6 +532,95 @@ export default function WhatIsBurlesque() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* ═══ "Когда прийти" — occasion cards, full width (4 cards, aligned) ═══ */}
+        <div
+          className="mb-12 md:mb-16"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition:
+              'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s',
+          }}
+        >
+          {/* Section label */}
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div
+              style={{
+                width: 'clamp(30px, 5vw, 50px)',
+                height: '1px',
+                background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.4))',
+              }}
+            />
+            <span
+              className="uppercase"
+              style={{
+                fontFamily: 'var(--font-inter)',
+                color: 'rgba(201,169,110,0.6)',
+                fontSize: '11px',
+                fontWeight: 500,
+                letterSpacing: '0.25em',
+              }}
+            >
+              Идеальный выбор для повода
+            </span>
+            <div
+              style={{
+                width: 'clamp(30px, 5vw, 50px)',
+                height: '1px',
+                background: 'linear-gradient(90deg, rgba(201,169,110,0.4), transparent)',
+              }}
+            />
+          </div>
+
+          {/* Occasion chips grid — 4 cards (Москва·СПб removed per user request) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { icon: <Heart size={16} strokeWidth={1.6} />, label: 'Свидание' },
+              { icon: <PartyPopper size={16} strokeWidth={1.6} />, label: 'Девичник' },
+              { icon: <Gift size={16} strokeWidth={1.6} />, label: 'День рождения' },
+              { icon: <Users size={16} strokeWidth={1.6} />, label: 'Корпоратив' },
+            ].map((chip, i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center text-center p-5 rounded-md"
+                style={{
+                  background: 'rgba(26,10,16,0.5)',
+                  border: '1px solid rgba(201,169,110,0.18)',
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+                  transition: `opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${0.65 + i * 0.08}s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${0.65 + i * 0.08}s`,
+                }}
+              >
+                <div
+                  className="flex items-center justify-center mb-3"
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '50%',
+                    background: 'rgba(123,26,43,0.18)',
+                    border: '1px solid rgba(201,169,110,0.3)',
+                    color: '#C9A96E',
+                  }}
+                >
+                  {chip.icon}
+                </div>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    color: 'rgba(245,230,211,0.8)',
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {chip.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* ═══ Closing quote — simple framed card, full container width ═══ */}

@@ -318,3 +318,19 @@ Stage Summary:
 - Modified: src/components/sections/WhatIsBurlesque.tsx — removed occasion chips block + simplified closing quote card to a clean frame (top+bottom gold lines, burgundy gradient, centered italic quote). Removed unused icon imports.
 - Part 1 now: lead text → 3 feature cards → simple framed quote card → gold separator → Part 2. Cleaner, aligned.
 - All routes HTTP 200; lint clean; responsive; Part 2 + /about unaffected.
+
+---
+Task ID: 28
+Agent: main (Z.ai Code)
+Task: Fix — I over-deleted in Task 27. User only asked to remove the "Москва · СПб" chip, not the whole occasion block. Restore the occasion chips block with 4 cards (no Москва·СПб), aligned grid.
+
+Work Log:
+- Acknowledged the mistake: Task 27 deleted the entire "Идеальный выбор для повода" occasion chips block when the user only wanted the "Москва · СПб" chip removed.
+- Edit (WhatIsBurlesque.tsx): re-added the occasion chips block (section label + grid) before the closing quote card. Now contains 4 chips: Свидание (Heart), Девичник (PartyPopper), День рождения (Gift), Корпоратив (Users). The "Москва · СПб" (MapPin) chip is removed. Grid changed from lg:grid-cols-5 to lg:grid-cols-4 so the 4 remaining cards align evenly across the full container width (4×260px columns at 1440px). Restored icon imports Heart/PartyPopper/Gift (MapPin stays removed since its chip is gone). Closing quote card (simple frame from Task 27) left unchanged.
+- Lint: clean. / → HTTP 200.
+- Agent Browser verification (desktop 1440): labelPresent=true ("Идеальный выбор для повода"); chipCount=4; chipLabels=[Свидание, Девичник, День рождения, Корпоратив]; mspbGone=true (no "Москва · СПб"); gridCols="260px 260px 260px 260px" (4 even columns, aligned). Mobile: grid-cols-2 → 2×2 on small screens.
+
+Stage Summary:
+- Modified: src/components/sections/WhatIsBurlesque.tsx — restored occasion chips block with 4 cards (Москва·СПб removed), grid changed to lg:grid-cols-4 for even alignment.
+- Part 1 now: lead text → 3 feature cards → 4 occasion chips → simple framed quote card → gold separator → Part 2.
+- All routes HTTP 200; lint clean; responsive.
