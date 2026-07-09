@@ -623,9 +623,9 @@ export default function WhatIsBurlesque() {
           </div>
         </div>
 
-        {/* ═══ Closing quote — simple framed card, full container width ═══ */}
+        {/* ═══ Closing quote — centered text, no frame ═══ */}
         <div
-          className="mb-16 md:mb-20"
+          className="mb-16 md:mb-20 max-w-5xl mx-auto"
           style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
@@ -633,51 +633,23 @@ export default function WhatIsBurlesque() {
               'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.8s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.8s',
           }}
         >
-          <div
-            className="relative rounded-lg overflow-hidden"
+          <p
             style={{
-              background:
-                'linear-gradient(135deg, rgba(123,26,43,0.18) 0%, rgba(26,10,16,0.7) 55%, rgba(13,4,8,0.5) 100%)',
-              border: '1px solid rgba(201,169,110,0.34)',
-              padding: '40px 36px md:52px 48px',
+              fontFamily: 'var(--font-cormorant)',
+              fontStyle: 'italic',
+              color: '#E8D5A3',
+              fontSize: 'clamp(19px, 1.9vw, 27px)',
+              fontWeight: 400,
+              lineHeight: 1.65,
+              letterSpacing: '0.02em',
+              margin: 0,
+              textAlign: 'center',
             }}
           >
-            {/* Top gold accent line */}
-            <div
-              className="absolute top-0 inset-x-0 h-px"
-              style={{
-                background:
-                  'linear-gradient(90deg, transparent, rgba(201,169,110,0.65), transparent)',
-              }}
-            />
-            {/* Bottom gold accent line */}
-            <div
-              className="absolute bottom-0 inset-x-0 h-px"
-              style={{
-                background:
-                  'linear-gradient(90deg, transparent, rgba(201,169,110,0.5), transparent)',
-              }}
-            />
-
-            <p
-              style={{
-                fontFamily: 'var(--font-cormorant)',
-                fontStyle: 'italic',
-                color: '#E8D5A3',
-                fontSize: 'clamp(19px, 1.9vw, 27px)',
-                fontWeight: 400,
-                lineHeight: 1.65,
-                letterSpacing: '0.02em',
-                maxWidth: '880px',
-                margin: '0 auto',
-                textAlign: 'center',
-              }}
-            >
-              «Мадам Бум» — это место, где бурлеск становится искусством, а каждый
-              вечер превращается в незабываемое путешествие в мир красоты, живого
-              джаза и театра.
-            </p>
-          </div>
+            «Мадам Бум» — это место, где бурлеск становится искусством, а каждый
+            вечер превращается в незабываемое путешествие в мир красоты, живого
+            джаза и театра.
+          </p>
         </div>
 
         {/* ═══════════════════════════════════

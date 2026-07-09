@@ -334,3 +334,20 @@ Stage Summary:
 - Modified: src/components/sections/WhatIsBurlesque.tsx — restored occasion chips block with 4 cards (Москва·СПб removed), grid changed to lg:grid-cols-4 for even alignment.
 - Part 1 now: lead text → 3 feature cards → 4 occasion chips → simple framed quote card → gold separator → Part 2.
 - All routes HTTP 200; lint clean; responsive.
+
+---
+Task ID: 29
+Agent: main (Z.ai Code)
+Task: Remove the frame around the closing quote «Мадам Бум» — это место, где бурлеск становится искусством...» — make it plain text, no card.
+
+Work Log:
+- Read worklog (Task 28) + inspected the closing quote block (max-w-5xl wrapper > rounded-lg card div with burgundy gradient bg + gold border + padding + top/bottom gold accent lines > centered italic <p>).
+- Edit (WhatIsBurlesque.tsx): removed the inner card div (background gradient, border, padding, top accent line, bottom accent line). Now the max-w-5xl wrapper directly contains the <p> — plain centered italic text, no frame. Kept the opacity/translateY reveal animation + typography (Cormorant italic, #E8D5A3, clamp 19–27px, centered). Same treatment as the lead paragraph in Task 25.
+- Lint: clean. / → HTTP 200.
+- Agent Browser verification: quotePresent=true; childIsParagraph=true (the wrapper's first child is now <p>); borderWidth=0px; background=transparent; padding=0px; cardDivPresent=false (.rounded-lg card gone); roundedLgCount=0 (no framed cards left in the section). Mobile 390×844: no overflow.
+- dev.log: no compile/runtime errors.
+
+Stage Summary:
+- Modified: src/components/sections/WhatIsBurlesque.tsx — closing quote now plain centered italic text (no frame/card), animation + typography preserved.
+- Part 1 now: lead text (no frame) → 3 feature cards → 4 occasion chips → closing quote text (no frame) → gold separator → Part 2.
+- All routes HTTP 200; lint clean; responsive.
