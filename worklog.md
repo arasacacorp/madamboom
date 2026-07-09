@@ -262,3 +262,19 @@ Stage Summary:
 - New imports: Gem, Heart, PartyPopper, Gift, Clapperboard, MapPin.
 - Result: visually rich, full-width, card-driven Part 1 that matches the site's editorial aesthetic; client's exact text preserved across the cards.
 - All routes HTTP 200; lint clean; responsive; Part 2 + /about unaffected; sticky footer intact.
+
+---
+Task ID: 25
+Agent: main (Z.ai Code)
+Task: Remove the frame/card around the lead paragraph "Бурлеск — это театральное искусство..." in WhatIsBurlesque Part 1 (main page).
+
+Work Log:
+- Read worklog (Task 24) + inspected the lead intro block (max-w-5xl wrapper > rounded-lg card div with bg gradient + border + padding + top gold line + left gold bar > <p>).
+- Edit (WhatIsBurlesque.tsx): removed the inner card div (background, border, padding, rounded-lg, top accent line, left accent bar). Now the max-w-5xl wrapper directly contains the <p> — plain centered text, no frame. Kept the opacity/translateY reveal animation + text styling (Cormorant, cream 92%, clamp 18–24px, centered).
+- Lint: clean. / → HTTP 200.
+- Agent Browser verification: lead block's first child is now <p> (childIsParagraph=true), borderWidth=0px, background=transparent, padding=0px, .rounded-lg card div absent (cardDivPresent=false). VLM confirms: "без рамки".
+- Feature cards / occasion chips / closing quote card below — all unchanged (still framed as designed). Only the lead intro lost its frame per request.
+
+Stage Summary:
+- Modified: src/components/sections/WhatIsBurlesque.tsx — lead intro paragraph now plain centered text (no card/frame), animation + typography preserved.
+- All routes HTTP 200; lint clean; rest of Part 1 + Part 2 + /about unaffected.

@@ -390,7 +390,7 @@ export default function WhatIsBurlesque() {
           </div>
         </div>
 
-        {/* ═══ Lead intro — full width, gold-accent card ═══ */}
+        {/* ═══ Lead intro — centered text, no card/frame ═══ */}
         <div
           className="mb-12 md:mb-16 max-w-5xl mx-auto"
           style={{
@@ -400,50 +400,24 @@ export default function WhatIsBurlesque() {
               'opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s',
           }}
         >
-          <div
-            className="relative rounded-lg overflow-hidden"
+          <p
             style={{
-              background:
-                'linear-gradient(135deg, rgba(26,10,16,0.7) 0%, rgba(13,4,8,0.5) 100%)',
-              border: '1px solid rgba(201,169,110,0.28)',
-              padding: '32px 28px md:40px 36px',
+              fontFamily: 'var(--font-cormorant)',
+              color: 'rgba(245,230,211,0.92)',
+              fontSize: 'clamp(18px, 1.7vw, 24px)',
+              fontWeight: 500,
+              lineHeight: 1.7,
+              letterSpacing: '0.01em',
+              textAlign: 'center',
+              margin: 0,
             }}
           >
-            {/* Top gold accent line */}
-            <div
-              className="absolute top-0 inset-x-0 h-px"
-              style={{
-                background:
-                  'linear-gradient(90deg, transparent, rgba(201,169,110,0.6), transparent)',
-              }}
-            />
-            {/* Left gold accent bar */}
-            <div
-              className="absolute top-0 left-0 w-px"
-              style={{
-                height: '55%',
-                background: 'linear-gradient(180deg, rgba(201,169,110,0.5), transparent)',
-              }}
-            />
-            <p
-              style={{
-                fontFamily: 'var(--font-cormorant)',
-                color: 'rgba(245,230,211,0.92)',
-                fontSize: 'clamp(18px, 1.7vw, 24px)',
-                fontWeight: 500,
-                lineHeight: 1.7,
-                letterSpacing: '0.01em',
-                textAlign: 'center',
-                margin: 0,
-              }}
-            >
-              Бурлеск — это театральное искусство, в котором соединяются танец, музыка,
-              юмор, актерская игра и яркие сценические образы. Современный бурлеск
-              вдохновлен традициями европейских кабаре начала XX века, но сегодня это
-              самостоятельный жанр, где главную роль играют артистизм, харизма, эстетика
-              и мастерство исполнения.
-            </p>
-          </div>
+            Бурлеск — это театральное искусство, в котором соединяются танец, музыка,
+            юмор, актерская игра и яркие сценические образы. Современный бурлеск
+            вдохновлен традициями европейских кабаре начала XX века, но сегодня это
+            самостоятельный жанр, где главную роль играют артистизм, харизма, эстетика
+            и мастерство исполнения.
+          </p>
         </div>
 
         {/* ═══ Feature cards — 3 key ideas, full width grid ═══ */}
