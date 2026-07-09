@@ -351,3 +351,23 @@ Stage Summary:
 - Modified: src/components/sections/WhatIsBurlesque.tsx — closing quote now plain centered italic text (no frame/card), animation + typography preserved.
 - Part 1 now: lead text (no frame) → 3 feature cards → 4 occasion chips → closing quote text (no frame) → gold separator → Part 2.
 - All routes HTTP 200; lint clean; responsive.
+
+---
+Task ID: 30
+Agent: main (Z.ai Code)
+Task: In the Afisha block, move the two afisha cards closer to each other in the center.
+
+Work Log:
+- Read worklog (Task 29) + measured current afisha layout: max-w-4xl + justify-between → at 1440px cards at left/right edges of 832px content area, gap 141px, leftMargin=rightMargin=304px. VLM perceived as "разнесены к краям" because justify-between always pins cards to container edges even when narrow.
+- First attempt (max-w-3xl + justify-between): gap dropped to 24px at 1440 but 184px at 1024 — inconsistent, and still pinned to edges (justify-between). VLM still said "разнесены".
+- Final fix (Afisha.tsx): switched justify-between → justify-center with gap-8 lg:gap-10 xl:gap-12, container max-w-5xl. Now the 2 posters cluster as a centered pair with a consistent gap, not pinned to edges. Original card size preserved (clamp 260–360px).
+- Lint: clean. / → HTTP 200.
+- Agent Browser verification:
+  • 1440px: cardW=346, gap=48px, leftMargin=rightMargin=350, pairCenter=720=viewportCenter, symmetric ✓. VLM: "Две карточки стоят близко друг к другу по центру страницы."
+  • 1024px: cardW=260, gap=40px, leftMargin=rightMargin=232, symmetric ✓, no overflow.
+  • Mobile 390×844: 2 mobile cards centered, no overflow.
+- dev.log: no compile/runtime errors.
+
+Stage Summary:
+- Modified: src/components/sections/Afisha.tsx — desktop grid changed justify-between → justify-center (gap-8 lg:gap-10 xl:gap-12, max-w-5xl). Two full-size posters now cluster as a centered pair instead of spreading to container edges.
+- All routes HTTP 200; lint clean; responsive; symmetric at all widths.
