@@ -10,6 +10,12 @@ import {
   Users,
   Stars,
   Flower2,
+  Gem,
+  Heart,
+  PartyPopper,
+  Gift,
+  Clapperboard,
+  MapPin,
 } from 'lucide-react'
 
 /* ─── Seeded pseudo-random for deterministic SSR ─── */
@@ -384,9 +390,9 @@ export default function WhatIsBurlesque() {
           </div>
         </div>
 
-        {/* Editorial prose column — full-width, centered */}
+        {/* ═══ Lead intro — full width, gold-accent card ═══ */}
         <div
-          className="max-w-3xl mx-auto mb-16 md:mb-20"
+          className="mb-12 md:mb-16 max-w-5xl mx-auto"
           style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(25px)',
@@ -394,20 +400,41 @@ export default function WhatIsBurlesque() {
               'opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s',
           }}
         >
-          {/* Lead paragraph with gold accent border */}
           <div
-            className="relative pl-6 mb-6"
-            style={{ borderLeft: '2px solid rgba(201,169,110,0.45)' }}
+            className="relative rounded-lg overflow-hidden"
+            style={{
+              background:
+                'linear-gradient(135deg, rgba(26,10,16,0.7) 0%, rgba(13,4,8,0.5) 100%)',
+              border: '1px solid rgba(201,169,110,0.28)',
+              padding: '32px 28px md:40px 36px',
+            }}
           >
+            {/* Top gold accent line */}
+            <div
+              className="absolute top-0 inset-x-0 h-px"
+              style={{
+                background:
+                  'linear-gradient(90deg, transparent, rgba(201,169,110,0.6), transparent)',
+              }}
+            />
+            {/* Left gold accent bar */}
+            <div
+              className="absolute top-0 left-0 w-px"
+              style={{
+                height: '55%',
+                background: 'linear-gradient(180deg, rgba(201,169,110,0.5), transparent)',
+              }}
+            />
             <p
               style={{
                 fontFamily: 'var(--font-cormorant)',
                 color: 'rgba(245,230,211,0.92)',
-                fontSize: 'clamp(18px, 1.6vw, 22px)',
+                fontSize: 'clamp(18px, 1.7vw, 24px)',
                 fontWeight: 500,
-                lineHeight: 1.75,
+                lineHeight: 1.7,
                 letterSpacing: '0.01em',
-                textAlign: 'left',
+                textAlign: 'center',
+                margin: 0,
               }}
             >
               Бурлеск — это театральное искусство, в котором соединяются танец, музыка,
@@ -417,67 +444,285 @@ export default function WhatIsBurlesque() {
               и мастерство исполнения.
             </p>
           </div>
+        </div>
 
-          {/* Body paragraphs */}
+        {/* ═══ Feature cards — 3 key ideas, full width grid ═══ */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 md:mb-16">
           {[
-            'Бурлеск — это не стриптиз. В центре внимания не откровенность, а искусство перевоплощения, красивые костюмы, пластика, театральная подача и умение рассказать историю через сценический номер. Каждый выход артиста становится маленьким спектаклем, наполненным эмоциями, юмором и неожиданными образами.',
-            'Бурлеск-кабаре «Мадам Бум» — это современное шоу, объединяющее бурлеск, живой джаз, вокал, конферанс и театральное действие. Мы создаем атмосферу настоящего кабаре, где зрители становятся частью происходящего, а каждый вечер превращается в яркое культурное событие.',
-            'В репертуаре «Мадам Бум» представлены как классические номера в лучших традициях мирового бурлеска, так и современные авторские постановки. На одной сцене встречаются артисты бурлеска, джазовые музыканты, вокалисты и конферансье, создавая уникальное шоу, которое невозможно сравнить с привычным театром или концертом. Это синтез музыки, танца, театра и живого общения со зрителем, благодаря которому каждый вечер становится неповторимым.',
-            'Если вы ищете, куда сходить вечером в Москве или Санкт-Петербурге, хотите провести необычное свидание, отпраздновать день рождения, девичник, годовщину свадьбы, корпоратив, организовать красивый вечер с друзьями или сделать оригинальный подарок близкому человеку, бурлеск-кабаре «Мадам Бум» станет идеальным выбором. Наши программы объединяют живой джаз, бурлеск, театр, вокал и конферанс, создавая атмосферу настоящего кабаре, где каждый гость становится частью праздника. Это вечер ярких эмоций, эстетики, вдохновения и впечатлений, к которым хочется возвращаться снова.',
-          ].map((text, i) => (
-            <p
+            {
+              icon: <Gem size={22} strokeWidth={1.5} />,
+              eyebrow: 'Искусство перевоплощения',
+              title: 'Бурлеск — это не стриптиз',
+              text:
+                'В центре внимания не откровенность, а искусство перевоплощения, красивые костюмы, пластика, театральная подача и умение рассказать историю через сценический номер. Каждый выход артиста становится маленьким спектаклем, наполненным эмоциями, юмором и неожиданными образами.',
+            },
+            {
+              icon: <Sparkles size={22} strokeWidth={1.5} />,
+              eyebrow: 'Современное шоу',
+              title: 'Атмосфера настоящего кабаре',
+              text:
+                'Бурлеск-кабаре «Мадам Бум» — это современное шоу, объединяющее бурлеск, живой джаз, вокал, конферанс и театральное действие. Мы создаем атмосферу настоящего кабаре, где зрители становятся частью происходящего, а каждый вечер превращается в яркое культурное событие.',
+            },
+            {
+              icon: <Clapperboard size={22} strokeWidth={1.5} />,
+              eyebrow: 'Синтез искусств',
+              title: 'Классика и авторские постановки',
+              text:
+                'В репертуаре «Мадам Бум» представлены как классические номера в лучших традициях мирового бурлеска, так и современные авторские постановки. На одной сцене встречаются артисты бурлеска, джазовые музыканты, вокалисты и конферансье, создавая уникальное шоу.',
+            },
+          ].map((card, i) => (
+            <div
               key={i}
+              className="burlesque-card relative rounded-md overflow-hidden"
               style={{
-                fontFamily: 'var(--font-cormorant)',
-                color: 'rgba(245,230,211,0.74)',
-                fontSize: 'clamp(15px, 1.25vw, 18px)',
-                fontWeight: 400,
-                lineHeight: 1.85,
-                letterSpacing: '0.02em',
-                textAlign: 'left',
-                marginBottom: '18px',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(25px)',
+                transition: `opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${0.3 + i * 0.1}s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${0.3 + i * 0.1}s`,
               }}
             >
-              {text}
-            </p>
+              <div
+                className="burlesque-card-inner relative h-full"
+                style={{
+                  background:
+                    'linear-gradient(135deg, rgba(26,10,16,0.7) 0%, rgba(13,4,8,0.5) 100%)',
+                  border: '1px solid rgba(201,169,110,0.25)',
+                  padding: '26px 24px',
+                  transition: 'box-shadow 0.5s ease, border-color 0.5s ease',
+                }}
+              >
+                {/* Top gold accent line */}
+                <div
+                  className="absolute top-0 inset-x-0 h-px"
+                  style={{
+                    top: '-1px',
+                    background:
+                      'linear-gradient(90deg, transparent, rgba(201,169,110,0.6), transparent)',
+                    zIndex: 2,
+                  }}
+                />
+                {/* Icon */}
+                <div
+                  className="flex items-center justify-center mb-4"
+                  style={{
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    background: 'rgba(201,169,110,0.08)',
+                    border: '1px solid rgba(201,169,110,0.3)',
+                    color: '#C9A96E',
+                  }}
+                >
+                  {card.icon}
+                </div>
+                {/* Eyebrow */}
+                <span
+                  style={{
+                    display: 'block',
+                    fontFamily: 'var(--font-inter)',
+                    color: 'rgba(201,169,110,0.7)',
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    marginBottom: '8px',
+                  }}
+                >
+                  {card.eyebrow}
+                </span>
+                {/* Title */}
+                <h3
+                  style={{
+                    fontFamily: 'var(--font-playfair)',
+                    color: '#E8D5A3',
+                    fontSize: 'clamp(18px, 1.7vw, 22px)',
+                    fontWeight: 600,
+                    letterSpacing: '0.03em',
+                    lineHeight: 1.25,
+                    marginBottom: '14px',
+                  }}
+                >
+                  {card.title}
+                </h3>
+                {/* Text */}
+                <p
+                  style={{
+                    fontFamily: 'var(--font-cormorant)',
+                    color: 'rgba(245,230,211,0.72)',
+                    fontSize: 'clamp(14px, 1.15vw, 16px)',
+                    fontWeight: 400,
+                    lineHeight: 1.7,
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  {card.text}
+                </p>
+              </div>
+            </div>
           ))}
+        </div>
 
-          {/* Closing italic quote with gold dot */}
-          <div
-            className="mt-6 flex items-start gap-3"
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
-              transition:
-                'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s',
-            }}
-          >
+        {/* ═══ "Когда прийти" — occasion cards, full width ═══ */}
+        <div
+          className="mb-12 md:mb-16"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition:
+              'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s',
+          }}
+        >
+          {/* Section label */}
+          <div className="flex items-center justify-center gap-3 mb-8">
             <div
               style={{
-                width: '5px',
-                height: '5px',
-                borderRadius: '50%',
-                background: '#C9A96E',
-                marginTop: '13px',
-                flexShrink: 0,
-                boxShadow: '0 0 8px rgba(201,169,110,0.4)',
+                width: 'clamp(30px, 5vw, 50px)',
+                height: '1px',
+                background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.4))',
               }}
             />
-            <p
+            <span
+              className="uppercase"
               style={{
-                fontFamily: 'var(--font-cormorant)',
-                fontStyle: 'italic',
-                color: 'rgba(232,213,163,0.8)',
-                fontSize: 'clamp(16px, 1.4vw, 20px)',
-                fontWeight: 400,
-                lineHeight: 1.7,
-                letterSpacing: '0.03em',
+                fontFamily: 'var(--font-inter)',
+                color: 'rgba(201,169,110,0.6)',
+                fontSize: '11px',
+                fontWeight: 500,
+                letterSpacing: '0.25em',
               }}
             >
-              «Мадам Бум» — это место, где бурлеск становится искусством, а каждый вечер
-              превращается в незабываемое путешествие в мир красоты, живого джаза и
-              театра.
-            </p>
+              Идеальный выбор для повода
+            </span>
+            <div
+              style={{
+                width: 'clamp(30px, 5vw, 50px)',
+                height: '1px',
+                background: 'linear-gradient(90deg, rgba(201,169,110,0.4), transparent)',
+              }}
+            />
+          </div>
+
+          {/* Occasion chips grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {[
+              { icon: <Heart size={16} strokeWidth={1.6} />, label: 'Свидание' },
+              { icon: <PartyPopper size={16} strokeWidth={1.6} />, label: 'Девичник' },
+              { icon: <Gift size={16} strokeWidth={1.6} />, label: 'День рождения' },
+              { icon: <Users size={16} strokeWidth={1.6} />, label: 'Корпоратив' },
+              { icon: <MapPin size={16} strokeWidth={1.6} />, label: 'Москва · СПб' },
+            ].map((chip, i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center text-center p-5 rounded-md"
+                style={{
+                  background: 'rgba(26,10,16,0.5)',
+                  border: '1px solid rgba(201,169,110,0.18)',
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+                  transition: `opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${0.65 + i * 0.08}s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${0.65 + i * 0.08}s`,
+                }}
+              >
+                <div
+                  className="flex items-center justify-center mb-3"
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '50%',
+                    background: 'rgba(123,26,43,0.18)',
+                    border: '1px solid rgba(201,169,110,0.3)',
+                    color: '#C9A96E',
+                  }}
+                >
+                  {chip.icon}
+                </div>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    color: 'rgba(245,230,211,0.8)',
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {chip.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ═══ Closing quote card — full width banner ═══ */}
+        <div
+          className="mb-16 md:mb-20 max-w-5xl mx-auto"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+            transition:
+              'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.8s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.8s',
+          }}
+        >
+          <div
+            className="relative rounded-lg overflow-hidden"
+            style={{
+              background:
+                'linear-gradient(135deg, rgba(123,26,43,0.18) 0%, rgba(26,10,16,0.7) 60%, rgba(13,4,8,0.5) 100%)',
+              border: '1px solid rgba(201,169,110,0.32)',
+              padding: '32px 28px md:40px 36px',
+            }}
+          >
+            {/* Top gold accent line */}
+            <div
+              className="absolute top-0 inset-x-0 h-px"
+              style={{
+                background:
+                  'linear-gradient(90deg, transparent, rgba(201,169,110,0.7), transparent)',
+              }}
+            />
+            <div className="flex flex-col items-center text-center">
+              {/* Decorative diamond */}
+              <div className="flex items-center gap-3 mb-5">
+                <div
+                  style={{
+                    width: 'clamp(25px, 4vw, 40px)',
+                    height: '1px',
+                    background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.5))',
+                  }}
+                />
+                <div
+                  style={{
+                    width: '7px',
+                    height: '7px',
+                    border: '1px solid rgba(201,169,110,0.7)',
+                    transform: 'rotate(45deg)',
+                    background: 'rgba(6,2,10,0.9)',
+                  }}
+                />
+                <div
+                  style={{
+                    width: 'clamp(25px, 4vw, 40px)',
+                    height: '1px',
+                    background: 'linear-gradient(90deg, rgba(201,169,110,0.5), transparent)',
+                  }}
+                />
+              </div>
+              <p
+                style={{
+                  fontFamily: 'var(--font-cormorant)',
+                  fontStyle: 'italic',
+                  color: '#E8D5A3',
+                  fontSize: 'clamp(17px, 1.6vw, 23px)',
+                  fontWeight: 400,
+                  lineHeight: 1.7,
+                  letterSpacing: '0.03em',
+                  maxWidth: '760px',
+                  margin: 0,
+                }}
+              >
+                «Мадам Бум» — это место, где бурлеск становится искусством, а каждый
+                вечер превращается в незабываемое путешествие в мир красоты, живого
+                джаза и театра.
+              </p>
+            </div>
           </div>
         </div>
 
