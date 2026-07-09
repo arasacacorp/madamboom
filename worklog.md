@@ -278,3 +278,24 @@ Work Log:
 Stage Summary:
 - Modified: src/components/sections/WhatIsBurlesque.tsx — lead intro paragraph now plain centered text (no card/frame), animation + typography preserved.
 - All routes HTTP 200; lint clean; rest of Part 1 + Part 2 + /about unaffected.
+
+---
+Task ID: 26
+Agent: main (Z.ai Code)
+Task: Make the closing quote card «Мадам Бум» — это место, где бурлеск становится искусством...» wider (full container width as usual) and more beautifully framed.
+
+Work Log:
+- Read worklog (Task 25) + inspected the closing quote block (max-w-5xl mx-auto, narrower than the max-w-6xl Part 1 container; had top gold line + diamond + quote text maxWidth 760px).
+- Edit (WhatIsBurlesque.tsx): removed the max-w-5xl mx-auto constraint so the card now spans the full container width (matches the feature-cards grid + occasion chips above — all share the max-w-6xl px-4 md:px-8 container). Enriched the design:
+  • Wider/larger padding (40px 36px → md:52px 48px), stronger burgundy gradient bg, brighter border.
+  • Added BOTTOM gold accent line (was only top) + LEFT + RIGHT vertical gold accent bars (fade top/bottom) — 4 accent lines total framing the card.
+  • Larger decorative diamond + longer gold lines (clamp 40–80px).
+  • Added a large decorative opening quote mark “ (Playfair, clamp 48–72px, semi-transparent gold) above the text.
+  • Quote text enlarged (clamp 17–23px → 19–27px), maxWidth 880px (was 760), removed the «» guillemets since the decorative mark now opens the quote.
+  • Added a closing flourish: gold lines + "МАДАМ БУМ" eyebrow label below the quote.
+- Lint: clean. / → HTTP 200.
+- Agent Browser verification (desktop 1440): card width 1088px = full container content width (1152 container − 2×32 padding); matches the feature-cards/occasion-chips width. 4 absolute accent divs (top+bottom lines + left+right bars) ✓. Decorative quote mark present ✓. Closing flourish "Мадам Бум" present ✓. Quote font 27px. Mobile 390×844: card width 358px (full width), no overflow. VLM confirms: "Большую декоративную кавычку сверху. Золотые вертикальные линии по бокам. Подпись «МАДАМ БУМ» внизу. Широкая."
+
+Stage Summary:
+- Modified: src/components/sections/WhatIsBurlesque.tsx — closing quote card now full container width with richer framing (4 gold accent lines + large decorative quote mark + enlarged text + closing "МАДАМ БУМ" flourish).
+- All routes HTTP 200; lint clean; responsive; Part 2 + /about unaffected.

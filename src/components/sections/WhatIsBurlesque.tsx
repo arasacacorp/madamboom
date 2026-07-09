@@ -625,9 +625,9 @@ export default function WhatIsBurlesque() {
           </div>
         </div>
 
-        {/* ═══ Closing quote card — full width banner ═══ */}
+        {/* ═══ Closing quote — full container width, richly framed ═══ */}
         <div
-          className="mb-16 md:mb-20 max-w-5xl mx-auto"
+          className="mb-16 md:mb-20"
           style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
@@ -639,9 +639,9 @@ export default function WhatIsBurlesque() {
             className="relative rounded-lg overflow-hidden"
             style={{
               background:
-                'linear-gradient(135deg, rgba(123,26,43,0.18) 0%, rgba(26,10,16,0.7) 60%, rgba(13,4,8,0.5) 100%)',
-              border: '1px solid rgba(201,169,110,0.32)',
-              padding: '32px 28px md:40px 36px',
+                'linear-gradient(135deg, rgba(123,26,43,0.22) 0%, rgba(26,10,16,0.72) 55%, rgba(13,4,8,0.55) 100%)',
+              border: '1px solid rgba(201,169,110,0.38)',
+              padding: '40px 36px md:52px 48px',
             }}
           >
             {/* Top gold accent line */}
@@ -649,53 +649,126 @@ export default function WhatIsBurlesque() {
               className="absolute top-0 inset-x-0 h-px"
               style={{
                 background:
-                  'linear-gradient(90deg, transparent, rgba(201,169,110,0.7), transparent)',
+                  'linear-gradient(90deg, transparent, rgba(201,169,110,0.75), transparent)',
               }}
             />
+            {/* Bottom gold accent line */}
+            <div
+              className="absolute bottom-0 inset-x-0 h-px"
+              style={{
+                background:
+                  'linear-gradient(90deg, transparent, rgba(201,169,110,0.5), transparent)',
+              }}
+            />
+            {/* Left vertical gold accent bar */}
+            <div
+              className="absolute top-1/2 left-0 w-px"
+              style={{
+                height: '60%',
+                transform: 'translateY(-50%)',
+                background: 'linear-gradient(180deg, transparent, rgba(201,169,110,0.45), transparent)',
+              }}
+            />
+            {/* Right vertical gold accent bar */}
+            <div
+              className="absolute top-1/2 right-0 w-px"
+              style={{
+                height: '60%',
+                transform: 'translateY(-50%)',
+                background: 'linear-gradient(180deg, transparent, rgba(201,169,110,0.45), transparent)',
+              }}
+            />
+
             <div className="flex flex-col items-center text-center">
-              {/* Decorative diamond */}
-              <div className="flex items-center gap-3 mb-5">
+              {/* Decorative diamond + lines */}
+              <div className="flex items-center gap-3 mb-6">
                 <div
                   style={{
-                    width: 'clamp(25px, 4vw, 40px)',
+                    width: 'clamp(40px, 6vw, 80px)',
                     height: '1px',
-                    background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.5))',
+                    background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.55))',
                   }}
                 />
                 <div
                   style={{
-                    width: '7px',
-                    height: '7px',
-                    border: '1px solid rgba(201,169,110,0.7)',
+                    width: '8px',
+                    height: '8px',
+                    border: '1px solid rgba(201,169,110,0.75)',
                     transform: 'rotate(45deg)',
                     background: 'rgba(6,2,10,0.9)',
                   }}
                 />
                 <div
                   style={{
-                    width: 'clamp(25px, 4vw, 40px)',
+                    width: 'clamp(40px, 6vw, 80px)',
                     height: '1px',
-                    background: 'linear-gradient(90deg, rgba(201,169,110,0.5), transparent)',
+                    background: 'linear-gradient(90deg, rgba(201,169,110,0.55), transparent)',
                   }}
                 />
               </div>
+
+              {/* Large decorative opening quote mark */}
+              <div
+                aria-hidden="true"
+                style={{
+                  fontFamily: 'var(--font-playfair)',
+                  fontSize: 'clamp(48px, 6vw, 72px)',
+                  lineHeight: 0.6,
+                  color: 'rgba(201,169,110,0.3)',
+                  marginBottom: '8px',
+                  fontWeight: 700,
+                }}
+              >
+                “
+              </div>
+
               <p
                 style={{
                   fontFamily: 'var(--font-cormorant)',
                   fontStyle: 'italic',
                   color: '#E8D5A3',
-                  fontSize: 'clamp(17px, 1.6vw, 23px)',
+                  fontSize: 'clamp(19px, 1.9vw, 27px)',
                   fontWeight: 400,
-                  lineHeight: 1.7,
-                  letterSpacing: '0.03em',
-                  maxWidth: '760px',
+                  lineHeight: 1.65,
+                  letterSpacing: '0.02em',
+                  maxWidth: '880px',
                   margin: 0,
                 }}
               >
-                «Мадам Бум» — это место, где бурлеск становится искусством, а каждый
+                Мадам Бум — это место, где бурлеск становится искусством, а каждый
                 вечер превращается в незабываемое путешествие в мир красоты, живого
                 джаза и театра.
               </p>
+
+              {/* Small closing flourish */}
+              <div className="flex items-center gap-3 mt-7">
+                <div
+                  style={{
+                    width: 'clamp(30px, 4vw, 50px)',
+                    height: '1px',
+                    background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.4))',
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    color: 'rgba(201,169,110,0.6)',
+                    fontSize: '11px',
+                    fontWeight: 500,
+                    letterSpacing: '0.3em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Мадам Бум
+                </span>
+                <div
+                  style={{
+                    width: 'clamp(30px, 4vw, 50px)',
+                    height: '1px',
+                    background: 'linear-gradient(90deg, rgba(201,169,110,0.4), transparent)',
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
