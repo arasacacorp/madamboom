@@ -281,7 +281,7 @@ export default function WhatIsBurlesque() {
   return (
     <section
       ref={sectionRef}
-      id="what-is-burlesque"
+      id="what-is-burlesque-about"
       className="relative py-14 md:py-20 lg:py-24 overflow-hidden"
       style={{ backgroundColor: '#06020A', paddingTop: 'clamp(24px, 2.5vw, 32px)' }}
     >
@@ -384,100 +384,236 @@ export default function WhatIsBurlesque() {
           </div>
         </div>
 
-        {/* Editorial prose column — full-width, centered */}
-        <div
-          className="max-w-3xl mx-auto mb-16 md:mb-20"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(25px)',
-            transition:
-              'opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s',
-          }}
-        >
-          {/* Lead paragraph with gold accent border */}
-          <div
-            className="relative pl-6 mb-6"
-            style={{ borderLeft: '2px solid rgba(201,169,110,0.45)' }}
-          >
-            <p
+        {/* Content grid: text + 2 cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-16 md:mb-20">
+          {/* Left: text column (7/12) */}
+          <div className="lg:col-span-7">
+            {/* Lead paragraph with gold accent */}
+            <div
+              className="relative pl-6 mb-5"
               style={{
-                fontFamily: 'var(--font-cormorant)',
-                color: 'rgba(245,230,211,0.92)',
-                fontSize: 'clamp(18px, 1.6vw, 22px)',
-                fontWeight: 500,
-                lineHeight: 1.75,
-                letterSpacing: '0.01em',
-                textAlign: 'left',
+                borderLeft: '2px solid rgba(201,169,110,0.45)',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(25px)',
+                transition:
+                  'opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s',
               }}
             >
-              Бурлеск — это театральное искусство, в котором соединяются танец, музыка,
-              юмор, актерская игра и яркие сценические образы. Современный бурлеск
-              вдохновлен традициями европейских кабаре начала XX века, но сегодня это
-              самостоятельный жанр, где главную роль играют артистизм, харизма, эстетика
-              и мастерство исполнения.
-            </p>
-          </div>
+              <p
+                style={{
+                  fontFamily: 'var(--font-cormorant)',
+                  color: 'rgba(245,230,211,0.9)',
+                  fontSize: 'clamp(17px, 1.5vw, 21px)',
+                  fontWeight: 500,
+                  lineHeight: 1.7,
+                  letterSpacing: '0.01em',
+                  textAlign: 'left',
+                }}
+              >
+                Бурлеск — это искусство кабаре, в котором красота, харизма, музыка и
+                театральность объединяются в яркое сценическое действие.
+              </p>
+            </div>
 
-          {/* Body paragraphs */}
-          {[
-            'Бурлеск — это не стриптиз. В центре внимания не откровенность, а искусство перевоплощения, красивые костюмы, пластика, театральная подача и умение рассказать историю через сценический номер. Каждый выход артиста становится маленьким спектаклем, наполненным эмоциями, юмором и неожиданными образами.',
-            'Бурлеск-кабаре «Мадам Бум» — это современное шоу, объединяющее бурлеск, живой джаз, вокал, конферанс и театральное действие. Мы создаем атмосферу настоящего кабаре, где зрители становятся частью происходящего, а каждый вечер превращается в яркое культурное событие.',
-            'В репертуаре «Мадам Бум» представлены как классические номера в лучших традициях мирового бурлеска, так и современные авторские постановки. На одной сцене встречаются артисты бурлеска, джазовые музыканты, вокалисты и конферансье, создавая уникальное шоу, которое невозможно сравнить с привычным театром или концертом. Это синтез музыки, танца, театра и живого общения со зрителем, благодаря которому каждый вечер становится неповторимым.',
-            'Если вы ищете, куда сходить вечером в Москве или Санкт-Петербурге, хотите провести необычное свидание, отпраздновать день рождения, девичник, годовщину свадьбы, корпоратив, организовать красивый вечер с друзьями или сделать оригинальный подарок близкому человеку, бурлеск-кабаре «Мадам Бум» станет идеальным выбором. Наши программы объединяют живой джаз, бурлеск, театр, вокал и конферанс, создавая атмосферу настоящего кабаре, где каждый гость становится частью праздника. Это вечер ярких эмоций, эстетики, вдохновения и впечатлений, к которым хочется возвращаться снова.',
-          ].map((text, i) => (
+            {/* Body paragraph 1 */}
             <p
-              key={i}
               style={{
                 fontFamily: 'var(--font-cormorant)',
-                color: 'rgba(245,230,211,0.74)',
+                color: 'rgba(245,230,211,0.72)',
                 fontSize: 'clamp(15px, 1.25vw, 18px)',
                 fontWeight: 400,
                 lineHeight: 1.85,
                 letterSpacing: '0.02em',
                 textAlign: 'left',
-                marginBottom: '18px',
+                marginBottom: '16px',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                transition:
+                  'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s',
               }}
             >
-              {text}
+              Современный бурлеск давно вышел за рамки привычных представлений. Сегодня
+              это жанр, где одинаково важны сценический образ, актёрское мастерство,
+              музыкальность, чувство юмора и взаимодействие с публикой.
             </p>
-          ))}
 
-          {/* Closing italic quote with gold dot */}
-          <div
-            className="mt-6 flex items-start gap-3"
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
-              transition:
-                'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s',
-            }}
-          >
-            <div
-              style={{
-                width: '5px',
-                height: '5px',
-                borderRadius: '50%',
-                background: '#C9A96E',
-                marginTop: '13px',
-                flexShrink: 0,
-                boxShadow: '0 0 8px rgba(201,169,110,0.4)',
-              }}
-            />
+            {/* Body paragraph 2 */}
             <p
               style={{
                 fontFamily: 'var(--font-cormorant)',
-                fontStyle: 'italic',
-                color: 'rgba(232,213,163,0.8)',
-                fontSize: 'clamp(16px, 1.4vw, 20px)',
+                color: 'rgba(245,230,211,0.72)',
+                fontSize: 'clamp(15px, 1.25vw, 18px)',
                 fontWeight: 400,
-                lineHeight: 1.7,
-                letterSpacing: '0.03em',
+                lineHeight: 1.85,
+                letterSpacing: '0.02em',
+                textAlign: 'left',
+                marginBottom: '16px',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                transition:
+                  'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s',
               }}
             >
-              «Мадам Бум» — это место, где бурлеск становится искусством, а каждый вечер
-              превращается в незабываемое путешествие в мир красоты, живого джаза и
-              театра.
+              В шоу «Мадам Бум» представлены сразу несколько граней жанра — от
+              роскошной классики до комедийных номеров с перцем.
             </p>
+
+            {/* Closing italic quote */}
+            <div
+              className="mt-6 flex items-start gap-3"
+              style={{
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+                transition:
+                  'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s',
+              }}
+            >
+              <div
+                style={{
+                  width: '4px',
+                  height: '4px',
+                  borderRadius: '50%',
+                  background: '#C9A96E',
+                  marginTop: '12px',
+                  flexShrink: 0,
+                  boxShadow: '0 0 8px rgba(201,169,110,0.4)',
+                }}
+              />
+              <p
+                style={{
+                  fontFamily: 'var(--font-cormorant)',
+                  fontStyle: 'italic',
+                  color: 'rgba(232,213,163,0.7)',
+                  fontSize: 'clamp(15px, 1.35vw, 19px)',
+                  fontWeight: 400,
+                  lineHeight: 1.7,
+                  letterSpacing: '0.03em',
+                }}
+              >
+                Такое сочетание делает каждое шоу одновременно элегантным, лёгким и
+                по-настоящему живым.
+              </p>
+            </div>
+          </div>
+
+          {/* Right: 2 cards (5/12) */}
+          <div className="lg:col-span-5 flex flex-col gap-5">
+            {/* Card 1: Классический бурлеск */}
+            <div
+              className="burlesque-card relative rounded-md overflow-hidden"
+              style={{
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(25px)',
+                transition:
+                  'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s',
+              }}
+            >
+              <div
+                className="burlesque-card-inner relative"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(26,10,16,0.7) 0%, rgba(13,4,8,0.5) 100%)',
+                  border: '1px solid rgba(201,169,110,0.25)',
+                  padding: '22px 22px',
+                  transition: 'box-shadow 0.5s ease, border-color 0.5s ease',
+                }}
+              >
+                <div
+                  className="absolute top-0 inset-x-0 h-px"
+                  style={{
+                    top: '-1px',
+                    background:
+                      'linear-gradient(90deg, transparent, rgba(201,169,110,0.6), transparent)',
+                    zIndex: 2,
+                  }}
+                />
+                <div className="flex items-center gap-3 mb-3">
+                  <Sparkles size={18} strokeWidth={1.5} style={{ color: '#C9A96E' }} />
+                  <h3
+                    style={{
+                      fontFamily: 'var(--font-playfair)',
+                      color: '#C9A96E',
+                      fontSize: 'clamp(17px, 1.6vw, 21px)',
+                      fontWeight: 600,
+                      letterSpacing: '0.05em',
+                    }}
+                  >
+                    Классический бурлеск
+                  </h3>
+                </div>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-cormorant)',
+                    color: 'rgba(245,230,211,0.7)',
+                    fontSize: 'clamp(14px, 1.15vw, 16px)',
+                    fontWeight: 400,
+                    lineHeight: 1.65,
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  Роскошный, чувственный и визуально впечатляющий. Перья, стразы,
+                  блеск, эффектные костюмы и эстетика золотой эпохи кабаре создают
+                  атмосферу настоящего праздника красоты.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2: Бурлеск с перцем */}
+            <div
+              className="burlesque-card relative rounded-md overflow-hidden"
+              style={{
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(25px)',
+                transition:
+                  'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.45s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.45s',
+              }}
+            >
+              <div
+                className="burlesque-card-inner relative"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(26,10,16,0.7) 0%, rgba(13,4,8,0.5) 100%)',
+                  border: '1px solid rgba(201,169,110,0.25)',
+                  padding: '22px 22px',
+                  transition: 'box-shadow 0.5s ease, border-color 0.5s ease',
+                }}
+              >
+                <div
+                  className="absolute top-0 inset-x-0 h-px"
+                  style={{
+                    top: '-1px',
+                    background:
+                      'linear-gradient(90deg, transparent, rgba(232,213,163,0.5), transparent)',
+                    zIndex: 2,
+                  }}
+                />
+                <div className="flex items-center gap-3 mb-3">
+                  <Theater size={18} strokeWidth={1.5} style={{ color: '#E8D5A3' }} />
+                  <h3
+                    style={{
+                      fontFamily: 'var(--font-playfair)',
+                      color: '#E8D5A3',
+                      fontSize: 'clamp(17px, 1.6vw, 21px)',
+                      fontWeight: 600,
+                      letterSpacing: '0.05em',
+                    }}
+                  >
+                    Бурлеск с перцем
+                  </h3>
+                </div>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-cormorant)',
+                    color: 'rgba(245,230,211,0.7)',
+                    fontSize: 'clamp(14px, 1.15vw, 16px)',
+                    fontWeight: 400,
+                    lineHeight: 1.65,
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  Комедийные и самоироничные номера, в которых главным инструментом
+                  становятся юмор, актёрская игра и неожиданные сценические решения.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -1,0 +1,821 @@
+     1→     1→'use client'
+     2→     2→
+     3→     3→import { useEffect, useRef, useState } from 'react'
+     4→     4→import {
+     5→     5→  Wine,
+     6→     6→  Sparkles,
+     7→     7→  Music,
+     8→     8→  Theater,
+     9→     9→  Eye,
+    10→    10→  Users,
+    11→    11→  Stars,
+    12→    12→  Flower2,
+    13→    13→} from 'lucide-react'
+    14→    14→
+    15→    15→/* ─── Seeded pseudo-random for deterministic SSR ─── */
+    16→    16→function seededRandom(seed: number) {
+    17→    17→  const x = Math.sin(seed + 1) * 10000
+    18→    18→  return x - Math.floor(x)
+    19→    19→}
+    20→    20→
+    21→    21→/* ─── Floating Particles ─── */
+    22→    22→function SectionParticles() {
+    23→    23→  const particles = Array.from({ length: 8 }, (_, i) => ({
+    24→    24→    id: i,
+    25→    25→    size: seededRandom(i * 11 + 500) * 3 + 1,
+    26→    26→    left: seededRandom(i * 13 + 510) * 100,
+    27→    27→    top: seededRandom(i * 17 + 520) * 100,
+    28→    28→    opacity: seededRandom(i * 19 + 530) * 0.12 + 0.03,
+    29→    29→    duration: seededRandom(i * 23 + 540) * 16 + 14,
+    30→    30→    delay: seededRandom(i * 29 + 550) * 10,
+    31→    31→    driftX: seededRandom(i * 31 + 560) * 50 - 25,
+    32→    32→    driftY: -(seededRandom(i * 37 + 570) * 80 + 20),
+    33→    33→    driftX2: seededRandom(i * 41 + 580) * 40 - 20,
+    34→    34→    driftY2: -(seededRandom(i * 43 + 590) * 100 + 30),
+    35→    35→  }))
+    36→    36→
+    37→    37→  return (
+    38→    38→    <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 2 }}>
+    39→    39→      {particles.map((p) => (
+    40→    40→        <div
+    41→    41→          key={p.id}
+    42→    42→          className="particle"
+    43→    43→          style={{
+    44→    44→            width: p.size,
+    45→    45→            height: p.size,
+    46→    46→            left: `${p.left}%`,
+    47→    47→            top: `${p.top}%`,
+    48→    48→            '--particle-opacity': p.opacity,
+    49→    49→            '--duration': `${p.duration}s`,
+    50→    50→            '--delay': `${p.delay}s`,
+    51→    51→            '--drift-x': `${p.driftX}px`,
+    52→    52→            '--drift-y': `${p.driftY}px`,
+    53→    53→            '--drift-x2': `${p.driftX2}px`,
+    54→    54→            '--drift-y2': `${p.driftY2}px`,
+    55→    55→          } as React.CSSProperties}
+    56→    56→        />
+    57→    57→      ))}
+    58→    58→    </div>
+    59→    59→  )
+    60→    60→}
+    61→    61→
+    62→    62→/* ─── Program element card (small, icon + label) ─── */
+    63→    63→function ProgramElement({
+    64→    64→  icon,
+    65→    65→  label,
+    66→    66→  delay,
+    67→    67→  visible,
+    68→    68→}: {
+    69→    69→  icon: React.ReactNode
+    70→    70→  label: string
+    71→    71→  delay: number
+    72→    72→  visible: boolean
+    73→    73→}) {
+    74→    74→  return (
+    75→    75→    <div
+    76→    76→      className="program-element flex flex-col items-center text-center group"
+    77→    77→      style={{
+    78→    78→        opacity: visible ? 1 : 0,
+    79→    79→        transform: visible ? 'translateY(0)' : 'translateY(20px)',
+    80→    80→        transition: `opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
+    81→    81→      }}
+    82→    82→    >
+    83→    83→      <div
+    84→    84→        className="program-element-icon flex items-center justify-center mb-3 transition-all duration-500"
+    85→    85→        style={{
+    86→    86→          width: '52px',
+    87→    87→          height: '52px',
+    88→    88→          borderRadius: '50%',
+    89→    89→          background: 'rgba(201,169,110,0.06)',
+    90→    90→          border: '1px solid rgba(201,169,110,0.2)',
+    91→    91→          color: '#C9A96E',
+    92→    92→        }}
+    93→    93→      >
+    94→    94→        {icon}
+    95→    95→      </div>
+    96→    96→      <span
+    97→    97→        style={{
+    98→    98→          fontFamily: 'var(--font-inter)',
+    99→    99→          color: 'rgba(245,230,211,0.7)',
+   100→   100→          fontSize: '11px',
+   101→   101→          fontWeight: 400,
+   102→   102→          letterSpacing: '0.1em',
+   103→   103→          textTransform: 'uppercase',
+   104→   104→          lineHeight: 1.3,
+   105→   105→        }}
+   106→   106→      >
+   107→   107→        {label}
+   108→   108→      </span>
+   109→   109→    </div>
+   110→   110→  )
+   111→   111→}
+   112→   112→
+   113→   113→/* ─── Highlight card (larger, for бокал and Варлоки) ─── */
+   114→   114→function HighlightCard({
+   115→   115→  icon,
+   116→   116→  title,
+   117→   117→  text,
+   118→   118→  accentLabel,
+   119→   119→  delay,
+   120→   120→  visible,
+   121→   121→}: {
+   122→   122→  icon: React.ReactNode
+   123→   123→  title: string
+   124→   124→  text: string
+   125→   125→  accentLabel: string
+   126→   126→  delay: number
+   127→   127→  visible: boolean
+   128→   128→}) {
+   129→   129→  return (
+   130→   130→    <div
+   131→   131→      className="highlight-card relative rounded-md overflow-hidden h-full"
+   132→   132→      style={{
+   133→   133→        opacity: visible ? 1 : 0,
+   134→   134→        transform: visible ? 'translateY(0)' : 'translateY(30px)',
+   135→   135→        transition: `opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
+   136→   136→      }}
+   137→   137→    >
+   138→   138→      <div
+   139→   139→        className="highlight-card-inner relative h-full"
+   140→   140→        style={{
+   141→   141→          background: 'linear-gradient(135deg, rgba(26,10,16,0.7) 0%, rgba(13,4,8,0.5) 100%)',
+   142→   142→          border: '1px solid rgba(201,169,110,0.22)',
+   143→   143→          padding: '28px 24px',
+   144→   144→          transition: 'box-shadow 0.5s ease, border-color 0.5s ease',
+   145→   145→        }}
+   146→   146→      >
+   147→   147→        {/* Top gold accent line */}
+   148→   148→        <div
+   149→   149→          className="absolute top-0 inset-x-0 h-px"
+   150→   150→          style={{
+   151→   151→            top: '-1px',
+   152→   152→            background:
+   153→   153→              'linear-gradient(90deg, transparent, rgba(201,169,110,0.5), transparent)',
+   154→   154→            zIndex: 2,
+   155→   155→          }}
+   156→   156→        />
+   157→   157→        {/* Subtle radial glow on hover */}
+   158→   158→        <div
+   159→   159→          className="highlight-card-glow absolute inset-0 pointer-events-none"
+   160→   160→          style={{
+   161→   161→            background:
+   162→   162→              'radial-gradient(ellipse at top, rgba(201,169,110,0.08) 0%, transparent 60%)',
+   163→   163→            opacity: 0,
+   164→   164→            transition: 'opacity 0.5s ease',
+   165→   165→          }}
+   166→   166→        />
+   167→   167→
+   168→   168→        {/* Accent label (eyebrow) */}
+   169→   169→        <div
+   170→   170→          className="flex items-center gap-2 mb-4"
+   171→   171→          style={{ position: 'relative', zIndex: 1 }}
+   172→   172→        >
+   173→   173→          <div
+   174→   174→            style={{
+   175→   175→              width: '24px',
+   176→   176→              height: '1px',
+   177→   177→              background: 'linear-gradient(90deg, rgba(201,169,110,0.7), transparent)',
+   178→   178→            }}
+   179→   179→          />
+   180→   180→          <span
+   181→   181→            style={{
+   182→   182→              fontFamily: 'var(--font-inter)',
+   183→   183→              color: 'rgba(201,169,110,0.7)',
+   184→   184→              fontSize: '10px',
+   185→   185→              fontWeight: 500,
+   186→   186→              letterSpacing: '0.2em',
+   187→   187→              textTransform: 'uppercase',
+   188→   188→            }}
+   189→   189→          >
+   190→   190→            {accentLabel}
+   191→   191→          </span>
+   192→   192→        </div>
+   193→   193→
+   194→   194→        {/* Icon + title row */}
+   195→   195→        <div
+   196→   196→          className="flex items-center gap-4 mb-4"
+   197→   197→          style={{ position: 'relative', zIndex: 1 }}
+   198→   198→        >
+   199→   199→          <div
+   200→   200→            className="flex items-center justify-center"
+   201→   201→            style={{
+   202→   202→              width: '48px',
+   203→   203→              height: '48px',
+   204→   204→              borderRadius: '8px',
+   205→   205→              background: 'rgba(201,169,110,0.1)',
+   206→   206→              border: '1px solid rgba(201,169,110,0.3)',
+   207→   207→              color: '#E8D5A3',
+   208→   208→              flexShrink: 0,
+   209→   209→            }}
+   210→   210→          >
+   211→   211→            {icon}
+   212→   212→          </div>
+   213→   213→          <h4
+   214→   214→            style={{
+   215→   215→              fontFamily: 'var(--font-playfair)',
+   216→   216→              color: '#E8D5A3',
+   217→   217→              fontSize: 'clamp(18px, 1.8vw, 22px)',
+   218→   218→              fontWeight: 600,
+   219→   219→              letterSpacing: '0.04em',
+   220→   220→              lineHeight: 1.2,
+   221→   221→            }}
+   222→   222→          >
+   223→   223→            {title}
+   224→   224→          </h4>
+   225→   225→        </div>
+   226→   226→
+   227→   227→        {/* Text */}
+   228→   228→        <p
+   229→   229→          style={{
+   230→   230→            position: 'relative',
+   231→   231→            zIndex: 1,
+   232→   232→            fontFamily: 'var(--font-cormorant)',
+   233→   233→            color: 'rgba(245,230,211,0.72)',
+   234→   234→            fontSize: 'clamp(14px, 1.2vw, 16px)',
+   235→   235→            fontWeight: 400,
+   236→   236→            lineHeight: 1.7,
+   237→   237→            letterSpacing: '0.02em',
+   238→   238→          }}
+   239→   239→        >
+   240→   240→          {text}
+   241→   241→        </p>
+   242→   242→      </div>
+   243→   243→    </div>
+   244→   244→  )
+   245→   245→}
+   246→   246→
+   247→   247→/* ─── What Is Burlesque Section ─── */
+   248→   248→export default function WhatIsBurlesque() {
+   249→   249→  const sectionRef = useRef<HTMLElement>(null)
+   250→   250→  const [isVisible, setIsVisible] = useState(false)
+   251→   251→
+   252→   252→  useEffect(() => {
+   253→   253→    const section = sectionRef.current
+   254→   254→    if (!section) return
+   255→   255→
+   256→   256→    const observer = new IntersectionObserver(
+   257→   257→      ([entry]) => {
+   258→   258→        if (entry.isIntersecting) {
+   259→   259→          setIsVisible(true)
+   260→   260→          observer.disconnect()
+   261→   261→        }
+   262→   262→      },
+   263→   263→      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
+   264→   264→    )
+   265→   265→
+   266→   266→    observer.observe(section)
+   267→   267→    return () => observer.disconnect()
+   268→   268→  }, [])
+   269→   269→
+   270→   270→  /* Program elements (7) */
+   271→   271→  const programElements = [
+   272→   272→    { icon: <Theater size={20} strokeWidth={1.5} />, label: 'Классический бурлеск' },
+   273→   273→    { icon: <Sparkles size={20} strokeWidth={1.5} />, label: 'Авторские постановки' },
+   274→   274→    { icon: <Music size={20} strokeWidth={1.5} />, label: 'Живой вокал' },
+   275→   275→    { icon: <Stars size={20} strokeWidth={1.5} />, label: 'Джазовые композиции' },
+   276→   276→    { icon: <Eye size={20} strokeWidth={1.5} />, label: 'Ментализм и магия' },
+   277→   277→    { icon: <Users size={20} strokeWidth={1.5} />, label: 'Интерактив со зрителями' },
+   278→   278→    { icon: <Flower2 size={20} strokeWidth={1.5} />, label: 'Элементы кабаре' },
+   279→   279→  ]
+   280→   280→
+   281→   281→  return (
+   282→   282→    <section
+   283→   283→      ref={sectionRef}
+   284→   284→      id="what-is-burlesque"
+   285→   285→      className="relative py-14 md:py-20 lg:py-24 overflow-hidden"
+   286→   286→      style={{ backgroundColor: '#06020A', paddingTop: 'clamp(24px, 2.5vw, 32px)' }}
+   287→   287→    >
+   288→   288→      {/* ── Background layers ── */}
+   289→   289→      <div
+   290→   290→        className="absolute inset-0"
+   291→   291→        style={{
+   292→   292→          background:
+   293→   293→            'linear-gradient(180deg, #06020A 0%, #0D0408 15%, #1A0812 45%, #0D0408 75%, #06020A 100%)',
+   294→   294→        }}
+   295→   295→      />
+   296→   296→      {/* Burgundy radial glow */}
+   297→   297→      <div
+   298→   298→        className="absolute inset-0"
+   299→   299→        style={{
+   300→   300→          background:
+   301→   301→            'radial-gradient(ellipse 50% 40% at 50% 35%, rgba(123, 26, 43, 0.12) 0%, rgba(123, 26, 43, 0.04) 40%, transparent 70%)',
+   302→   302→          zIndex: 1,
+   303→   303→        }}
+   304→   304→      />
+   305→   305→      {/* Gold conic light accents */}
+   306→   306→      <div
+   307→   307→        className="absolute inset-0"
+   308→   308→        style={{
+   309→   309→          background: `
+   310→   310→            conic-gradient(from 175deg at 25% 5%, rgba(201,169,110,0.04) 0deg, transparent 20deg) 0 0 / 100% 40% no-repeat,
+   311→   311→            conic-gradient(from 185deg at 75% 5%, rgba(201,169,110,0.03) 0deg, transparent 18deg) 0 0 / 100% 40% no-repeat
+   312→   312→          `,
+   313→   313→          zIndex: 1,
+   314→   314→        }}
+   315→   315→      />
+   316→   316→      <SectionParticles />
+   317→   317→      <div className="vignette" style={{ position: 'absolute' }} />
+   318→   318→
+   319→   319→      {/* ── Content ── */}
+   320→   320→      <div className="relative max-w-6xl mx-auto px-4 md:px-8" style={{ zIndex: 6 }}>
+   321→   321→        {/* ═══════════════════════════════════
+   322→   322→            PART 1: Что такое бурлеск?
+   323→   323→            ═══════════════════════════════════ */}
+   324→   324→
+   325→   325→        {/* Title block — centered */}
+   326→   326→        <div
+   327→   327→          className="mb-10 md:mb-14 flex flex-col items-center"
+   328→   328→          style={{
+   329→   329→            opacity: isVisible ? 1 : 0,
+   330→   330→            transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
+   331→   331→            transition:
+   332→   332→              'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)',
+   333→   333→          }}
+   334→   334→        >
+   335→   335→          {/* Main heading */}
+   336→   336→          <h2
+   337→   337→            style={{
+   338→   338→              fontFamily: 'var(--font-playfair)',
+   339→   339→              fontSize: 'clamp(30px, 4.5vw, 56px)',
+   340→   340→              fontWeight: 700,
+   341→   341→              color: '#C9A96E',
+   342→   342→              letterSpacing: '0.02em',
+   343→   343→              lineHeight: 1.1,
+   344→   344→              textShadow:
+   345→   345→                '0 0 60px rgba(201,169,110,0.15), 0 4px 20px rgba(0,0,0,0.5)',
+   346→   346→              textAlign: 'center',
+   347→   347→            }}
+   348→   348→          >
+   349→   349→            Что такое{' '}
+   350→   350→            <span style={{ fontStyle: 'italic', color: '#E8D5A3' }}>бурлеск?</span>
+   351→   351→          </h2>
+   352→   352→
+   353→   353→          {/* Subtitle with symmetrical gold lines — centered */}
+   354→   354→          <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
+   355→   355→            <div
+   356→   356→              className="hidden sm:block"
+   357→   357→              style={{
+   358→   358→                width: 'clamp(30px, 5vw, 60px)',
+   359→   359→                height: '1px',
+   360→   360→                background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.5))',
+   361→   361→              }}
+   362→   362→            />
+   363→   363→            <span
+   364→   364→              className="uppercase"
+   365→   365→              style={{
+   366→   366→                fontFamily: 'var(--font-cormorant)',
+   367→   367→                color: 'rgba(201,169,110,0.65)',
+   368→   368→                fontSize: 'clamp(12px, 1.2vw, 15px)',
+   369→   369→                fontWeight: 400,
+   370→   370→                letterSpacing: '0.22em',
+   371→   371→                textAlign: 'center',
+   372→   372→              }}
+   373→   373→            >
+   374→   374→              Искусство кабаре · Музыка · Театральность
+   375→   375→            </span>
+   376→   376→            <div
+   377→   377→              className="hidden sm:block"
+   378→   378→              style={{
+   379→   379→                width: 'clamp(30px, 5vw, 60px)',
+   380→   380→                height: '1px',
+   381→   381→                background: 'linear-gradient(90deg, rgba(201,169,110,0.5), transparent)',
+   382→   382→              }}
+   383→   383→            />
+   384→   384→          </div>
+   385→   385→        </div>
+   386→   386→
+   387→   387→        {/* Content grid: text + 2 cards */}
+   388→   388→        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-16 md:mb-20">
+   389→   389→          {/* Left: text column (7/12) */}
+   390→   390→          <div className="lg:col-span-7">
+   391→   391→            {/* Lead paragraph with gold accent */}
+   392→   392→            <div
+   393→   393→              className="relative pl-6 mb-5"
+   394→   394→              style={{
+   395→   395→                borderLeft: '2px solid rgba(201,169,110,0.45)',
+   396→   396→                opacity: isVisible ? 1 : 0,
+   397→   397→                transform: isVisible ? 'translateY(0)' : 'translateY(25px)',
+   398→   398→                transition:
+   399→   399→                  'opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s',
+   400→   400→              }}
+   401→   401→            >
+   402→   402→              <p
+   403→   403→                style={{
+   404→   404→                  fontFamily: 'var(--font-cormorant)',
+   405→   405→                  color: 'rgba(245,230,211,0.9)',
+   406→   406→                  fontSize: 'clamp(17px, 1.5vw, 21px)',
+   407→   407→                  fontWeight: 500,
+   408→   408→                  lineHeight: 1.7,
+   409→   409→                  letterSpacing: '0.01em',
+   410→   410→                  textAlign: 'left',
+   411→   411→                }}
+   412→   412→              >
+   413→   413→                Бурлеск — это искусство кабаре, в котором красота, харизма, музыка и
+   414→   414→                театральность объединяются в яркое сценическое действие.
+   415→   415→              </p>
+   416→   416→            </div>
+   417→   417→
+   418→   418→            {/* Body paragraph 1 */}
+   419→   419→            <p
+   420→   420→              style={{
+   421→   421→                fontFamily: 'var(--font-cormorant)',
+   422→   422→                color: 'rgba(245,230,211,0.72)',
+   423→   423→                fontSize: 'clamp(15px, 1.25vw, 18px)',
+   424→   424→                fontWeight: 400,
+   425→   425→                lineHeight: 1.85,
+   426→   426→                letterSpacing: '0.02em',
+   427→   427→                textAlign: 'left',
+   428→   428→                marginBottom: '16px',
+   429→   429→                opacity: isVisible ? 1 : 0,
+   430→   430→                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+   431→   431→                transition:
+   432→   432→                  'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s',
+   433→   433→              }}
+   434→   434→            >
+   435→   435→              Современный бурлеск давно вышел за рамки привычных представлений. Сегодня
+   436→   436→              это жанр, где одинаково важны сценический образ, актёрское мастерство,
+   437→   437→              музыкальность, чувство юмора и взаимодействие с публикой.
+   438→   438→            </p>
+   439→   439→
+   440→   440→            {/* Body paragraph 2 */}
+   441→   441→            <p
+   442→   442→              style={{
+   443→   443→                fontFamily: 'var(--font-cormorant)',
+   444→   444→                color: 'rgba(245,230,211,0.72)',
+   445→   445→                fontSize: 'clamp(15px, 1.25vw, 18px)',
+   446→   446→                fontWeight: 400,
+   447→   447→                lineHeight: 1.85,
+   448→   448→                letterSpacing: '0.02em',
+   449→   449→                textAlign: 'left',
+   450→   450→                marginBottom: '16px',
+   451→   451→                opacity: isVisible ? 1 : 0,
+   452→   452→                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+   453→   453→                transition:
+   454→   454→                  'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s',
+   455→   455→              }}
+   456→   456→            >
+   457→   457→              В шоу «Мадам Бум» представлены сразу несколько граней жанра — от
+   458→   458→              роскошной классики до комедийных номеров с перцем.
+   459→   459→            </p>
+   460→   460→
+   461→   461→            {/* Closing italic quote */}
+   462→   462→            <div
+   463→   463→              className="mt-6 flex items-start gap-3"
+   464→   464→              style={{
+   465→   465→                opacity: isVisible ? 1 : 0,
+   466→   466→                transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+   467→   467→                transition:
+   468→   468→                  'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s',
+   469→   469→              }}
+   470→   470→            >
+   471→   471→              <div
+   472→   472→                style={{
+   473→   473→                  width: '4px',
+   474→   474→                  height: '4px',
+   475→   475→                  borderRadius: '50%',
+   476→   476→                  background: '#C9A96E',
+   477→   477→                  marginTop: '12px',
+   478→   478→                  flexShrink: 0,
+   479→   479→                  boxShadow: '0 0 8px rgba(201,169,110,0.4)',
+   480→   480→                }}
+   481→   481→              />
+   482→   482→              <p
+   483→   483→                style={{
+   484→   484→                  fontFamily: 'var(--font-cormorant)',
+   485→   485→                  fontStyle: 'italic',
+   486→   486→                  color: 'rgba(232,213,163,0.7)',
+   487→   487→                  fontSize: 'clamp(15px, 1.35vw, 19px)',
+   488→   488→                  fontWeight: 400,
+   489→   489→                  lineHeight: 1.7,
+   490→   490→                  letterSpacing: '0.03em',
+   491→   491→                }}
+   492→   492→              >
+   493→   493→                Такое сочетание делает каждое шоу одновременно элегантным, лёгким и
+   494→   494→                по-настоящему живым.
+   495→   495→              </p>
+   496→   496→            </div>
+   497→   497→          </div>
+   498→   498→
+   499→   499→          {/* Right: 2 cards (5/12) */}
+   500→   500→          <div className="lg:col-span-5 flex flex-col gap-5">
+   501→   501→            {/* Card 1: Классический бурлеск */}
+   502→   502→            <div
+   503→   503→              className="burlesque-card relative rounded-md overflow-hidden"
+   504→   504→              style={{
+   505→   505→                opacity: isVisible ? 1 : 0,
+   506→   506→                transform: isVisible ? 'translateY(0)' : 'translateY(25px)',
+   507→   507→                transition:
+   508→   508→                  'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s',
+   509→   509→              }}
+   510→   510→            >
+   511→   511→              <div
+   512→   512→                className="burlesque-card-inner relative"
+   513→   513→                style={{
+   514→   514→                  background: 'linear-gradient(135deg, rgba(26,10,16,0.7) 0%, rgba(13,4,8,0.5) 100%)',
+   515→   515→                  border: '1px solid rgba(201,169,110,0.25)',
+   516→   516→                  padding: '22px 22px',
+   517→   517→                  transition: 'box-shadow 0.5s ease, border-color 0.5s ease',
+   518→   518→                }}
+   519→   519→              >
+   520→   520→                <div
+   521→   521→                  className="absolute top-0 inset-x-0 h-px"
+   522→   522→                  style={{
+   523→   523→                    top: '-1px',
+   524→   524→                    background:
+   525→   525→                      'linear-gradient(90deg, transparent, rgba(201,169,110,0.6), transparent)',
+   526→   526→                    zIndex: 2,
+   527→   527→                  }}
+   528→   528→                />
+   529→   529→                <div className="flex items-center gap-3 mb-3">
+   530→   530→                  <Sparkles size={18} strokeWidth={1.5} style={{ color: '#C9A96E' }} />
+   531→   531→                  <h3
+   532→   532→                    style={{
+   533→   533→                      fontFamily: 'var(--font-playfair)',
+   534→   534→                      color: '#C9A96E',
+   535→   535→                      fontSize: 'clamp(17px, 1.6vw, 21px)',
+   536→   536→                      fontWeight: 600,
+   537→   537→                      letterSpacing: '0.05em',
+   538→   538→                    }}
+   539→   539→                  >
+   540→   540→                    Классический бурлеск
+   541→   541→                  </h3>
+   542→   542→                </div>
+   543→   543→                <p
+   544→   544→                  style={{
+   545→   545→                    fontFamily: 'var(--font-cormorant)',
+   546→   546→                    color: 'rgba(245,230,211,0.7)',
+   547→   547→                    fontSize: 'clamp(14px, 1.15vw, 16px)',
+   548→   548→                    fontWeight: 400,
+   549→   549→                    lineHeight: 1.65,
+   550→   550→                    letterSpacing: '0.02em',
+   551→   551→                  }}
+   552→   552→                >
+   553→   553→                  Роскошный, чувственный и визуально впечатляющий. Перья, стразы,
+   554→   554→                  блеск, эффектные костюмы и эстетика золотой эпохи кабаре создают
+   555→   555→                  атмосферу настоящего праздника красоты.
+   556→   556→                </p>
+   557→   557→              </div>
+   558→   558→            </div>
+   559→   559→
+   560→   560→            {/* Card 2: Бурлеск с перцем */}
+   561→   561→            <div
+   562→   562→              className="burlesque-card relative rounded-md overflow-hidden"
+   563→   563→              style={{
+   564→   564→                opacity: isVisible ? 1 : 0,
+   565→   565→                transform: isVisible ? 'translateY(0)' : 'translateY(25px)',
+   566→   566→                transition:
+   567→   567→                  'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.45s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.45s',
+   568→   568→              }}
+   569→   569→            >
+   570→   570→              <div
+   571→   571→                className="burlesque-card-inner relative"
+   572→   572→                style={{
+   573→   573→                  background: 'linear-gradient(135deg, rgba(26,10,16,0.7) 0%, rgba(13,4,8,0.5) 100%)',
+   574→   574→                  border: '1px solid rgba(201,169,110,0.25)',
+   575→   575→                  padding: '22px 22px',
+   576→   576→                  transition: 'box-shadow 0.5s ease, border-color 0.5s ease',
+   577→   577→                }}
+   578→   578→              >
+   579→   579→                <div
+   580→   580→                  className="absolute top-0 inset-x-0 h-px"
+   581→   581→                  style={{
+   582→   582→                    top: '-1px',
+   583→   583→                    background:
+   584→   584→                      'linear-gradient(90deg, transparent, rgba(232,213,163,0.5), transparent)',
+   585→   585→                    zIndex: 2,
+   586→   586→                  }}
+   587→   587→                />
+   588→   588→                <div className="flex items-center gap-3 mb-3">
+   589→   589→                  <Theater size={18} strokeWidth={1.5} style={{ color: '#E8D5A3' }} />
+   590→   590→                  <h3
+   591→   591→                    style={{
+   592→   592→                      fontFamily: 'var(--font-playfair)',
+   593→   593→                      color: '#E8D5A3',
+   594→   594→                      fontSize: 'clamp(17px, 1.6vw, 21px)',
+   595→   595→                      fontWeight: 600,
+   596→   596→                      letterSpacing: '0.05em',
+   597→   597→                    }}
+   598→   598→                  >
+   599→   599→                    Бурлеск с перцем
+   600→   600→                  </h3>
+   601→   601→                </div>
+   602→   602→                <p
+   603→   603→                  style={{
+   604→   604→                    fontFamily: 'var(--font-cormorant)',
+   605→   605→                    color: 'rgba(245,230,211,0.7)',
+   606→   606→                    fontSize: 'clamp(14px, 1.15vw, 16px)',
+   607→   607→                    fontWeight: 400,
+   608→   608→                    lineHeight: 1.65,
+   609→   609→                    letterSpacing: '0.02em',
+   610→   610→                  }}
+   611→   611→                >
+   612→   612→                  Комедийные и самоироничные номера, в которых главным инструментом
+   613→   613→                  становятся юмор, актёрская игра и неожиданные сценические решения.
+   614→   614→                </p>
+   615→   615→              </div>
+   616→   616→            </div>
+   617→   617→          </div>
+   618→   618→        </div>
+   619→   619→
+   620→   620→        {/* ═══════════════════════════════════
+   621→   621→            Gold Separator
+   622→   622→            ═══════════════════════════════════ */}
+   623→   623→        <div
+   624→   624→          className="flex items-center gap-4 mb-14 md:mb-18 mx-auto"
+   625→   625→          style={{
+   626→   626→            opacity: isVisible ? 1 : 0,
+   627→   627→            transition: 'opacity 0.8s ease 0.5s',
+   628→   628→            width: '100%',
+   629→   629→            maxWidth: '700px',
+   630→   630→          }}
+   631→   631→        >
+   632→   632→          <div
+   633→   633→            style={{
+   634→   634→              flex: 1,
+   635→   635→              height: '1px',
+   636→   636→              background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.3))',
+   637→   637→            }}
+   638→   638→          />
+   639→   639→          <div
+   640→   640→            style={{
+   641→   641→              width: '8px',
+   642→   642→              height: '8px',
+   643→   643→              border: '1px solid rgba(201,169,110,0.6)',
+   644→   644→              transform: 'rotate(45deg)',
+   645→   645→              background: 'rgba(6,2,10,0.9)',
+   646→   646→            }}
+   647→   647→          />
+   648→   648→          <div
+   649→   649→            style={{
+   650→   650→              flex: 1,
+   651→   651→              height: '1px',
+   652→   652→              background: 'linear-gradient(90deg, rgba(201,169,110,0.3), transparent)',
+   653→   653→            }}
+   654→   654→          />
+   655→   655→        </div>
+   656→   656→
+   657→   657→        {/* ═══════════════════════════════════
+   658→   658→            PART 2: Шоу-программа «Мадам Бум»
+   659→   659→            ═══════════════════════════════════ */}
+   660→   660→
+   661→   661→        {/* Part 2 Title — centered */}
+   662→   662→        <div
+   663→   663→          className="mb-10 md:mb-12 flex flex-col items-center"
+   664→   664→          style={{
+   665→   665→            opacity: isVisible ? 1 : 0,
+   666→   666→            transform: isVisible ? 'translateY(0)' : 'translateY(25px)',
+   667→   667→            transition:
+   668→   668→              'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s',
+   669→   669→          }}
+   670→   670→        >
+   671→   671→          <h2
+   672→   672→            style={{
+   673→   673→              fontFamily: 'var(--font-playfair)',
+   674→   674→              fontSize: 'clamp(28px, 4vw, 48px)',
+   675→   675→              fontWeight: 700,
+   676→   676→              color: '#C9A96E',
+   677→   677→              letterSpacing: '0.02em',
+   678→   678→              lineHeight: 1.1,
+   679→   679→              textShadow: '0 0 50px rgba(201,169,110,0.12), 0 4px 16px rgba(0,0,0,0.4)',
+   680→   680→              textAlign: 'center',
+   681→   681→            }}
+   682→   682→          >
+   683→   683→            Шоу-программа{' '}
+   684→   684→            <span style={{ fontStyle: 'italic', color: '#E8D5A3' }}>«Мадам Бум»</span>
+   685→   685→          </h2>
+   686→   686→        </div>
+   687→   687→
+   688→   688→        {/* Конферанс description — centered, narrower */}
+   689→   689→        <div
+   690→   690→          className="max-w-3xl mx-auto mb-12 md:mb-14"
+   691→   691→          style={{
+   692→   692→            opacity: isVisible ? 1 : 0,
+   693→   693→            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+   694→   694→            transition:
+   695→   695→              'opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.65s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.65s',
+   696→   696→          }}
+   697→   697→        >
+   698→   698→          <p
+   699→   699→            style={{
+   700→   700→              fontFamily: 'var(--font-cormorant)',
+   701→   701→              color: 'rgba(245,230,211,0.78)',
+   702→   702→              fontSize: 'clamp(16px, 1.4vw, 20px)',
+   703→   703→              fontWeight: 400,
+   704→   704→              lineHeight: 1.8,
+   705→   705→              letterSpacing: '0.02em',
+   706→   706→              textAlign: 'center',
+   707→   707→            }}
+   708→   708→          >
+   709→   709→            Особое место в программе занимает искусство{' '}
+   710→   710→            <span style={{ color: '#E8D5A3', fontStyle: 'italic' }}>конферанса</span> —
+   711→   711→            тонкого и остроумного общения с публикой, которое превращает отдельные
+   712→   712→            номера в единое театральное повествование. Благодаря ведущей вечер
+   713→   713→            развивается как цельная история, наполненная юмором, импровизацией и живым
+   714→   714→            взаимодействием со зрителями.
+   715→   715→          </p>
+   716→   716→        </div>
+   717→   717→
+   718→   718→        {/* Program elements — 7 icon cards in grid */}
+   719→   719→        <div
+   720→   720→          className="mb-14 md:mb-16"
+   721→   721→          style={{
+   722→   722→            opacity: isVisible ? 1 : 0,
+   723→   723→            transition: 'opacity 0.8s ease 0.75s',
+   724→   724→          }}
+   725→   725→        >
+   726→   726→          {/* Section label */}
+   727→   727→          <div className="flex items-center justify-center gap-3 mb-8">
+   728→   728→            <div
+   729→   729→              style={{
+   730→   730→                width: '30px',
+   731→   731→                height: '1px',
+   732→   732→                background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.3))',
+   733→   733→              }}
+   734→   734→            />
+   735→   735→            <span
+   736→   736→              className="uppercase"
+   737→   737→              style={{
+   738→   738→                fontFamily: 'var(--font-inter)',
+   739→   739→                color: 'rgba(201,169,110,0.55)',
+   740→   740→                fontSize: '11px',
+   741→   741→                fontWeight: 500,
+   742→   742→                letterSpacing: '0.25em',
+   743→   743→              }}
+   744→   744→            >
+   745→   745→              В программе представлены
+   746→   746→            </span>
+   747→   747→            <div
+   748→   748→              style={{
+   749→   749→                width: '30px',
+   750→   750→                height: '1px',
+   751→   751→                background: 'linear-gradient(90deg, rgba(201,169,110,0.3), transparent)',
+   752→   752→              }}
+   753→   753→            />
+   754→   754→          </div>
+   755→   755→
+   756→   756→          {/* Grid of 7 elements */}
+   757→   757→          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-6 md:gap-5">
+   758→   758→            {programElements.map((el, i) => (
+   759→   759→              <ProgramElement
+   760→   760→                key={i}
+   761→   761→                icon={el.icon}
+   762→   762→                label={el.label}
+   763→   763→                delay={0.75 + i * 0.08}
+   764→   764→                visible={isVisible}
+   765→   765→              />
+   766→   766→            ))}
+   767→   767→          </div>
+   768→   768→        </div>
+   769→   769→
+   770→   770→        {/* Two highlight cards: Бокал + Варлоки */}
+   771→   771→        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+   772→   772→          <HighlightCard
+   773→   773→            icon={<Wine size={22} strokeWidth={1.5} />}
+   774→   774→            title="Девушка в бокале"
+   775→   775→            accentLabel="Легендарный номер"
+   776→   776→            text="Одним из главных украшений шоу является легендарный номер девушки в бокале с игристым — один из самых узнаваемых символов мирового бурлеска. В репертуаре «Мадам Бум» представлены сразу два номера в бокале с совершенно разной эстетикой и сценическими образами, что является редкостью даже для крупных международных бурлеск-проектов."
+   777→   777→            delay={1.1}
+   778→   778→            visible={isVisible}
+   779→   779→          />
+   780→   780→          <HighlightCard
+   781→   781→            icon={<Eye size={22} strokeWidth={1.5} />}
+   782→   782→            title="Анна и Сергей Варлоки"
+   783→   783→            accentLabel="Ментализм и магия"
+   784→   784→            text="Дополняют программу выступления менталистов Анны и Сергея Варлоки, создающих атмосферу настоящего сценического волшебства, где граница между реальностью и иллюзией становится почти незаметной."
+   785→   785→            delay={1.2}
+   786→   786→            visible={isVisible}
+   787→   787→          />
+   788→   788→        </div>
+   789→   789→      </div>
+   790→   790→
+   791→   791→      {/* ═══ INLINE STYLES ═══ */}
+   792→   792→      <style>{`
+   793→   793→        /* Burlesque cards hover (Part 1) — no translateY to avoid border being clipped by upper elements */
+   794→   794→        .burlesque-card-inner:hover {
+   795→   795→          box-shadow: 0 0 32px rgba(201,169,110,0.28), 0 8px 30px rgba(0,0,0,0.5);
+   796→   796→          border: 1px solid rgba(201,169,110,0.7) !important;
+   797→   797→          border-color: rgba(201,169,110,0.7) !important;
+   798→   798→        }
+   799→   799→
+   800→   800→        /* Program element hover */
+   801→   801→        .program-element:hover .program-element-icon {
+   802→   802→          background: rgba(201,169,110,0.15) !important;
+   803→   803→          border-color: rgba(201,169,110,0.55) !important;
+   804→   804→          transform: translateY(-3px);
+   805→   805→          box-shadow: 0 0 18px rgba(201,169,110,0.2);
+   806→   806→        }
+   807→   807→
+   808→   808→        /* Highlight cards hover (Part 2) — no translateY, border stays visible on all sides */
+   809→   809→        .highlight-card-inner:hover {
+   810→   810→          box-shadow: 0 0 36px rgba(201,169,110,0.32), 0 10px 35px rgba(0,0,0,0.5);
+   811→   811→          border: 1px solid rgba(201,169,110,0.7) !important;
+   812→   812→          border-color: rgba(201,169,110,0.7) !important;
+   813→   813→        }
+   814→   814→        .highlight-card-inner:hover .highlight-card-glow {
+   815→   815→          opacity: 1 !important;
+   816→   816→        }
+   817→   817→      `}</style>
+   818→   818→    </section>
+   819→   819→  )
+   820→   820→}
+   821→   821→

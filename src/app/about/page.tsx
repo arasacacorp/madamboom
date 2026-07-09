@@ -2,11 +2,14 @@
 
 import Navbar from '@/components/sections/Navbar'
 import About from '@/components/sections/About'
+import WhatIsBurlesqueAbout from '@/components/sections/WhatIsBurlesqueAbout'
 import WhyUs from '@/components/sections/WhyUs'
 import Footer from '@/components/sections/Footer'
 
 /* ═══ About Page (/about) ═══
- * Hero = About component (editorial layout with producer photo + text)
+ * Hero = About component (О проекте — editorial layout with producer photo + text)
+ * Then WhatIsBurlesqueAbout block (Что такое бурлеск? + Шоу-программа — copied
+ *   from the main page's current WhatIsBurlesque section).
  * Then WhyUs block (Почему Мадам Бум?)
  * Then Footer.
  *
@@ -28,8 +31,11 @@ export default function AboutPage() {
       <div style={{ height: '56px' }} className="sm:hidden" />
       <div style={{ height: '64px' }} className="hidden sm:block" />
 
-      {/* Hero — About section (editorial: title + producer photo + text + CTA) */}
+      {/* Hero — About section (О проекте: title + producer photo + text + CTA) */}
       <About />
+
+      {/* Что такое бурлеск? + Шоу-программа «Мадам Бум» (full current version) */}
+      <WhatIsBurlesqueAbout />
 
       {/* Почему Мадам Бум? — 6 фишек шоу */}
       <WhyUs />

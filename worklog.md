@@ -211,3 +211,26 @@ Stage Summary:
 - Modified: src/components/sections/Hero.tsx (Билеты → /events internal link); src/components/sections/Afisha.tsx (SPb badge burgundy #7B1A2B on both desktop + mobile, Moscow stays gold).
 - Hero Билеты now navigates to /events (calendar + afisha ticket hub). Afisha SPb badge now visually distinct from Moscow (burgundy vs gold), matching the calendar's city color coding.
 - All routes HTTP 200; lint clean; responsive; sticky footer intact.
+
+---
+Task ID: 23
+Agent: main (Z.ai Code)
+Task: (1) Copy the current "Что такое бурлеск" block (full WhatIsBurlesque section, current form) to /about, replacing the old smaller burlesque block there. (2) Rework Part 1 of WhatIsBurlesque on the main page with new client text (keep Part 2 "Шоу-программа" untouched).
+
+Work Log:
+- Read worklog (Task 22) + inspected WhatIsBurlesque.tsx (821 lines: Part 1 lines 321-655 = title + text/2-card grid + gold separator; Part 2 lines 657-789 = Шоу-программа title + conferansh text + 7 program-element grid + 2 highlight cards Бокал/Варлоки), About.tsx (had its own "PART 2: Что такое бурлеск?" block lines 560-673 with 2 BurlesqueCards + quote), /about/page.tsx.
+- Step 1 — Created WhatIsBurlesqueAbout.tsx: exact copy of current WhatIsBurlesque.tsx (full current version — Part 1 old text + 2 cards + Part 2), only changed section id "what-is-burlesque" → "what-is-burlesque-about" to avoid DOM id conflicts when both could theoretically render.
+- Step 2 — Reworked WhatIsBurlesque.tsx Part 1 (main page): replaced the old "text column (7/12) + 2 cards (5/12)" grid with a single centered max-w-3xl editorial prose column. New content (client's exact text): lead paragraph with gold left-border accent (para 1 "театральное искусство..."), 4 body paragraphs (Бурлеск — это не стриптиз; Бурлеск-кабаре «Мадам Бум»; В репертуаре; Если вы ищете), closing italic quote with gold dot («Мадам Бум» — это место, где бурлеск становится искусством...). Removed the 2 cards (Классический бурлеск / Бурлеск с перцем) since the new text is pure prose. Part 2 (Шоу-программа: conferansh + 7 program elements + Бокал/Варлоки highlight cards) left 100% untouched. Title block + subtitle + gold separator preserved.
+- Step 3 — About.tsx: deleted the old "PART 2: Что такое бурлеск?" block (lines 560-673) + the now-unused BurlesqueCard helper function (lines 52-158). About now = Part 1 only (О проекте: producer photo + text + CTA) ending with the gold separator as a closer.
+- Step 4 — /about/page.tsx: added <WhatIsBurlesqueAbout /> between <About /> and <WhyUs />. /about now: Navbar → About (О проекте) → WhatIsBurlesqueAbout (Что такое бурлеск? + Шоу-программа, current version) → WhyUs → Footer.
+- Lint: clean (no unused-var errors after BurlesqueCard removal). / → HTTP 200, /about → HTTP 200.
+- Agent Browser self-verification (mandatory):
+  • HOME (1440×900): WhatIsBurlesque Part 1 — all new text present (театральное искусство / не стриптиз / Бурлеск-кабаре «Мадам Бум» / В репертуаре / Если вы ищете / незабываемое путешествие). Old text GONE (искусство кабаре красота харизма / Роскошный чувственный / Комедийные самоироничные). Part 2 intact: Шоу-программа title ✓, all 7 program elements ✓, Девушка в бокале ✓, Анна и Сергей Варлоки ✓. Mobile 390×844: no overflow, new lead text present.
+  • /about (1440×900): WhatIsBurlesqueAbout section found (id=what-is-burlesque-about). Contains the CURRENT version — old lead (искусство кабаре красота харизма) ✓, 2 cards (Классический бурлеск + Бурлеск с перцем) ✓, old quote (по-настоящему живым) ✓, Part 2 (Шоу-программа + Девушка в бокале + Варлоки) ✓. New rework text ABSENT (театральное искусство / не стриптиз not present). Old About Part 2 block removed — only 1 "Что такое бурлеск" title on the page (from WhatIsBurlesqueAbout, no duplicate).
+  • dev.log: only expected TC 403 (placeholder key) — no compile/runtime errors.
+
+Stage Summary:
+- New artifacts: src/components/sections/WhatIsBurlesqueAbout.tsx (current-version copy for /about).
+- Modified: src/components/sections/WhatIsBurlesque.tsx (Part 1 reworked with client's 6-paragraph editorial text; Part 2 untouched); src/components/sections/About.tsx (removed old Part 2 burlesque block + unused BurlesqueCard helper); src/app/about/page.tsx (added <WhatIsBurlesqueAbout />).
+- Home page: "Что такое бурлеск?" now = rich editorial prose (client's new text) → gold separator → Шоу-программа (unchanged). /about: О проекте → full current "Что такое бурлеск? + Шоу-программа" section → Почему Мадам Бум → Footer.
+- All routes HTTP 200; lint clean; responsive; sticky footer intact.
