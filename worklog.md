@@ -389,3 +389,20 @@ Work Log:
 Stage Summary:
 - Modified: src/components/sections/Programs.tsx — ProgramCard now takes url (Moscow) + spbUrl (SPB) props; CTA buttons = "Билеты в Москве" (gold, madamboommsk) + "Билеты в Санкт-Петербурге" (outline, madamboomspb). Both programs' cards updated.
 - All routes HTTP 200; lint clean; responsive (buttons stack on mobile).
+
+---
+Task ID: 32
+Agent: main (Z.ai Code)
+Task: In the "Программы текущих шоу" block, change the buttons from "Билеты в Москве"/"Билеты в Санкт-Петербурге" (external ticketscloud) to "Афиша Москва"/"Афиша Санкт-Петербург" (internal /msk, /spb), and add an arrow to the SPB button too (both should have arrows).
+
+Work Log:
+- Read worklog (Task 31) + inspected the current CTA buttons block (msk gold gradient → madamboommsk external + spb outline → madamboomspb external, only msk had an arrow).
+- Edit 1 — CTA buttons (Programs.tsx): changed labels "Билеты в Москве" → "Афиша Москва", "Билеты в Санкт-Петербурге" → "Афиша Санкт-Петербург". Removed target="_blank"/rel on both (now internal same-tab navigation). Added the gold-arrow SVG to the SPB button (was missing). Kept styling: msk = gold gradient primary, spb = outline secondary.
+- Edit 2 — All 4 ProgramCard usages: url "https://madamboommsk.ticketscloud.org/" → "/msk"; spbUrl "https://madamboomspb.ticketscloud.org/" → "/spb". Both now internal links to the city afisha pages.
+- Lint: clean. / → HTTP 200.
+- Agent Browser verification (desktop 1440): 4 "Афиша Москва" buttons (href=/msk, no target, has arrow svg ✓); 4 "Афиша Санкт-Петербург" buttons (href=/spb, no target, has arrow svg ✓). Old "Билеты в Москве"/"Билеты в Санкт-Петербурге" fully gone. VLM confirms: "кнопки «Афиша Москва» и «Афиша Санкт-Петербург» с правыми стрелками." Mobile 390×844: no overflow.
+- dev.log: no compile/runtime errors.
+
+Stage Summary:
+- Modified: src/components/sections/Programs.tsx — CTA buttons now "Афиша Москва" (→/msk, gold, arrow) + "Афиша Санкт-Петербург" (→/spb, outline, arrow). Both internal links. All 4 ProgramCard usages updated.
+- All routes HTTP 200; lint clean; responsive.

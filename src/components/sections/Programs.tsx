@@ -223,12 +223,10 @@ function ProgramCard({
             </div>
           )}
 
-          {/* CTA buttons — Билеты в Москве + Билеты в Санкт-Петербурге */}
+          {/* CTA buttons — Афиша Москва + Афиша Санкт-Петербурге (internal links) */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-auto">
             <a
               href={url}
-              target="_blank"
-              rel="noopener noreferrer"
               className="program-cta-btn inline-flex items-center justify-center gap-2"
               style={{
                 fontFamily: 'var(--font-inter)',
@@ -246,7 +244,7 @@ function ProgramCard({
                 whiteSpace: 'nowrap',
               }}
             >
-              Билеты в Москве
+              Афиша Москва
               <svg
                 width="13"
                 height="13"
@@ -261,8 +259,6 @@ function ProgramCard({
             </a>
             <a
               href={spbUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               className="program-info-btn inline-flex items-center justify-center gap-2"
               style={{
                 fontFamily: 'var(--font-inter)',
@@ -280,7 +276,18 @@ function ProgramCard({
                 whiteSpace: 'nowrap',
               }}
             >
-              Билеты в Санкт-Петербурге
+              Афиша Санкт-Петербург
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                style={{ transition: 'transform 0.3s ease' }}
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
             </a>
           </div>
         </div>
@@ -434,8 +441,8 @@ export default function Programs() {
               'Девушка в золотом бокале ✦',
             ]}
             highlighted={true}
-            url="https://madamboommsk.ticketscloud.org/"
-            spbUrl="https://madamboomspb.ticketscloud.org/"
+            url="/msk"
+            spbUrl="/spb"
             delay={0.2}
             visible={isVisible}
           />
@@ -453,8 +460,8 @@ export default function Programs() {
             ]}
             highlighted={false}
             timeBadge="19:00 — приветственный бокал · 20:00 — шоу"
-            url="https://madamboommsk.ticketscloud.org/"
-            spbUrl="https://madamboomspb.ticketscloud.org/"
+            url="/msk"
+            spbUrl="/spb"
             delay={0.4}
             visible={isVisible}
           />
@@ -475,8 +482,8 @@ export default function Programs() {
               'Девушка в золотом бокале ✦',
             ]}
             highlighted={true}
-            url="https://madamboommsk.ticketscloud.org/"
-            spbUrl="https://madamboomspb.ticketscloud.org/"
+            url="/msk"
+            spbUrl="/spb"
             delay={0.15}
             visible={isVisible}
           />
@@ -494,8 +501,8 @@ export default function Programs() {
             ]}
             highlighted={false}
             timeBadge="19:00 — приветственный бокал · 20:00 — шоу"
-            url="https://madamboommsk.ticketscloud.org/"
-            spbUrl="https://madamboomspb.ticketscloud.org/"
+            url="/msk"
+            spbUrl="/spb"
             delay={0.3}
             visible={isVisible}
           />
