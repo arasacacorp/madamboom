@@ -406,3 +406,30 @@ Work Log:
 Stage Summary:
 - Modified: src/components/sections/Programs.tsx — CTA buttons now "Афиша Москва" (→/msk, gold, arrow) + "Афиша Санкт-Петербург" (→/spb, outline, arrow). Both internal links. All 4 ProgramCard usages updated.
 - All routes HTTP 200; lint clean; responsive.
+
+---
+Task ID: 33
+Agent: main (Z.ai Code)
+Task: Diagnose why calendar events aren't displaying; fix with the real TicketsCloud API key the user provided.
+
+Work Log:
+- Diagnosis (Task 33-pre): checked dev.log — every /api/calendar call returned 500 "TicketsCloud API error: 403 Forbidden". Root cause: .env had TC_API_KEY=your_api_key_here (placeholder). Confirmed by direct curl to TicketsCloud: "bad key: 'your_api_key_here'" (HTTP 403). All calendar infrastructure (city filter, widget override, caching) was already wired (Tasks 15-16) — only the key was missing.
+- User provided real key: 4fecb5ca855545ffbeb96a0a52188b35 (32-char hex).
+- Edit: replaced TC_API_KEY=your_api_key_here → TC_API_KEY=4fecb5ca855545ffbeb96a0a52188b35 in .env.
+- Restarted dev server (setsid+disown pattern) so Next.js picks up the new .env (env vars are read at startup, not on file change).
+- Verified directly against TicketsCloud API: key valid, returns real events (HTTP 200, JSON with event data).
+- Verified /api/calendar endpoints:
+  • /api/calendar?year=2026&month=7 → 10 events (5 Москва + 5 СПб, correct cityMarker М/СПб).
+  • /api/calendar?year=2026&month=7&city=msk → 5 Moscow-only events ✓.
+  • /api/calendar?year=2026&month=7&city=spb → 5 SPb-only events ✓.
+  Events: 10/17/18/24/31 июля (Москва), 11/16/23/25/30 июля (СПб). Titles include "Бурлеск кабаре шоу МАДАМ БУМ" and "«Джазовый бунт»" variants.
+- Agent Browser verification:
+  • Home /: calendar counter "10 ШОУ В ЭТОМ МЕСЯЦЕ", hasEvents=true, no "Шоу не найдены", no errors. VLM: "Есть мероприятия (подсвеченные даты). В этом месяце указано 10 шоу."
+  • /msk: calendar counter "5 ШОУ В ЭТОМ МЕСЯЦЕ", legend shows only Москва (СПб hidden — cityFilter working), hasEvents=true.
+  • /spb: calendar counter "5 ШОУ В ЭТОМ МЕСЯЦЕ", hasEvents=true.
+- dev.log: ALL /api/calendar calls now HTTP 200 (no more 403 Forbidden). Calendar fully functional.
+
+Stage Summary:
+- Modified: .env — TC_API_KEY set to real key 4fecb5ca855545ffbeb96a0a52188b35.
+- Calendar now displays real TicketsCloud events on all 3 pages: home (10 events, both cities), /msk (5 Moscow-only → madamboommsk widget), /spb (5 SPb-only → madamboomspb widget). City filter + widget override + caching all working end-to-end.
+- Security note: the real key is now in .env (which is gitignored). It is NOT committed to the repo. Do not share .env publicly.
