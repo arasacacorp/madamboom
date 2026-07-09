@@ -56,3 +56,26 @@ Stage Summary:
 - Artifacts: public/images/afisha-msk.jpg + afisha-spb.jpg (new); api/calendar/route.ts (city filter); Calendar.tsx (cityFilter/widgetOverride/title props); Afisha.tsx (2 posters + city badge + Подробнее→city pages); src/app/msk/page.tsx (new); src/app/spb/page.tsx (new); Navbar.tsx (Афиша Москва highlighted link).
 - All 8 routes HTTP 200; lint clean; logo centered; responsive; sticky footer.
 - Known limitation (unchanged): calendars show "Шоу не найдены" until a real TC_API_KEY is set in .env — but the city-filter + widget-override logic is wired and verified (network shows ?city=msk requests; legend shows only the filtered city). With a real key, /msk shows only Moscow events and all "Купить билеты" open madamboommsk widget; /spb shows only SPB events → madamboomspb widget.
+
+---
+Task ID: 16
+Agent: main (Z.ai Code)
+Task: (1) Home afisha block — centralize the 2 posters; move the Москва/Санкт-Петербург badges from poster overlay to ABOVE each poster. (2) /spb page — replace text with client-provided copy.
+
+Work Log:
+- Read worklog (Task 15) + inspected current Afisha.tsx (AfishaCard + AfishaCardMobile both had the city badge as an absolute overlay inside .afisha-poster-inner top-left) and /spb/page.tsx (intro paragraphs + schedule + closing line).
+- Task 1 — Afisha.tsx desktop card (AfishaCard): moved the city badge OUT of the poster-inner overlay into a new centered flex container placed BEFORE the .afisha-poster-frame. Restyled as a gold-gradient pill (linear-gradient #C9A96E→#E8D5A3, dark text #06020A, dot indicator) matching the navbar Москва badge aesthetic — more prominent above the poster than the old dark translucent overlay. Removed the absolute-positioned badge span from inside the image container (image is now clean, no overlay). Corner brackets retained (featured-only).
+- Task 1 — Afisha.tsx mobile card (AfishaCardMobile): identical change — gold-gradient badge above poster (slightly smaller padding/font for mobile), overlay removed.
+- Centralization: desktop grid already uses `justify-center` (hidden md:flex items-start justify-center). With 2 cards (both highlighted=false, equal width) they are symmetric around grid center. Verified via Agent Browser: cardCenters=[527, 913], gridCenter=720 → ±193px symmetric (perfectly centralized as a pair). No grid change needed.
+- Task 2 — /spb page text: replaced 4 intro paragraphs with client's exact copy (ярких вечерних шоу; Каждый четверг ресторан «Юнити» сбор гостей с бокалом игристого; По субботам клуб «Ибица» «Джазовый бум» виртуозная живая музыка; станет идеальным выбором). Updated schedule Thursday → "ресторан «Юнити», переулок Гривцова, 4" (fixed client typo «Юнти»→«Юнити» for consistency with intro + correct venue name). Updated schedule Saturday → "клуб «Ибица»" (no address, per client text). Updated closing line → "«Мадам Бум» — место, где живой джаз, бурлеск и театр создают атмосферу настоящего кабаре." Old generated text removed (no "площадка Unity", no "Садовая улица, 12", no "превращают обычный").
+- Lint: clean. All routes HTTP 200 (/, /spb, /msk, /events).
+- Agent Browser self-verification (mandatory):
+  • Home afisha (desktop 1440): 2 cards, 2 badges; overlaySpansInsidePoster=[0,0] (overlay removed); badgeAbovePoster=true for both; badgeCentered matches cardCenter (527=527, 913=913 — badges centered on each poster); cards symmetric around grid center 720 (±193). Screenshot captured.
+  • Home afisha (mobile 390×844): 2 mobile cards; badges above posters (badgeAbove=true); no overlay (noOverlay=true); no horizontal overflow.
+  • /spb text: all 4 new paragraphs present (para1 ярких вечерних шоу, para2 Юнити + бокал игристого, para3 Ибица + виртуозная, para4 идеальным выбором); schedule Thursday «Юнити»+Гривцова 4 ✓; schedule Saturday «клуб «Ибица»» ✓; closing line ✓; old text fully gone. Calendar intact (title "Календарь событий в Санкт-Петербурге", section present). Mobile 390×844: no overflow, h1 correct. Screenshot captured.
+  • dev.log: only expected TC 403 errors (placeholder key) — no compile/runtime errors.
+
+Stage Summary:
+- Modified: src/components/sections/Afisha.tsx (badges moved above posters in both desktop + mobile cards, gold-gradient pill style); src/app/spb/page.tsx (4 intro paragraphs + Thursday/Saturday schedule + closing line replaced with client copy).
+- Home afisha now: 2 centralized posters, each with a prominent gold "Москва"/"Санкт-Петербург" badge ABOVE the poster (no overlay). /spb page now shows the client's exact descriptive text.
+- All routes HTTP 200; lint clean; responsive; sticky footer intact.

@@ -121,6 +121,40 @@ function AfishaCard({
         transition: `opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
       }}
     >
+      {/* City badge — above the poster, centered */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
+        <span
+          className="afisha-city-badge"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '7px',
+            padding: '7px 16px',
+            borderRadius: '20px',
+            fontFamily: 'var(--font-inter)',
+            fontSize: '11px',
+            fontWeight: 600,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: '#06020A',
+            background: 'linear-gradient(135deg, #C9A96E 0%, #E8D5A3 100%)',
+            border: '1px solid rgba(232,213,163,0.5)',
+            boxShadow: '0 0 14px rgba(201,169,110,0.25)',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <span
+            style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: '#06020A',
+            }}
+          />
+          {city}
+        </span>
+      </div>
+
       {/* ── Poster frame ── */}
       <div
         className="afisha-poster-frame relative"
@@ -156,44 +190,6 @@ function AfishaCard({
             }}
             loading="lazy"
           />
-
-          {/* City badge — visible marker on the poster */}
-          <span
-            className="afisha-city-badge"
-            style={{
-              position: 'absolute',
-              top: '12px',
-              left: '12px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 12px',
-              borderRadius: '20px',
-              fontFamily: 'var(--font-inter)',
-              fontSize: '10px',
-              fontWeight: 600,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: '#E8D5A3',
-              background: 'rgba(6,2,10,0.78)',
-              border: '1px solid rgba(201,169,110,0.45)',
-              backdropFilter: 'blur(6px)',
-              WebkitBackdropFilter: 'blur(6px)',
-              zIndex: 4,
-              whiteSpace: 'nowrap',
-            }}
-          >
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                background: '#C9A96E',
-                boxShadow: '0 0 6px rgba(201,169,110,0.8)',
-              }}
-            />
-            {city}
-          </span>
 
           {/* Corner brackets — only on featured card, on the frame edges */}
           {highlighted && <CornerBrackets />}
@@ -632,6 +628,39 @@ function AfishaCardMobile({
         transition: `opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
       }}
     >
+      {/* City badge — above the poster, centered */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '6px 14px',
+            borderRadius: '20px',
+            fontFamily: 'var(--font-inter)',
+            fontSize: '10px',
+            fontWeight: 600,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: '#06020A',
+            background: 'linear-gradient(135deg, #C9A96E 0%, #E8D5A3 100%)',
+            border: '1px solid rgba(232,213,163,0.5)',
+            boxShadow: '0 0 12px rgba(201,169,110,0.25)',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <span
+            style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: '#06020A',
+            }}
+          />
+          {city}
+        </span>
+      </div>
+
       {/* Poster frame */}
       <div
         className="afisha-poster-frame relative"
@@ -662,42 +691,6 @@ function AfishaCardMobile({
             }}
             loading="lazy"
           />
-          {/* City badge */}
-          <span
-            style={{
-              position: 'absolute',
-              top: '10px',
-              left: '10px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '5px 10px',
-              borderRadius: '20px',
-              fontFamily: 'var(--font-inter)',
-              fontSize: '9px',
-              fontWeight: 600,
-              letterSpacing: '0.16em',
-              textTransform: 'uppercase',
-              color: '#E8D5A3',
-              background: 'rgba(6,2,10,0.78)',
-              border: '1px solid rgba(201,169,110,0.45)',
-              backdropFilter: 'blur(6px)',
-              WebkitBackdropFilter: 'blur(6px)',
-              zIndex: 4,
-              whiteSpace: 'nowrap',
-            }}
-          >
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                background: '#C9A96E',
-                boxShadow: '0 0 6px rgba(201,169,110,0.8)',
-              }}
-            />
-            {city}
-          </span>
           {highlighted && <CornerBrackets />}
         </div>
       </div>
