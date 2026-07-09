@@ -371,3 +371,21 @@ Work Log:
 Stage Summary:
 - Modified: src/components/sections/Afisha.tsx — desktop grid changed justify-between → justify-center (gap-8 lg:gap-10 xl:gap-12, max-w-5xl). Two full-size posters now cluster as a centered pair instead of spreading to container edges.
 - All routes HTTP 200; lint clean; responsive; symmetric at all widths.
+
+---
+Task ID: 31
+Agent: main (Z.ai Code)
+Task: In the "Программы текущих шоу" block, replace the "Билеты" + "О программе" buttons on each program card with "Билеты в Москве" + "Билеты в Санкт-Петербурге".
+
+Work Log:
+- Read worklog (Task 30) + inspected Programs.tsx: ProgramCard had 2 CTA buttons — "Билеты" (gold, href=url → madamboomgrimerka) + "О программе" (outline, href=#programs no-op). 4 ProgramCard usages (2 desktop + 2 mobile, both programs "Мадам Бум" and "Джазовый бунт"). All used url="https://madamboomgrimerka.ticketscloud.org/".
+- Edit 1 — ProgramCard interface/destructure: added `spbUrl: string` prop (required, alongside existing `url`).
+- Edit 2 — CTA buttons block: replaced "Билеты" (gold gradient) → "Билеты в Москве" (href=url, target=_blank); replaced "О программе" (outline, #programs) → "Билеты в Санкт-Петербурге" (href=spbUrl, target=_blank, outline style kept). Made buttons stack vertically on mobile (flex-col sm:flex-row), slightly smaller font/padding + whiteSpace:nowrap so both long labels fit. Kept gold-arrow SVG on the primary Moscow button.
+- Edit 3 — All 4 ProgramCard usages: changed url madamboomgrimerka → madamboommsk (consistent with the rest of the site after Tasks 15-16), added spbUrl="https://madamboomspb.ticketscloud.org/" to each.
+- Lint: clean. / → HTTP 200.
+- Agent Browser verification (desktop 1440): 4 "Билеты в Москве" buttons (all → madamboommsk.ticketscloud.org), 4 "Билеты в Санкт-Петербурге" buttons (all → madamboomspb.ticketscloud.org). Old "Билеты" and "О программе" fully gone. VLM confirms: "Внизу каждой карточки есть две кнопки: «Билеты в Москве» и «Билеты в Санкт-Петербурге»." Mobile 390×844: no overflow (buttons stack vertically on narrow screens).
+- dev.log: no compile/runtime errors.
+
+Stage Summary:
+- Modified: src/components/sections/Programs.tsx — ProgramCard now takes url (Moscow) + spbUrl (SPB) props; CTA buttons = "Билеты в Москве" (gold, madamboommsk) + "Билеты в Санкт-Петербурге" (outline, madamboomspb). Both programs' cards updated.
+- All routes HTTP 200; lint clean; responsive (buttons stack on mobile).
