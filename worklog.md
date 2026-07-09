@@ -190,3 +190,24 @@ Stage Summary:
 - Modified: src/components/sections/Hero.tsx (subtitle forced to 2 lines via <br>); src/components/sections/Footer.tsx (tagline under logo → new sentence).
 - Hero subtitle now: line 1 "Игривое и дерзкое бурлеск-шоу, где блеск, юмор и магия сцены" / line 2 "превращает вечер в незабываемый праздник". Footer logo now followed by the same sentence.
 - All routes HTTP 200; lint clean; responsive; sticky footer intact.
+
+---
+Task ID: 22
+Agent: main (Z.ai Code)
+Task: (1) Hero "Билеты" button → /events (internal). (2) Afisha Санкт-Петербург badge → burgundy (matching calendar SPb color #7B1A2B) instead of gold.
+
+Work Log:
+- Read worklog (Task 21) + inspected Calendar.tsx CITY_COLORS (М=#C9A96E gold, СПб=#7B1A2B burgundy), Hero.tsx Билеты button, Afisha.tsx desktop + mobile city badges.
+- Task 1 — Hero.tsx: changed <a href="https://madamboomgrimerka.ticketscloud.org/" target="_blank" rel="noopener noreferrer"> → <a href="/events"> (internal navigation to the events/calendar ticket hub). Removed target/rel (same-tab navigation). Kept gold gradient styling + Ticket icon.
+- Task 2 — Afisha.tsx: made the city badge style conditional on the `city` prop. Default (Москва) stays gold gradient (linear-gradient #C9A96E→#E8D5A3, dark text, gold glow, dark dot). For city==='Санкт-Петербург' overrides to burgundy: background linear-gradient(135deg, #7B1A2B 0%, #5A0F1A 100%), text color #E8D5A3 (cream), border rgba(201,169,110,0.45) (gold edge for consistency), box-shadow rgba(123,26,43,0.45) burgundy glow, dot #E8D5A3. Applied to BOTH desktop (AfishaCard) and mobile (AfishaCardMobile) badges. Color #7B1A2B exactly matches Calendar.tsx CITY_COLORS['СПб'].
+- Lint: clean. / → HTTP 200.
+- Agent Browser self-verification (mandatory):
+  • Hero: Билеты button href="/events" (heroBtnIsEvents=true), no target=_blank. ✓
+  • Afisha badges (desktop): Москва → bg linear-gradient rgb(201,169,110)→rgb(232,213,163), color rgb(6,2,10), gold box-shadow, dark dot. Санкт-Петербург → bg linear-gradient rgb(123,26,43)→rgb(90,15,26) (burgundy ✓), color rgb(232,213,163) cream, burgundy box-shadow, cream dot. VLM confirms: "Москва — золотой. Санкт-Петербург — бордовый." Screenshot captured.
+  • Afisha badges (mobile 390×844): Москва gold gradient, Санкт-Петербург burgundy gradient (rgb(123,26,43)). ✓
+  • dev.log: only expected TC 403 (placeholder key) — no compile/runtime errors.
+
+Stage Summary:
+- Modified: src/components/sections/Hero.tsx (Билеты → /events internal link); src/components/sections/Afisha.tsx (SPb badge burgundy #7B1A2B on both desktop + mobile, Moscow stays gold).
+- Hero Билеты now navigates to /events (calendar + afisha ticket hub). Afisha SPb badge now visually distinct from Moscow (burgundy vs gold), matching the calendar's city color coding.
+- All routes HTTP 200; lint clean; responsive; sticky footer intact.

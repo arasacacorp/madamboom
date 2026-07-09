@@ -297,11 +297,9 @@ export default function Hero({ animate }: HeroProps) {
           ref={buttonsRef}
           className="flex items-center gap-4 mt-2 opacity-0"
         >
-          {/* Primary — Билеты */}
+          {/* Primary — Билеты → /events (calendar + afisha ticket hub) */}
           <a
-            href="https://madamboomgrimerka.ticketscloud.org/"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/events"
             className="cta-button flex items-center gap-2 px-7 py-3 rounded-sm transition-all duration-400 hover:scale-105"
             style={{
               fontFamily: 'var(--font-inter)',

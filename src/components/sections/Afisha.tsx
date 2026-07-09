@@ -121,7 +121,8 @@ function AfishaCard({
         transition: `opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
       }}
     >
-      {/* City badge — above the poster, centered */}
+      {/* City badge — above the poster, centered.
+          Москва → gold gradient; Санкт-Петербург → burgundy (matches calendar SPb color #7B1A2B) */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
         <span
           className="afisha-city-badge"
@@ -141,6 +142,14 @@ function AfishaCard({
             border: '1px solid rgba(232,213,163,0.5)',
             boxShadow: '0 0 14px rgba(201,169,110,0.25)',
             whiteSpace: 'nowrap',
+            ...(city === 'Санкт-Петербург'
+              ? {
+                  color: '#E8D5A3',
+                  background: 'linear-gradient(135deg, #7B1A2B 0%, #5A0F1A 100%)',
+                  border: '1px solid rgba(201,169,110,0.45)',
+                  boxShadow: '0 0 14px rgba(123,26,43,0.45)',
+                }
+              : {}),
           }}
         >
           <span
@@ -149,6 +158,7 @@ function AfishaCard({
               height: '6px',
               borderRadius: '50%',
               background: '#06020A',
+              ...(city === 'Санкт-Петербург' ? { background: '#E8D5A3' } : {}),
             }}
           />
           {city}
@@ -628,7 +638,8 @@ function AfishaCardMobile({
         transition: `opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
       }}
     >
-      {/* City badge — above the poster, centered */}
+      {/* City badge — above the poster, centered.
+          Москва → gold gradient; Санкт-Петербург → burgundy (matches calendar SPb color #7B1A2B) */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
         <span
           style={{
@@ -647,6 +658,14 @@ function AfishaCardMobile({
             border: '1px solid rgba(232,213,163,0.5)',
             boxShadow: '0 0 12px rgba(201,169,110,0.25)',
             whiteSpace: 'nowrap',
+            ...(city === 'Санкт-Петербург'
+              ? {
+                  color: '#E8D5A3',
+                  background: 'linear-gradient(135deg, #7B1A2B 0%, #5A0F1A 100%)',
+                  border: '1px solid rgba(201,169,110,0.45)',
+                  boxShadow: '0 0 12px rgba(123,26,43,0.45)',
+                }
+              : {}),
           }}
         >
           <span
@@ -655,6 +674,7 @@ function AfishaCardMobile({
               height: '6px',
               borderRadius: '50%',
               background: '#06020A',
+              ...(city === 'Санкт-Петербург' ? { background: '#E8D5A3' } : {}),
             }}
           />
           {city}
