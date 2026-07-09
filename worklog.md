@@ -146,3 +146,27 @@ Work Log:
 Stage Summary:
 - Modified: src/components/sections/Afisha.tsx — narrowed desktop grid container max-w-6xl → max-w-4xl (justify-between kept, original card size kept). Posters now sit closer to the middle, symmetric, full-size, with a visible central gap between them.
 - All routes HTTP 200; lint clean; responsive; sticky footer intact.
+
+---
+Task ID: 20
+Agent: main (Z.ai Code)
+Task: Hero block — (1) replace the "МАДАМ БУМ" text title with the SVG logo, (2) remove the "Роскошное бурлеск-шоу, живой джаз, вокал..." tagline line, (3) replace the "Бурлеск кабаре нового поколения" subtitle with "Игривое и дерзкое бурлеск-шоу, где блеск, юмор и магия сцены превращает вечер в незабываемый праздник".
+
+Work Log:
+- Read worklog (Task 19) + inspected Hero.tsx. Verified logo-boom.svg colors (white .st0 + cream .st1) render on the dark hero bg.
+- Edit 1 — title (titleRef h1): kept the h1 wrapper (for GSAP ref + opacity animation) but swapped the inner "МАДАМ БУМ" text for <img src="/logo-boom.svg" alt="Мадам Бум — бурлеск-кабаре">. Sized via height clamp(70px, 13vh, 150px), width auto, maxWidth 92vw (mobile-safe), with a layered drop-shadow glow (gold + burgundy + dark). Removed old text-only styles (fontFamily/fontSize/color/textShadow).
+- Edit 2 — subtitle (subtitleRef): replaced "Бурлеск кабаре нового поколения" → the new full sentence. Restyled: the old style (uppercase + tracking-[0.4em] + small 17px caps) would mangle a ~95-char sentence, so changed to elegant italic Cormorant, color #E8D5A3, fontSize clamp(15px, 2vw, 23px), normal letter-spacing, lineHeight 1.5, maxWidth 760px (wraps to 2 lines nicely).
+- Edit 3 — tagline (taglineRef block): removed the entire "Роскошное бурлеск-шоу..." div. Removed its GSAP fromTo tween (null ref would throw). Kept the taglineRef declaration with an inline comment (lint passed; no unused-var error since it's a ref). Timeline now flows city(1.5) → buttons(2.0).
+- Lint: clean. / → HTTP 200.
+- Agent Browser self-verification (mandatory):
+  • Desktop 1440×900: h1 contains <img src="/logo-boom.svg" alt="Мадам Бум — бурлеск-кабаре">, logo visible 458×117px; h1 opacity=1 (GSAP ran); curtain gone. New subtitle "Игривое и дерзкое бурлеск-шоу..." present. Old subtitle "Бурлеск кабаре нового поколения" GONE. Old Hero tagline "Роскошное бурлеск-шоу, живой джаз" GONE from Hero (the phrase still exists in Programs.tsx — different section, not part of this task). City line + buttons intact.
+  • VLM: confirms italic subtitle starts "Игривое и дерзкое бурлеск-шоу...", no separate "Роскошное..." line. (VLM perceives the SVG wordmark logo as "text" because the logo IS a vector wordmark — DOM proves it's an <img>.)
+  • Mobile 390×844: logo 354×108px, fits viewport (logoFitsViewport=true), no horizontal overflow. GSAP animation runs.
+  • Console: only the pre-existing Calendar HTTP 500 (placeholder TC key) + pre-existing hydration/duplicate-key warnings (noted since Task 1) — no new errors from the Hero edit.
+  • dev.log: no compile/runtime errors.
+- Note: Curtain.tsx (the intro curtain before the Hero) still shows "МАДАМ БУМ" as text — user scoped this task to "Hero блоку", so Curtain left unchanged. Can swap to logo on request.
+
+Stage Summary:
+- Modified: src/components/sections/Hero.tsx — title → SVG logo img (drop-shadow glow); subtitle → new italic tagline sentence; tagline line removed (+ its GSAP tween).
+- Hero now: ornament → SVG logo → gold shimmer line → "Игривое и дерзкое бурлеск-шоу..." subtitle → city line → CTA buttons. Clean, elegant, on-brand.
+- All routes HTTP 200; lint clean; responsive (logo scales down on mobile via maxWidth 92vw); GSAP animation intact; sticky footer unaffected.

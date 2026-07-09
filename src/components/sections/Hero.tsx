@@ -64,7 +64,7 @@ export default function Hero({ animate }: HeroProps) {
   const lineRef = useRef<HTMLDivElement>(null)
   const subtitleRef = useRef<HTMLDivElement>(null)
   const cityRef = useRef<HTMLDivElement>(null)
-  const taglineRef = useRef<HTMLDivElement>(null)
+  const taglineRef = useRef<HTMLDivElement>(null) // unused (tagline removed) — kept to avoid touching later refs
   const buttonsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -120,13 +120,7 @@ export default function Hero({ animate }: HeroProps) {
       1.5
     )
 
-    // Tagline
-    tl.fromTo(
-      taglineRef.current,
-      { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-      1.7
-    )
+    // Tagline — removed (user request); timeline jumps from city to buttons.
 
     // CTA buttons — fade in last
     tl.fromTo(
@@ -237,20 +231,24 @@ export default function Hero({ animate }: HeroProps) {
           <div style={{ width: 'clamp(30px, 5vw, 50px)', height: '1px', background: 'linear-gradient(90deg, #C9A96E, transparent)' }} />
         </div>
 
-        {/* Main title "МАДАМ БУМ" — уменьшен на 40% */}
+        {/* Main logo (SVG) — replaces the "МАДАМ БУМ" text title */}
         <h1
           ref={titleRef}
-          className="text-center leading-[0.85] opacity-0"
-          style={{
-            fontFamily: 'var(--font-playfair)',
-            fontSize: 'clamp(25px, 5.4vw, 66px)',
-            fontWeight: 900,
-            color: '#F5E6D3',
-            letterSpacing: '0.06em',
-            textShadow: '0 0 120px rgba(201,169,110,0.12), 0 0 60px rgba(123,26,43,0.1), 0 6px 30px rgba(0,0,0,0.6)',
-          }}
+          className="text-center opacity-0"
+          style={{ lineHeight: 1 }}
         >
-          МАДАМ БУМ
+          <img
+            src="/logo-boom.svg"
+            alt="Мадам Бум — бурлеск-кабаре"
+            style={{
+              height: 'clamp(70px, 13vh, 150px)',
+              width: 'auto',
+              display: 'block',
+              margin: '0 auto',
+              maxWidth: '92vw',
+              filter: 'drop-shadow(0 0 90px rgba(201,169,110,0.2)) drop-shadow(0 0 40px rgba(123,26,43,0.15)) drop-shadow(0 8px 28px rgba(0,0,0,0.55))',
+            }}
+          />
         </h1>
 
         {/* Gold shimmer line underneath */}
@@ -260,35 +258,20 @@ export default function Hero({ animate }: HeroProps) {
           style={{ width: '100px', height: '1px' }}
         />
 
-        {/* Subtitle "БУРЛЕСК КАБАРЕ НОВОГО ПОКОЛЕНИЯ" */}
-        <div ref={subtitleRef} className="opacity-0 text-center">
-          <p
-            className="tracking-[0.4em] uppercase"
-            style={{
-              fontFamily: 'var(--font-cormorant)',
-              color: '#C9A96E',
-              fontWeight: 400,
-              fontSize: 'clamp(11px, 1.6vw, 17px)',
-            }}
-          >
-            Бурлеск кабаре нового поколения
-          </p>
-        </div>
-
-        {/* Description line */}
-        <div ref={taglineRef} className="opacity-0 text-center max-w-2xl">
+        {/* Subtitle — tagline line (replaces the old short subtitle) */}
+        <div ref={subtitleRef} className="opacity-0 text-center" style={{ maxWidth: '760px' }}>
           <p
             style={{
               fontFamily: 'var(--font-cormorant)',
               fontStyle: 'italic',
-              color: 'rgba(245, 230, 211, 0.7)',
+              color: '#E8D5A3',
               fontWeight: 400,
-              fontSize: 'clamp(12px, 1.5vw, 17px)',
-              letterSpacing: '0.05em',
+              fontSize: 'clamp(15px, 2vw, 23px)',
+              letterSpacing: '0.02em',
               lineHeight: 1.5,
             }}
           >
-            Роскошное бурлеск-шоу, живой джаз, вокал, сценическая магия и атмосфера настоящего европейского кабаре.
+            Игривое и дерзкое бурлеск-шоу, где блеск, юмор и магия сцены превращает вечер в незабываемый праздник
           </p>
         </div>
 
