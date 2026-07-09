@@ -28,3 +28,31 @@ Stage Summary:
 - Artifacts: src/ (83 files), public/ (31 assets), prisma/schema.prisma (ContactMessage model), db/custom.db (with existing data), .env (DATABASE_URL + TC placeholders), gsap@3.15.0 installed.
 - Known limitation (unchanged): Calendar section shows "Шоу не найдены" until a real TicketsCloud TC_API_KEY replaces the placeholder in .env. All other sections/pages fully functional.
 - Preview via the right-hand Preview Panel (gateway :81 → :3000); click "Open in New Tab" for a separate browser tab.
+
+---
+Task ID: 15
+Agent: main (Z.ai Code)
+Task: (1) Home afisha block → 2 new posters (Moscow + SPB) with ticket links madamboommsk/spb.ticketscloud.org + "Подробнее" → new pages /msk & /spb. (2) Create /msk page with provided text + Moscow-only calendar (madamboommsk widget). (3) Navbar "Афиша Москва" link with Moscow highlighted.
+
+Work Log:
+- Read worklog (Task 14) + inspected Afisha.tsx, Navbar.tsx, Calendar.tsx (props/fetch/header), api/calendar/route.ts, events/page.tsx.
+- Identified uploaded afishas via VLM: image aclq2y… = Москва (Гримёрка, Пушечная 9/6, ИЮЛЬ) → public/images/afisha-msk.jpg; image UxVn-4… = Санкт-Петербург (IBIZA Джазовый бунт + Unity классика, ИЮЛЬ) → public/images/afisha-spb.jpg.
+- API (api/calendar/route.ts): added `city` query param (`msk`|`spb`) — filters events by cityMarker ('М'/'СПб') before month filter; cache key includes city so MSK/SPB/all caches don't collide. Backward compatible (no city param = all events, unchanged).
+- Calendar.tsx: added 3 optional props — `cityFilter?: 'М'|'СПб'` (appends &city=msk/spb to fetch + cache key), `widgetOverride?: string` (overrides widgetUrl on ALL fetched events so modal iframe + buy button use it), `title?: string` (overrides section h2). City legend now shows only the filtered city when cityFilter set, else both. Existing <Calendar/> usages (no props) unchanged — fully backward compatible.
+- Afisha.tsx: replaced 3-poster events array with 2 (Москва→afisha-msk.jpg/madamboommsk/spb.ticketscloud.org//msk, СПб→afisha-spb.jpg/madamboomspb.ticketscloud.org//spb). Added `city` + `infoUrl` props to AfishaCard & AfishaCardMobile. Added a gold city badge (pill, top-left of poster) on each card. Renamed secondary button "О программе"→"Подробнее", href=infoUrl (internal link, no target=_blank). Desktop grid now 2 cards centered (both highlighted=false); mobile stacked.
+- Created /msk page (src/app/msk/page.tsx): hero (city badge "Афиша · Москва" + h1 "Бурлеск-кабаре «Мадам Бум» в Москве") → editorial 2-col block (afisha-msk.jpg poster + 4 intro paragraphs from client text) → 3 info cards (Сбор гостей 19:00 / Начало шоу 20:00 / Дресс-код Вечерний) + dress-code note → schedule block (Пятница—Гримёрка Пушечная 9/6, Суббота—«Джазовый бум») → closing line → <Calendar cityFilter="М" widgetOverride="https://madamboommsk.ticketscloud.org/" title="Календарь событий в Москве" /> → CTA (Билеты→madamboommsk + Связаться→/contacts) → sticky Footer.
+- Created /spb page (src/app/spb/page.tsx): analogous editorial page for Санкт-Петербург based on known venue facts (Ibiza/Садовая 12 Saturdays «Джазовый бунт»; Unity/Гривцова 4 Thursdays классическая) — SPB-only calendar with widgetOverride madamboomspb + title "Календарь событий в Санкт-Петербурге".
+- Navbar.tsx: added optional `badge?: string` to NavItem 'link' type + LEFT_LINKS. New left link "Афиша" href=/msk badge="Москва" (gold gradient pill, highlighted). Desktop left links gap tightened to gap-4 xl:gap-6 to fit 4 links; logo still perfectly centered (verified centerDelta=0). Mobile drawer also renders the gold Москва badge.
+- Lint: clean (no errors). All 8 routes HTTP 200 (/, /msk, /spb, /events, /about, /cast, /contacts, /private-events).
+- Agent Browser self-verification (mandatory):
+  • Home afisha: 2 posters (afisha-msk.jpg + afisha-spb.jpg), city badges "Москва"+"Санкт-Петербург", "Билеты"→madamboommsk/spb.ticketscloud.org, "Подробнее"→/msk & /spb. Screenshot captured.
+  • Navbar: "Афиша Москва" link (href=/msk) with gold highlighted "Москва" badge; logo centered (centerDelta=0); clicking navigates to /msk. Mobile drawer contains "Афиша Москва"→/msk.
+  • /msk: h1 "Бурлеск-кабаре «Мадам Бум» в Москве"; h2s (intro, Расписание, "Календарь событий в Москве", "Купить билеты в Москве"); afisha-msk.jpg present; info cards (19:00/20:00/Вечерний); schedule (Пятница/Суббота/Гримёрка); calendar legend shows ONLY "Москва" (no СПб — cityFilter working); network confirms fetch /api/calendar?city=msk; calendar graceful empty state "Шоу не найдены" (placeholder TC key); sticky footer (flex flex-col min-h-screen).
+  • /spb: h1 "Бурлеск-кабаре «Мадам Бум» в Санкт-Петербурге"; calendar title "Календарь событий в Санкт-Петербурге"; content includes Четверг/Ibiza/Unity/Садовая/Гривцова; SPB ticket links; calendar legend has Санкт-Петербург.
+  • Mobile 390×844: no horizontal overflow (bodyWidth=390); 2 afisha cards (mobile); drawer has all links incl. Афиша Москва.
+  • dev.log: only expected TC 403 errors (placeholder key) — no compile/runtime errors.
+
+Stage Summary:
+- Artifacts: public/images/afisha-msk.jpg + afisha-spb.jpg (new); api/calendar/route.ts (city filter); Calendar.tsx (cityFilter/widgetOverride/title props); Afisha.tsx (2 posters + city badge + Подробнее→city pages); src/app/msk/page.tsx (new); src/app/spb/page.tsx (new); Navbar.tsx (Афиша Москва highlighted link).
+- All 8 routes HTTP 200; lint clean; logo centered; responsive; sticky footer.
+- Known limitation (unchanged): calendars show "Шоу не найдены" until a real TC_API_KEY is set in .env — but the city-filter + widget-override logic is wired and verified (network shows ?city=msk requests; legend shows only the filtered city). With a real key, /msk shows only Moscow events and all "Купить билеты" open madamboommsk widget; /spb shows only SPB events → madamboomspb widget.

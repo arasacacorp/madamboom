@@ -5,6 +5,9 @@ import { getWidgetUrl } from '@/lib/tc-widget-config'
  * GET /api/calendar?year=2026&month=6
  * (month is 1-indexed: 1=January, 12=December)
  *
+ * GET /api/calendar?year=2026&month=7&city=msk   — only Moscow events
+ * GET /api/calendar?year=2026&month=7&city=spb   — only Saint Petersburg events
+ *
  * Fetches events from TicketsCloud, caches 1 hour in-memory.
  * Only READ operations — never modifies anything on TicketsCloud side.
  */
@@ -275,6 +278,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const yearParam = searchParams.get('year')
   const monthParam = searchParams.get('month') // 1-12
+  const cityParam = searchParams.get('city') // 'msk' | 'spb' | null
 
   try {
     const rawEvents = await fetchAllEvents()
@@ -284,6 +288,16 @@ export async function GET(request: NextRequest) {
       .map(transformEvent)
       .filter((e): e is CalendarEvent => e !== null)
 
+    // ── Optional city filter (applied before month filter) ──
+    // 'msk' → only Moscow events (cityMarker === 'М')
+    // 'spb' → only Saint Petersburg events (cityMarker === 'СПб')
+    let cityFiltered = allCalEvents
+    if (cityParam === 'msk') {
+      cityFiltered = allCalEvents.filter((e) => e.cityMarker === 'М')
+    } else if (cityParam === 'spb') {
+      cityFiltered = allCalEvents.filter((e) => e.cityMarker === 'СПб')
+    }
+
     // If year+month specified, filter to that month
     if (yearParam && monthParam) {
       const year = parseInt(yearParam, 10)
@@ -291,10 +305,10 @@ export async function GET(request: NextRequest) {
       if (!isNaN(year) && !isNaN(month) && month >= 1 && month <= 12) {
         // Filter by dateKey (YYYY-MM)
         const monthPrefix = `${year}-${String(month).padStart(2, '0')}-`
-        const filtered = allCalEvents.filter((e) => e.dateKey.startsWith(monthPrefix))
+        const filtered = cityFiltered.filter((e) => e.dateKey.startsWith(monthPrefix))
 
-        // Cache key
-        const cacheKey = `${year}-${month}`
+        // Cache key (includes city so MSK/SPB/all caches don't collide)
+        const cacheKey = `${year}-${month}-${cityParam || 'all'}`
         const cached = cache.get(cacheKey)
         if (cached && Date.now() - cached.ts < CACHE_TTL) {
           return NextResponse.json(
@@ -311,9 +325,9 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // No filter — return all events
+    // No month filter — return city-filtered (or all) events
     return NextResponse.json(
-      { events: allCalEvents, cached: false, count: allCalEvents.length },
+      { events: cityFiltered, cached: false, count: cityFiltered.length },
       { headers: { 'Cache-Control': 'public, max-age=3600' } }
     )
   } catch (error) {

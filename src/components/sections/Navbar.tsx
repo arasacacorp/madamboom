@@ -13,12 +13,14 @@ import { Menu, X, Ticket, Calendar } from 'lucide-react'
  */
 
 type NavItem =
-  | { type: 'link'; label: string; href: string }
+  | { type: 'link'; label: string; href: string; badge?: string }
   | { type: 'button-outline'; label: string; href: string }
 
-/* Left side of the centered logo (links only) */
-const LEFT_LINKS: { label: string; href: string }[] = [
+/* Left side of the centered logo (links only).
+ * `badge` renders a highlighted chip next to the label (e.g. "Москва"). */
+const LEFT_LINKS: { label: string; href: string; badge?: string }[] = [
   { label: 'О шоу', href: '/about' },
+  { label: 'Афиша', href: '/msk', badge: 'Москва' },
   { label: 'Календарь событий', href: '/events' },
   { label: 'Состав', href: '/cast' },
 ]
@@ -108,7 +110,7 @@ export default function Navbar() {
         {/* ═══ Desktop navbar (lg+): centered-logo 3-column grid ═══ */}
         <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-7xl mx-auto px-5 sm:px-8 h-14 sm:h-16">
           {/* ── Left links (justify-end → push toward center/logo) ── */}
-          <div className="flex items-center justify-end gap-5 xl:gap-7">
+          <div className="flex items-center justify-end gap-4 xl:gap-6">
             {LEFT_LINKS.map((item) => (
               <a
                 key={item.label}
@@ -123,9 +125,34 @@ export default function Navbar() {
                   letterSpacing: '0.14em',
                   textDecoration: 'none',
                   textTransform: 'uppercase',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {item.label}
+                {item.badge && (
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-inter)',
+                      fontSize: '9px',
+                      fontWeight: 700,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      color: '#06020A',
+                      background:
+                        'linear-gradient(135deg, #C9A96E 0%, #E8D5A3 100%)',
+                      padding: '2px 7px',
+                      borderRadius: '10px',
+                      lineHeight: 1.4,
+                      border: '1px solid rgba(232,213,163,0.5)',
+                      boxShadow: '0 0 10px rgba(201,169,110,0.25)',
+                    }}
+                  >
+                    {item.badge}
+                  </span>
+                )}
               </a>
             ))}
           </div>
@@ -356,9 +383,34 @@ export default function Navbar() {
                   transitionDelay: drawerOpen ? `${i * 60}ms` : '0ms',
                   transform: drawerOpen ? 'translateX(0)' : 'translateX(20px)',
                   opacity: drawerOpen ? 1 : 0,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
                 }}
               >
                 {item.label}
+                {item.badge && (
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-inter)',
+                      fontSize: '9px',
+                      fontWeight: 700,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      color: '#06020A',
+                      background:
+                        'linear-gradient(135deg, #C9A96E 0%, #E8D5A3 100%)',
+                      padding: '2px 8px',
+                      borderRadius: '10px',
+                      lineHeight: 1.4,
+                      border: '1px solid rgba(232,213,163,0.5)',
+                      boxShadow: '0 0 10px rgba(201,169,110,0.25)',
+                    }}
+                  >
+                    {item.badge}
+                  </span>
+                )}
               </a>
             )
           })}

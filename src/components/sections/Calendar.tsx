@@ -688,8 +688,22 @@ function EventModal({
   )
 }
 
-/* ─── Main Calendar Component ─── */
-export default function Calendar() {
+/* ─── Main Calendar Component ───
+ * Props (all optional):
+ *  - cityFilter: 'М' | 'СПб'  → only fetch events for that city (via /api/calendar?city=)
+ *  - widgetOverride: string   → force ALL events' ticket widget URL to this value
+ *                               (e.g. 'https://madamboommsk.ticketscloud.org/' on the /msk page)
+ *  - title: string            → override the section heading (default "Календарь событий")
+ */
+export default function Calendar({
+  cityFilter,
+  widgetOverride,
+  title,
+}: {
+  cityFilter?: 'М' | 'СПб'
+  widgetOverride?: string
+  title?: string
+} = {}) {
   const sectionRef = useRef<HTMLElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(new Date())
@@ -702,14 +716,15 @@ export default function Calendar() {
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
 
-  /* ── Client-side cache by month ── */
+  /* ── Client-side cache by month (+ city) ── */
   const monthCacheRef = useRef<Map<string, CalendarEvent[]>>(new Map())
 
   /* ── Fetch events when month changes ── */
   useEffect(() => {
     const year = currentMonth.getFullYear()
     const month = currentMonth.getMonth() + 1 // 1-indexed for API
-    const cacheKey = `${year}-${month}`
+    const cityQs = cityFilter === 'М' ? '&city=msk' : cityFilter === 'СПб' ? '&city=spb' : ''
+    const cacheKey = `${year}-${month}-${cityQs || 'all'}`
 
     // Use cache if available
     const cached = monthCacheRef.current.get(cacheKey)
@@ -724,14 +739,18 @@ export default function Calendar() {
     setIsLoading(true)
     setLoadError(null)
 
-    fetch(`/api/calendar?year=${year}&month=${month}`)
+    fetch(`/api/calendar?year=${year}&month=${month}${cityQs}`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         return res.json()
       })
       .then((data) => {
         if (cancelled) return
-        const evts = (data.events || []) as CalendarEvent[]
+        // Override widget URL for all events when widgetOverride is set
+        const raw = (data.events || []) as CalendarEvent[]
+        const evts = widgetOverride
+          ? raw.map((e) => ({ ...e, widgetUrl: widgetOverride }))
+          : raw
         monthCacheRef.current.set(cacheKey, evts)
         setEvents(evts)
         setIsLoading(false)
@@ -747,7 +766,7 @@ export default function Calendar() {
     return () => {
       cancelled = true
     }
-  }, [currentMonth])
+  }, [currentMonth, cityFilter, widgetOverride])
 
   /* ── Intersection Observer for entrance animation ── */
   useEffect(() => {
@@ -927,7 +946,7 @@ export default function Calendar() {
               lineHeight: 1.1,
             }}
           >
-            Календарь событий
+            {title || 'Календарь событий'}
           </h2>
 
           <div className="gold-line-shimmer" style={{ width: '80px', height: '1px' }} />
@@ -944,20 +963,25 @@ export default function Calendar() {
             Расписание шоу
           </p>
 
-          {/* City legend */}
+          {/* City legend — show only the filtered city when cityFilter is set,
+              otherwise show both cities */}
           <div className="flex items-center gap-4 mt-2">
-            <div className="flex items-center gap-1.5">
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: CITY_COLORS['М'], boxShadow: `0 0 6px ${CITY_COLORS['М']}` }} />
-              <span style={{ fontFamily: 'var(--font-inter)', color: 'rgba(201,169,110,0.55)', fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-                Москва
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: CITY_COLORS['СПб'], boxShadow: `0 0 6px ${CITY_COLORS['СПб']}` }} />
-              <span style={{ fontFamily: 'var(--font-inter)', color: 'rgba(201,169,110,0.55)', fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-                Санкт-Петербург
-              </span>
-            </div>
+            {(!cityFilter || cityFilter === 'М') && (
+              <div className="flex items-center gap-1.5">
+                <span style={{ width: 8, height: 8, borderRadius: '50%', background: CITY_COLORS['М'], boxShadow: `0 0 6px ${CITY_COLORS['М']}` }} />
+                <span style={{ fontFamily: 'var(--font-inter)', color: 'rgba(201,169,110,0.55)', fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                  Москва
+                </span>
+              </div>
+            )}
+            {(!cityFilter || cityFilter === 'СПб') && (
+              <div className="flex items-center gap-1.5">
+                <span style={{ width: 8, height: 8, borderRadius: '50%', background: CITY_COLORS['СПб'], boxShadow: `0 0 6px ${CITY_COLORS['СПб']}` }} />
+                <span style={{ fontFamily: 'var(--font-inter)', color: 'rgba(201,169,110,0.55)', fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                  Санкт-Петербург
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

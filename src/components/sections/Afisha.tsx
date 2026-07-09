@@ -50,34 +50,30 @@ function SectionParticles() {
 }
 
 /* ─── Event data ───
-   date/city/show/venue kept for accessibility (alt text, aria-label) only —
-   NOT rendered visibly on the card. The poster image carries all info. */
+   Two afishas: Moscow + Saint Petersburg.
+   - url       → TicketsCloud sales widget ("Билеты" button, external)
+   - infoUrl   → internal city page ("Подробнее" button → /msk, /spb)
+   date/city/show/venue kept for accessibility (alt text, aria-label);
+   city is also rendered as a visible badge on the poster. */
 const events = [
   {
-    date: '19 ИЮН',
+    date: 'ИЮЛЬ 2025',
     city: 'Москва',
-    show: 'Бурлеск-кабаре',
-    venue: 'Клуб «Гримёрка»',
-    image: '/images/afisha-moscow-grimerka.jpg',
-    url: 'https://madamboomgrimerka.ticketscloud.org/',
+    show: 'Бурлеск-кабаре «Мадам Бум»',
+    venue: 'Ресторан «Гримёрка»',
+    image: '/images/afisha-msk.jpg',
+    url: 'https://madamboommsk.ticketscloud.org/',
+    infoUrl: '/msk',
     highlighted: false,
   },
   {
-    date: '26 ИЮН',
+    date: 'ИЮЛЬ 2025',
     city: 'Санкт-Петербург',
-    show: 'Ибица Джаз',
-    venue: 'Douglas Tickets',
-    image: '/images/afisha-speterburg-ibiza.jpg',
-    url: 'https://madamboomibiza.ticketscloud.org/',
-    highlighted: true,
-  },
-  {
-    date: '27 ИЮН',
-    city: 'Москва',
-    show: 'Джаз энд Бурлеск',
-    venue: 'Клуб «Гримёрка»',
-    image: '/images/afisha-moscow-jazz.jpg',
-    url: 'https://jazzandburlesque.ticketscloud.org/',
+    show: 'Ибица · Джазовый бунт',
+    venue: 'Ibiza / Unity',
+    image: '/images/afisha-spb.jpg',
+    url: 'https://madamboomspb.ticketscloud.org/',
+    infoUrl: '/spb',
     highlighted: false,
   },
 ]
@@ -98,6 +94,8 @@ function CornerBrackets() {
 function AfishaCard({
   image,
   url,
+  infoUrl,
+  city,
   altText,
   highlighted,
   delay,
@@ -105,6 +103,8 @@ function AfishaCard({
 }: {
   image: string
   url: string
+  infoUrl: string
+  city: string
   altText: string
   highlighted: boolean
   delay: number
@@ -157,12 +157,50 @@ function AfishaCard({
             loading="lazy"
           />
 
+          {/* City badge — visible marker on the poster */}
+          <span
+            className="afisha-city-badge"
+            style={{
+              position: 'absolute',
+              top: '12px',
+              left: '12px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              borderRadius: '20px',
+              fontFamily: 'var(--font-inter)',
+              fontSize: '10px',
+              fontWeight: 600,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color: '#E8D5A3',
+              background: 'rgba(6,2,10,0.78)',
+              border: '1px solid rgba(201,169,110,0.45)',
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
+              zIndex: 4,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <span
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: '#C9A96E',
+                boxShadow: '0 0 6px rgba(201,169,110,0.8)',
+              }}
+            />
+            {city}
+          </span>
+
           {/* Corner brackets — only on featured card, on the frame edges */}
           {highlighted && <CornerBrackets />}
         </div>
       </div>
 
-      {/* ── Action buttons — Билеты (primary) + О программе (secondary), single row ── */}
+      {/* ── Action buttons — Билеты (primary) + Подробнее (secondary, internal) ── */}
       <div
         className="afisha-actions"
         style={{
@@ -196,13 +234,13 @@ function AfishaCard({
             <polyline points="12 5 19 12 12 19" />
           </svg>
         </a>
-        {/* О программе — secondary CTA (placeholder href, links TBD) */}
+        {/* Подробнее — secondary CTA → city page (/msk or /spb) */}
         <a
-          href="#afisha"
+          href={infoUrl}
           className="afisha-info-btn"
-          aria-label={`О программе: ${altText}`}
+          aria-label={`Подробнее: ${altText}`}
         >
-          <span>О программе</span>
+          <span>Подробнее</span>
           <svg
             width="14"
             height="14"
@@ -352,15 +390,17 @@ export default function Afisha() {
           </p>
         </div>
 
-        {/* ── Event Cards — Desktop / Tablet (3 in a row, middle elevated) ── */}
+        {/* ── Event Cards — Desktop / Tablet (side by side, centered) ── */}
         <div
           className="hidden md:flex items-start justify-center gap-6 lg:gap-8 xl:gap-10 w-full max-w-6xl px-6 lg:px-8 pb-8"
         >
           {events.map((evt, i) => (
             <AfishaCard
-              key={evt.date}
+              key={evt.city}
               image={evt.image}
               url={evt.url}
+              infoUrl={evt.infoUrl}
+              city={evt.city}
               altText={`${evt.show}. ${evt.city}. ${evt.date}`}
               highlighted={evt.highlighted}
               delay={0.2 + i * 0.15}
@@ -373,9 +413,11 @@ export default function Afisha() {
         <div className="md:hidden flex flex-col items-center gap-8 w-full max-w-sm px-4 pb-8">
           {events.map((evt, i) => (
             <AfishaCardMobile
-              key={evt.date}
+              key={evt.city}
               image={evt.image}
               url={evt.url}
+              infoUrl={evt.infoUrl}
+              city={evt.city}
               altText={`${evt.show}. ${evt.city}. ${evt.date}`}
               highlighted={evt.highlighted}
               delay={0.15 + i * 0.12}
@@ -563,6 +605,8 @@ export default function Afisha() {
 function AfishaCardMobile({
   image,
   url,
+  infoUrl,
+  city,
   altText,
   highlighted,
   delay,
@@ -570,6 +614,8 @@ function AfishaCardMobile({
 }: {
   image: string
   url: string
+  infoUrl: string
+  city: string
   altText: string
   highlighted: boolean
   delay: number
@@ -616,11 +662,47 @@ function AfishaCardMobile({
             }}
             loading="lazy"
           />
+          {/* City badge */}
+          <span
+            style={{
+              position: 'absolute',
+              top: '10px',
+              left: '10px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '5px 10px',
+              borderRadius: '20px',
+              fontFamily: 'var(--font-inter)',
+              fontSize: '9px',
+              fontWeight: 600,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: '#E8D5A3',
+              background: 'rgba(6,2,10,0.78)',
+              border: '1px solid rgba(201,169,110,0.45)',
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
+              zIndex: 4,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <span
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: '#C9A96E',
+                boxShadow: '0 0 6px rgba(201,169,110,0.8)',
+              }}
+            />
+            {city}
+          </span>
           {highlighted && <CornerBrackets />}
         </div>
       </div>
 
-      {/* Action buttons — Билеты + О программе, single row */}
+      {/* Action buttons — Билеты + Подробнее, single row */}
       <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'nowrap' }}>
         <a
           href={url}
@@ -646,11 +728,11 @@ function AfishaCardMobile({
           </svg>
         </a>
         <a
-          href="#afisha"
+          href={infoUrl}
           className="afisha-info-btn"
-          aria-label={`О программе: ${altText}`}
+          aria-label={`Подробнее: ${altText}`}
         >
-          <span>О программе</span>
+          <span>Подробнее</span>
           <svg
             width="14"
             height="14"
