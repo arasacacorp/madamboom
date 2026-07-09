@@ -21,7 +21,7 @@ type NavItem =
 const LEFT_LINKS: { label: string; href: string; badge?: string }[] = [
   { label: 'О шоу', href: '/about' },
   { label: 'Афиша', href: '/msk', badge: 'Москва' },
-  { label: 'Календарь событий', href: '/events' },
+  { label: 'Афиша', href: '/spb', badge: 'Санкт-Петербург' },
   { label: 'Состав', href: '/cast' },
 ]
 

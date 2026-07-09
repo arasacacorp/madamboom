@@ -79,3 +79,25 @@ Stage Summary:
 - Modified: src/components/sections/Afisha.tsx (badges moved above posters in both desktop + mobile cards, gold-gradient pill style); src/app/spb/page.tsx (4 intro paragraphs + Thursday/Saturday schedule + closing line replaced with client copy).
 - Home afisha now: 2 centralized posters, each with a prominent gold "Москва"/"Санкт-Петербург" badge ABOVE the poster (no overlay). /spb page now shows the client's exact descriptive text.
 - All routes HTTP 200; lint clean; responsive; sticky footer intact.
+
+---
+Task ID: 17
+Agent: main (Z.ai Code)
+Task: (1) Home afisha — make both cards centered (user perceived "one centered, one to the right"). (2) Navbar — remove "Календарь событий", add "Афиша Санкт-Петербург".
+
+Work Log:
+- Read worklog (Task 16) + inspected Afisha.tsx (grid + card CSS) and Navbar.tsx (LEFT_LINKS).
+- Task 1 diagnosis: Measured afisha at 1440/1280/1024 — cards were geometrically centered (leftMargin=rightMargin, pairCenter=viewportCenter) but the pair was WIDE (732px: 2×346px cards + 40px gap), so card1 sat in the left half (center 527) and card2 in the right half (center 913), reading as "one left, one right" rather than a centered cluster. Confirmed via VLM (original screenshot: cards symmetric but spread). Narrowing the container alone wouldn't help (cards re-center in viewport regardless of container width) — only reducing card width + gap brings both cards closer to the vertical centerline.
+- Task 1 fix (Afisha.tsx): reduced .afisha-card width clamp(260px,24vw,360px) → clamp(240px,20vw,300px); .afisha-card--featured clamp(280px,26vw,400px) → clamp(250px,21vw,320px); desktop grid gap-6 lg:gap-8 xl:gap-10 → gap-6 (fixed); container max-w-6xl → max-w-3xl (just fits the compact pair). Result at 1440: pair width 600px (was 732px), card1 center 564 (was 527, +37px toward center), card2 center 876 (was 913, −37px toward center), still symmetric (leftMargin=rightMargin=420). VLM confirms: "карточки центрированы как пара по центру страницы, обе находятся в центральной зоне".
+- Task 2 (Navbar.tsx): LEFT_LINKS — removed {label:'Календарь событий', href:'/events'}; added {label:'Афиша', href:'/spb', badge:'Санкт-Петербург'}. Now 4 left links: О шоу→/about, Афиша[Москва]→/msk, Афиша[Санкт-Петербург]→/spb, Состав→/cast. Two "Афиша" links differentiated by gold city badges (Москва / Санкт-Петербург). /events route still exists (just no navbar link) — verified HTTP 200.
+- Lint: clean. All routes HTTP 200 (/, /msk, /spb, /events, /about, /cast, /contacts, /private-events).
+- Agent Browser self-verification (mandatory):
+  • Afisha (desktop 1440): 2 cards, compact pair (600px), card1Center=564, card2Center=876, leftMargin=rightMargin=420, pairCenter=720=viewportCenter. VLM: "both cards in central zone, centered as a pair." Screenshot captured.
+  • Navbar (desktop 1440): 9 anchors; "Календарь событий" GONE (hasCalendarLink=false); "Афиша Москва"→/msk ✓; "Афиша Санкт-Петербург"→/spb ✓; logo centered (logoCenter=720=navCenter); no overflow (bodyWidth=1440, left links end at 622, logo starts at 654, 32px gap). Clicking "Афиша Санкт-Петербург" → navigated to /spb (h1 "Бурлеск-кабаре «Мадам Бум» в Санкт-Петербурге").
+  • Mobile drawer (390×844): contains О шоу, Афиша Москва (/msk), Афиша Санкт-Петербург (/spb), Состав, Контакты, Заказать мероприятие — no Календарь событий. Mobile afisha: 2 cards, card1Centered=true (195=vpCenter), no horizontal overflow.
+  • dev.log: only expected TC 403 errors (placeholder key) — no compile/runtime errors.
+
+Stage Summary:
+- Modified: src/components/sections/Afisha.tsx (compact centered card pair: smaller card width + fixed gap-6 + max-w-3xl container); src/components/sections/Navbar.tsx (removed Календарь событий, added Афиша Санкт-Петербург→/spb).
+- Home afisha now reads as a centered pair (both cards in central zone) instead of spread to left/right halves. Navbar now has two Афиша links (Москва + Санкт-Петербург) with gold city badges; /events page preserved (accessible via direct URL, not in navbar).
+- All routes HTTP 200; lint clean; responsive; logo centered; sticky footer intact.

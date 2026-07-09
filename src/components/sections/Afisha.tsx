@@ -386,9 +386,9 @@ export default function Afisha() {
           </p>
         </div>
 
-        {/* ── Event Cards — Desktop / Tablet (side by side, centered) ── */}
+        {/* ── Event Cards — Desktop / Tablet (2 posters, compact centered pair) ── */}
         <div
-          className="hidden md:flex items-start justify-center gap-6 lg:gap-8 xl:gap-10 w-full max-w-6xl px-6 lg:px-8 pb-8"
+          className="hidden md:flex items-start justify-center gap-6 w-full max-w-3xl px-6 lg:px-8 pb-8"
         >
           {events.map((evt, i) => (
             <AfishaCard
@@ -425,12 +425,12 @@ export default function Afisha() {
 
       {/* ═══ INLINE STYLES ═══ */}
       <style>{`
-        /* ── Featured card width (wider + middle) ── */
+        /* ── Card width (compact, so the 2-poster pair clusters centered) ── */
         .afisha-card {
-          width: clamp(260px, 24vw, 360px);
+          width: clamp(240px, 20vw, 300px);
         }
         .afisha-card--featured {
-          width: clamp(280px, 26vw, 400px);
+          width: clamp(250px, 21vw, 320px);
         }
 
         /* ── Poster frame hover ── */
