@@ -457,3 +457,28 @@ Stage Summary:
 - Modified: src/app/api/calendar/route.ts (added showType/showTypeKey via getShowType helper); src/components/sections/Calendar.tsx (day-cell МСК/СПБ text badges, sidebar showType + Jazz chip + city-dot, "Ближайшие шоу" title).
 - Calendar now: dates marked МСК (gold) / СПБ (burgundy); sidebar lists "Мадам Бум" and "Джазовый бунт" distinctly with a Jazz accent chip on jazz shows.
 - All routes HTTP 200; lint clean; responsive.
+
+---
+Task ID: 35
+Agent: main (Z.ai Code)
+Task: (1) Calendar modal — remove literal "<br>" / "\u2028" symbols from event description (TicketsCloud returns HTML-ish text). (2) "Купить билеты" in modal should open TicketsCloud directly on THIS event (with seat selection), not the general all-events widget.
+
+Work Log:
+- Read worklog (Task 34) + inspected API: TicketsCloud description contained literal "<br><br>" tags + "\u2028" (unicode line separator) — rendered as visible text "«Джазовый бунт» — это...<br><br>В программе:...". widgetUrl was venue/org-level (madamboomgrimerka.ticketscloud.org/) showing ALL events, not the clicked one.
+- Investigated TC widget: tested ?event_id={id} param → widget accepts it (HTTP 200) and pre-selects that event (confirmed event_id + "Мадам Бум" in widget HTML). TC has no separate per-event purchase URL field in the API response, but the widget URL + ?event_id opens the seat-selection view for that specific show.
+- API (route.ts): added 2 helpers:
+  • cleanDescription(desc) — strips <br> tags, drops all HTML tags, replaces \u2028/\u2029 with \n, normalizes whitespace, collapses 3+ newlines into 2 (paragraph breaks). Returns clean multi-line text.
+  • buildEventWidgetUrl(venueId, title, eventId) — wraps getWidgetUrl + appends ?event_id={eventId} (handles existing query string with &).
+  Updated transformEvent: description = cleanDescription(raw.title.desc); widgetUrl = buildEventWidgetUrl(...).
+- Calendar.tsx modal: replaced single <p>{event.description}</p> with a paragraph-splitter — splits description by \n, trims/filters empty lines, renders each as a separate <p> (Cormorant italic, gap-3 between paragraphs). No more literal <br> text.
+- Lint: clean. Restarted dev server (API change needs restart).
+- Agent Browser verification (mandatory):
+  • API: description has NO <br> (False), NO \u2028 (False), clean \n\n paragraph breaks. widgetUrl includes event_id for all 3 tested events (6a0cca.../6a16dd.../6a2a67...).
+  • Modal (clicked 11 июля Jazz): 7 description paragraphs rendered cleanly (descParaCount=7, first "«Джазовый бунт» — это вечер чувственной театральности...", second "джаз бэнд, вокал, бурлеск..."). hasBrLiteral=false, hasBrTag=false. Buy button present.
+  • Clicked "Купить билеты": iframe src = "https://madamboomibiza.ticketscloud.org/?event_id=6a16ddf0a68f9ef4954d9c66" — opens the SPECIFIC event's seat selection, not the general all-events list. hasEventId=true.
+- dev.log: no errors.
+
+Stage Summary:
+- Modified: src/app/api/calendar/route.ts (cleanDescription + buildEventWidgetUrl helpers; transformEvent uses them); src/components/sections/Calendar.tsx (modal description rendered as clean paragraphs split by \n).
+- Result: modal description shows clean Russian text in paragraphs (no <br> symbols). "Купить билеты" opens TicketsCloud widget pre-selected on the clicked event (with seat selection for that show) via ?event_id={id} appended to the venue widget URL.
+- All routes HTTP 200; lint clean; responsive.

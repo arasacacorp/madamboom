@@ -206,6 +206,38 @@ function getShowType(title: string): { showType: string; showTypeKey: 'jazz' | '
   return { showType: 'Мадам Бум', showTypeKey: 'classic' }
 }
 
+/* ─── Clean TicketsCloud description ───
+ * TC returns HTML-ish text with literal "<br>" tags, "\u2028" (line separator),
+ * multiple consecutive line breaks, and leading/trailing whitespace.
+ * We strip the HTML tags, normalize whitespace, and split into paragraphs
+ * (by 2+ newlines), so the frontend can render clean <p> blocks. */
+function cleanDescription(desc: string): string {
+  if (!desc) return ''
+  return desc
+    // Drop HTML tags (br, etc.)
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    // Drop unicode line/paragraph separators
+    .replace(/[\u2028\u2029]/g, '\n')
+    // Normalize whitespace within lines
+    .split('\n')
+    .map((line) => line.replace(/[ \t]+/g, ' ').trim())
+    .join('\n')
+    // Collapse 3+ newlines into 2 (paragraph break)
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
+/* ─── Build per-event widget URL ───
+ * The base widget URL (from getWidgetUrl, by venue/show) shows ALL events
+ * for that venue/org. To open the TicketsCloud widget directly on THIS event
+ * (with seat selection for this specific show), append ?event_id={eventId}. */
+function buildEventWidgetUrl(venueId: string, title: string, eventId: string): string | null {
+  const base = getWidgetUrl(venueId, title)
+  if (!base) return null
+  return `${base}${base.includes('?') ? '&' : '?'}event_id=${eventId}`
+}
+
 /* (getWidgetUrl импортирован из @/lib/tc-widget-config — см. конфиг-файл
  *  для добавления новых поддоменов виджетов продаж) */
 
@@ -237,7 +269,7 @@ function transformEvent(raw: RawTCEvent): CalendarEvent | null {
     dateDisplay: toDateDisplay(parsed.start, timezone),
     timeDisplay: toTimeDisplay(parsed.start, timezone),
     title: raw.title.text,
-    description: raw.title.desc,
+    description: cleanDescription(raw.title.desc),
     ageRating: raw.age_rating || 18,
     venueId: raw.venue.id,
     venueName: raw.venue.name,
@@ -250,7 +282,7 @@ function transformEvent(raw: RawTCEvent): CalendarEvent | null {
     coverUrl: raw.media?.cover?.url || null,
     coverSmallUrl: raw.media?.cover_small?.url || null,
     sets,
-    widgetUrl: getWidgetUrl(raw.venue.id, raw.title.text),
+    widgetUrl: buildEventWidgetUrl(raw.venue.id, raw.title.text, raw.id),
     cityMarker: getCityMarker(city),
     ...getShowType(raw.title.text),
   }

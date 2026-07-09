@@ -461,21 +461,30 @@ function EventModal({
                   </div>
                 </div>
 
-                {/* Description */}
+                {/* Description — split into paragraphs (description is pre-cleaned by API: <br> stripped, \n\n = paragraph break) */}
                 {event.description && (
-                  <p
-                    className="mb-6"
-                    style={{
-                      fontFamily: 'var(--font-cormorant)',
-                      color: 'rgba(245,230,211,0.78)',
-                      fontSize: 'clamp(14px, 1.3vw, 16px)',
-                      fontStyle: 'italic',
-                      lineHeight: 1.7,
-                      letterSpacing: '0.02em',
-                    }}
-                  >
-                    {event.description}
-                  </p>
+                  <div className="mb-6 flex flex-col gap-3">
+                    {event.description
+                      .split('\n')
+                      .map((line) => line.trim())
+                      .filter((line) => line.length > 0)
+                      .map((line, i) => (
+                        <p
+                          key={i}
+                          style={{
+                            fontFamily: 'var(--font-cormorant)',
+                            color: 'rgba(245,230,211,0.78)',
+                            fontSize: 'clamp(14px, 1.3vw, 16px)',
+                            fontStyle: 'italic',
+                            lineHeight: 1.7,
+                            letterSpacing: '0.02em',
+                            margin: 0,
+                          }}
+                        >
+                          {line}
+                        </p>
+                      ))}
+                  </div>
                 )}
 
                 {/* Tickets availability + categories */}
