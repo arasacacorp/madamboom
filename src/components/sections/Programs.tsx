@@ -244,7 +244,7 @@ function ProgramCard({
                 whiteSpace: 'nowrap',
               }}
             >
-              Афиша Москва
+              Афиша в Москве
               <svg
                 width="13"
                 height="13"
@@ -276,7 +276,7 @@ function ProgramCard({
                 whiteSpace: 'nowrap',
               }}
             >
-              Афиша Санкт-Петербург
+              Афиша в Санкт-Петербурге
               <svg
                 width="13"
                 height="13"
