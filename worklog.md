@@ -101,3 +101,27 @@ Stage Summary:
 - Modified: src/components/sections/Afisha.tsx (compact centered card pair: smaller card width + fixed gap-6 + max-w-3xl container); src/components/sections/Navbar.tsx (removed Календарь событий, added Афиша Санкт-Петербург→/spb).
 - Home afisha now reads as a centered pair (both cards in central zone) instead of spread to left/right halves. Navbar now has two Афиша links (Москва + Санкт-Петербург) with gold city badges; /events page preserved (accessible via direct URL, not in navbar).
 - All routes HTTP 200; lint clean; responsive; logo centered; sticky footer intact.
+
+---
+Task ID: 18
+Agent: main (Z.ai Code)
+Task: User clarified — DO NOT shrink the afisha cards. The two posters should be spread symmetrically: one on the LEFT edge, one on the RIGHT edge (равномерно по левому и правому краю), not clustered in the center. Revert card size to original.
+
+Work Log:
+- Read worklog (Task 17) + inspected current Afisha.tsx. My Task 17 change had shrunk cards (clamp(240px,20vw,300px)) + narrowed container (max-w-3xl) + kept justify-center, which the user rejected.
+- Reverted card width to original: .afisha-card clamp(260px,24vw,360px); .afisha-card--featured clamp(280px,26vw,400px).
+- Reverted container to original: max-w-6xl + gap-6 lg:gap-8 xl:gap-10.
+- Changed desktop grid alignment justify-center → justify-between so the 2 posters sit at the LEFT and RIGHT edges of the wide container (symmetric spread), instead of clustered in the middle.
+- Lint: clean. / → HTTP 200.
+- Agent Browser verification (measured at multiple widths — all symmetric, original card size):
+  • 1440px: card1Width=346, card2Width=346 (original size restored); card1Left=176, card2Right=1264; leftMargin=176, rightMargin=176 (symmetric ✓); gap=397px (posters spread to edges).
+  • 1280px: card1Left=96, c2Right=1184; symmetric ✓; cardW=307.
+  • 1024px: card1Left=32, c2Right=992; symmetric ✓; cardW=260.
+  • 800px: card1Left=24, c2Right=776; symmetric ✓; cardW=260; no overflow.
+  • Mobile 390×844: 2 mobile cards (stacked), card1Center=195=viewportCenter, no overflow.
+- dev.log: only expected TC 403 (placeholder key) — no compile/runtime errors.
+
+Stage Summary:
+- Modified: src/components/sections/Afisha.tsx — reverted card size to original (clamp 260-360px), reverted container to max-w-6xl, changed justify-center → justify-between so the 2 posters spread symmetrically to the left and right edges (equal margins both sides, large centered gap between them).
+- Result: two full-size posters, one on the left, one on the right, perfectly balanced (leftMargin = rightMargin at every viewport width).
+- All routes HTTP 200; lint clean; responsive; sticky footer intact.
