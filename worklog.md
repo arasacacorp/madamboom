@@ -125,3 +125,24 @@ Stage Summary:
 - Modified: src/components/sections/Afisha.tsx — reverted card size to original (clamp 260-360px), reverted container to max-w-6xl, changed justify-center → justify-between so the 2 posters spread symmetrically to the left and right edges (equal margins both sides, large centered gap between them).
 - Result: two full-size posters, one on the left, one on the right, perfectly balanced (leftMargin = rightMargin at every viewport width).
 - All routes HTTP 200; lint clean; responsive; sticky footer intact.
+
+---
+Task ID: 19
+Agent: main (Z.ai Code)
+Task: Move the two afisha posters closer to the middle (they were spread to the far edges in Task 18; user wants them shifted inward toward center while keeping the spread layout, NOT clustered).
+
+Work Log:
+- Read worklog (Task 18). Previous state: justify-between + max-w-6xl (1152px container) → at 1440px posters sat at far edges (leftMargin=rightMargin=176px, center-to-center gap 742px, each card 371px from viewport center).
+- Fix (Afisha.tsx): kept justify-between + original card size (clamp 260–360px) + original gap classes; narrowed desktop container max-w-6xl → max-w-4xl (896px). With justify-between, a narrower centered container pulls both full-size posters inward toward the middle while keeping a visible spread between them (not the rejected tight cluster from Task 17).
+- Lint: clean. / → HTTP 200.
+- Agent Browser verification (measured, all symmetric, original card size):
+  • 1440px: cardW=346 (original ✓); leftMargin=304, rightMargin=304 (was 176 — pulled 128px inward each side); gap=141px (was 397 — still a clear spread, not clustered); card1 center 477, card2 center 963 (243px from viewport center each, was 371px).
+  • 1280px: cardW=307, leftMargin=rightMargin=224, gap=218px, symmetric ✓.
+  • 1024px: cardW=260, leftMargin=rightMargin=96, gap=312px, symmetric ✓, no overflow.
+  • Mobile 390×844: 2 mobile cards centered, no overflow.
+- VLM: confirms cards still spread with a gap (not bunched) — "closer to middle" achieved while preserving the spread layout the user wanted in Task 18.
+- dev.log: only expected TC 403 (placeholder key) — no compile/runtime errors.
+
+Stage Summary:
+- Modified: src/components/sections/Afisha.tsx — narrowed desktop grid container max-w-6xl → max-w-4xl (justify-between kept, original card size kept). Posters now sit closer to the middle, symmetric, full-size, with a visible central gap between them.
+- All routes HTTP 200; lint clean; responsive; sticky footer intact.

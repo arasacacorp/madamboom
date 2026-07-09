@@ -386,9 +386,9 @@ export default function Afisha() {
           </p>
         </div>
 
-        {/* ── Event Cards — Desktop / Tablet (2 posters, spread to left & right edges) ── */}
+        {/* ── Event Cards — Desktop / Tablet (2 posters, spread toward the middle) ── */}
         <div
-          className="hidden md:flex items-start justify-between gap-6 lg:gap-8 xl:gap-10 w-full max-w-6xl px-6 lg:px-8 pb-8"
+          className="hidden md:flex items-start justify-between gap-6 lg:gap-8 xl:gap-10 w-full max-w-4xl px-6 lg:px-8 pb-8"
         >
           {events.map((evt, i) => (
             <AfishaCard
