@@ -258,7 +258,7 @@ export default function Hero({ animate }: HeroProps) {
           style={{ width: '100px', height: '1px' }}
         />
 
-        {/* Subtitle — tagline line (replaces the old short subtitle) */}
+        {/* Subtitle — tagline (2 lines: "...магия сцены" / "превращает вечер в незабываемый праздник") */}
         <div ref={subtitleRef} className="opacity-0 text-center" style={{ maxWidth: '760px' }}>
           <p
             style={{
@@ -271,7 +271,9 @@ export default function Hero({ animate }: HeroProps) {
               lineHeight: 1.5,
             }}
           >
-            Игривое и дерзкое бурлеск-шоу, где блеск, юмор и магия сцены превращает вечер в незабываемый праздник
+            Игривое и дерзкое бурлеск-шоу, где блеск, юмор и магия сцены
+            <br />
+            превращает вечер в незабываемый праздник
           </p>
         </div>
 

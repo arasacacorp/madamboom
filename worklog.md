@@ -170,3 +170,23 @@ Stage Summary:
 - Modified: src/components/sections/Hero.tsx — title → SVG logo img (drop-shadow glow); subtitle → new italic tagline sentence; tagline line removed (+ its GSAP tween).
 - Hero now: ornament → SVG logo → gold shimmer line → "Игривое и дерзкое бурлеск-шоу..." subtitle → city line → CTA buttons. Clean, elegant, on-brand.
 - All routes HTTP 200; lint clean; responsive (logo scales down on mobile via maxWidth 92vw); GSAP animation intact; sticky footer unaffected.
+
+---
+Task ID: 21
+Agent: main (Z.ai Code)
+Task: (1) Hero subtitle — force a 2-line break: line 1 "...магия сцены", line 2 "превращает вечер в незабываемый праздник". (2) Footer — replace the tagline under the logo with the same sentence.
+
+Work Log:
+- Read worklog (Task 20) + inspected Hero.tsx (subtitle) and Footer.tsx (logo + tagline block at line 87-101).
+- Task 1 — Hero.tsx: inserted a <br /> inside the subtitle <p> between "...магия сцены" and "превращает вечер в незабываемый праздник". Verified via DOM: two text nodes — node1 top:451 bottom:479 ("Игривое и дерзкое бурлеск..."), <br>, node2 top:486 bottom:514 ("превращает вечер..."). Subtitle total height 69px (2 lines). Exact split as requested.
+- Task 2 — Footer.tsx: replaced the old tagline "Бурлеск-кабаре нового поколения. Кинематографичное шоу, которое вы никогда не забудете." with "Игривое и дерзкое бурлеск-шоу, где блеск, юмор и магия сцены превращает вечер в незабываемый праздник." (kept the same styling: Cormorant italic, cream 70%, maxWidth 380px). Logo (logo-boom.svg, 42px) sits above it unchanged.
+- Lint: clean. / → HTTP 200.
+- Agent Browser self-verification (mandatory):
+  • Hero (desktop 1440): subtitle <p> has <br>; 2 distinct lines rendered (line1 top 451, line2 top 486); splitCorrectly=true (starts "...магия сцены", ends "...незабываемый праздник"). Screenshot captured.
+  • Footer: logo present; tagline text = "Игривое и дерзкое бурлеск-шоу, где блеск, юмор и магия сцены превращает вечер в незабываемый праздник."; old "Кинематографичное шоу" text GONE. Screenshot captured.
+  • dev.log: no compile/runtime errors (only expected TC 403).
+
+Stage Summary:
+- Modified: src/components/sections/Hero.tsx (subtitle forced to 2 lines via <br>); src/components/sections/Footer.tsx (tagline under logo → new sentence).
+- Hero subtitle now: line 1 "Игривое и дерзкое бурлеск-шоу, где блеск, юмор и магия сцены" / line 2 "превращает вечер в незабываемый праздник". Footer logo now followed by the same sentence.
+- All routes HTTP 200; lint clean; responsive; sticky footer intact.
