@@ -1416,28 +1416,6 @@ export default function Calendar({
                                 >
                                   {evt.showType}
                                 </p>
-                                {/* Show-type accent — "Джазовый бунт" gets a jazz-tinted chip */}
-                                {evt.showTypeKey === 'jazz' && (
-                                  <span
-                                    style={{
-                                      fontFamily: 'var(--font-inter)',
-                                      fontSize: '8px',
-                                      fontWeight: 700,
-                                      letterSpacing: '0.12em',
-                                      textTransform: 'uppercase',
-                                      color: '#E8D5A3',
-                                      background: 'rgba(201,169,110,0.12)',
-                                      border: '1px solid rgba(201,169,110,0.3)',
-                                      borderRadius: '8px',
-                                      padding: '2px 6px',
-                                      lineHeight: 1.2,
-                                      whiteSpace: 'nowrap',
-                                      flexShrink: 0,
-                                    }}
-                                  >
-                                    Jazz
-                                  </span>
-                                )}
                               </div>
                               <div className="flex items-center gap-3 mt-1.5">
                                 {/* City badge with dot — colored by city */}
